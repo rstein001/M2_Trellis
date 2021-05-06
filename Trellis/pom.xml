@@ -11,7 +11,7 @@
         <maven.compiler.target>15</maven.compiler.target>
     </properties>
     <dependencies>
-        <dependency>
+        <dependency>            
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>15.0.1</version>
@@ -32,7 +32,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.5</version>
                 <configuration>
-                    <mainClass>fr.insa.beuvron.testjavafxla.App</mainClass>
+                    <mainClass>fr.insa.stein.cours_s2.trellis.gui.Main</mainClass>
                 </configuration>
                 <executions>
                     <execution>
