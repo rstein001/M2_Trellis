@@ -1,3 +1,6 @@
+
+import fr.insa.stein.cours_s2.trellis.dessin.Groupe;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,7 +11,7 @@
  *
  * @author renaud
  */
-public class ZoneConstructible {
+public class ZoneConstructible extends Groupe {
     
     private double Xmax;
     private double Xmin;

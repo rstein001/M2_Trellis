@@ -1,6 +1,7 @@
 
 import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
 import fr.insa.stein.cours_s2.trellis.dessin.Point;
+import javafx.scene.paint.Color;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,6 +17,11 @@ public abstract class Noeud extends Point{
     
     private int id;
 
+    public Noeud(Numeroteur<Noeud> num, double x, double y, Color col) {
+        super(x, y, col);
+        this.id = num.creeID(this);
+    }
+    
     public Noeud(Numeroteur<Noeud> num, double x, double y) {
         super(x, y);
         this.id = num.creeID(this);

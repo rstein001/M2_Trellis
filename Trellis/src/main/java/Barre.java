@@ -21,6 +21,15 @@ public class Barre extends Segment {
     private int idNoeud1;
     private int idNoeud2;
 
+    
+    public Barre(Numeroteur<Barre> num, TypeBarre Type, Noeud Noeud1, Noeud Noeud2, Color col) {
+        super((Point) Noeud1, (Point) Noeud2, col);
+        this.id =  num.creeID(this);
+        this.idType = Type.getId();
+        this.idNoeud1 = Noeud1.getId();
+        this.idNoeud2 = Noeud2.getId();
+    }
+    
     public Barre(Numeroteur<Barre> num, TypeBarre Type, Noeud Noeud1, Noeud Noeud2) {
         super((Point) Noeud1, (Point) Noeud2);
         this.id =  num.creeID(this);

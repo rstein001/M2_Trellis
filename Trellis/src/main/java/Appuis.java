@@ -1,6 +1,7 @@
 
 import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
 import fr.insa.stein.cours_s2.trellis.dessin.Point;
+import javafx.scene.paint.Color;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -18,17 +19,31 @@ public abstract class Appuis extends Noeud {
     private int numPT;
     private double alpha;
     
+    public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, Point P, Color col) {
+        super(num, P.getPx(), P.getPy(), col);
+        idTriangle= TT.getId();
+        numPT= TT.numPoint(P, 1000);
+        alpha= (P.getPx()- TT.getPT((numPT+1)%3).getPx())/(TT.getPT((numPT+1)%3).getPx()- TT.getPT(numPT).getPx());
+    }
+    
+    public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, double X, double Y, Color col) {
+        super(num, X, Y, col);
+        idTriangle= TT.getId();
+        numPT= TT.numPoint(new Point(X,Y), 1000);
+        alpha= (X- TT.getPT((numPT+1)%3).getPx())/(TT.getPT((numPT+1)%3).getPx()- TT.getPT(numPT).getPx());
+    }
+    
     public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, Point P) {
         super(num, P.getPx(), P.getPy());
         idTriangle= TT.getId();
-        numPT= TT.numPoint(P);
+        numPT= TT.numPoint(P, 1000);
         alpha= (P.getPx()- TT.getPT((numPT+1)%3).getPx())/(TT.getPT((numPT+1)%3).getPx()- TT.getPT(numPT).getPx());
     }
     
     public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, double X, double Y) {
         super(num, X, Y);
         idTriangle= TT.getId();
-        numPT= TT.numPoint(new Point(X,Y));
+        numPT= TT.numPoint(new Point(X,Y), 1000);
         alpha= (X- TT.getPT((numPT+1)%3).getPx())/(TT.getPT((numPT+1)%3).getPx()- TT.getPT(numPT).getPx());
     }
 

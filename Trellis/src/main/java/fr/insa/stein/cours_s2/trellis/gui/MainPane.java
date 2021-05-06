@@ -74,7 +74,7 @@ public class MainPane extends BorderPane {
         this.rbPoints.setOnAction((t) -> {
             this.controleur.boutonPoints(t);
         });
-        this.rbSegments = new RadioButton("Segments");
+        this.rbSegments = new RadioButton("Segmentdfhgiurhs");
         this.rbSegments.setOnAction((t) -> {
             this.controleur.boutonSegments(t);
         });
