@@ -92,6 +92,8 @@ public class Numeroteur<TO> {
         this.objetVersId.put(obj, id);
     }
 
-    
+    public int getSize(){
+        return this.objetVersId.size();
+    }
     
 }

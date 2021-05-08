@@ -107,7 +107,7 @@ public class Segment extends FigureSimple {
             return p4.distancePoint(p);
         }
     }
-
+    
     @Override
     public void dessine(GraphicsContext context) {
         context.setStroke(this.getCouleur());

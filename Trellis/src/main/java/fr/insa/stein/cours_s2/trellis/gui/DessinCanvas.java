@@ -56,7 +56,7 @@ public class DessinCanvas extends Pane {
 
     public void redrawAll() {
         GraphicsContext context = this.realCanvas.getGraphicsContext2D();
-        Groupe model = this.main.getModel();
+        Groupe model = this.main.getZone();
         model.dessine(context);
         List<Figure> select = this.main.getControleur().getSelection();
         if (! select.isEmpty()) {

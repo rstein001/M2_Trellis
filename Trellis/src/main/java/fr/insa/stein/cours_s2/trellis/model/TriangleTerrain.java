@@ -1,9 +1,12 @@
+package fr.insa.stein.cours_s2.trellis.model;
+
 
 import fr.insa.stein.cours_s2.trellis.dessin.Figure;
 import fr.insa.stein.cours_s2.trellis.dessin.Groupe;
 import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
 import fr.insa.stein.cours_s2.trellis.dessin.Point;
 import fr.insa.stein.cours_s2.trellis.dessin.Segment;
+import static java.lang.Math.acos;
 import java.util.List;
 import javafx.scene.paint.Color;
 
@@ -22,30 +25,21 @@ public class TriangleTerrain extends Groupe {
     private int id;
     private Point[] PT= new Point[3];
     
-    public TriangleTerrain(Numeroteur<TriangleTerrain> num, Point PT0, Point PT1, Point PT2, Color col) {
+    public TriangleTerrain(ZoneConstructible Zone, Numeroteur<TriangleTerrain> num, Point PT0, Point PT1, Point PT2, Color col) {
+        if(Zone.dansLaZone(PT0)==false || Zone.dansLaZone(PT1)==false || Zone.dansLaZone(PT2)==false){
+            throw new Error("Pas dans la zone constructible");
+        }
         this.id = num.creeID(this);
-        this.PT[0] = PT0;
-        this.PT[1] = PT1;
-        this.PT[2] = PT2;
-        this.add(PT0);
-        this.add(PT1);
-        this.add(PT2);
+        //this.PT[0] = PT0;
+        //this.PT[1] = PT1;
+        //this.PT[2] = PT2;
         this.add(new Segment(PT0,PT1, col));
         this.add(new Segment(PT1,PT2, col));
         this.add(new Segment(PT2,PT0, col));
     }
 
-    public TriangleTerrain(Numeroteur<TriangleTerrain> num, Point PT0, Point PT1, Point PT2) {
-        this.id = num.creeID(this);
-        this.PT[0] = PT0;
-        this.PT[1] = PT1;
-        this.PT[2] = PT2;
-        this.add(PT0);
-        this.add(PT1);
-        this.add(PT2);
-        this.add(new Segment(PT0,PT1));
-        this.add(new Segment(PT1,PT2));
-        this.add(new Segment(PT2,PT0));
+    public TriangleTerrain(ZoneConstructible Zone, Numeroteur<TriangleTerrain> num, Point PT0, Point PT1, Point PT2) {
+        this(Zone, num, PT0, PT1, PT2, Color.LIGHTGREEN);
     }
 
     public Point getPT(int i) {
@@ -58,6 +52,11 @@ public class TriangleTerrain extends Groupe {
 
     public int getId() {
         return id;
+    }
+    
+    @Override
+    public String toString() {
+        return  "Triangle Terrain {\n" + "id : "+getId()+" ; "+ PT[0].toString()+" ; "+ PT[1].toString()+" ; "+ PT[2].toString() + "\n}";
     }
     
     public int numPoint(Point P, double dmax){
@@ -75,5 +74,12 @@ public class TriangleTerrain extends Groupe {
         }else{
             throw new Error("Trop loin du terrain");
         }
+    }
+    
+    public double Angle(int i1, int i2, Point P){
+        Point vec1 = this.getPT(i1).Vecteur(this.getPT(i2));
+        Point vec2 = this.getPT(i1).Vecteur(P);
+        double scalaire = vec1.Scalaire(vec2);
+        return acos(scalaire/(vec1.Norme()*vec2.Norme()));
     }
 }

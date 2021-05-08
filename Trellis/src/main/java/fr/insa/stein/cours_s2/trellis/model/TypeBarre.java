@@ -1,3 +1,5 @@
+package fr.insa.stein.cours_s2.trellis.model;
+
 
 import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
 
@@ -75,6 +77,12 @@ public class TypeBarre {
 
     public void setRcomp(double Rcomp) {
         this.Rcomp = Rcomp;
+    }
+
+    @Override
+    public String toString() {
+        return "TypeBarre{\n" + "id : " + id + " ; cout : " + cout + "; Lmin : " + Lmin + " ; Lmax : " + Lmax +
+                " ; Rtrac : " + Rtrac + " ; Rcomp : " + Rcomp + "\n}";
     }
     
     

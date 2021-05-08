@@ -35,7 +35,7 @@ import recup.Lire;
  */
 public class Groupe extends Figure {
 
-    private List<Figure> contient;
+    public List<Figure> contient;
 
     public List<Figure> getContient() {
         return contient;

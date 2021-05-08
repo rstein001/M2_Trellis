@@ -18,10 +18,14 @@ along with CoursBeuvron.  If not, see <http://www.gnu.org/licenses/>.
  */
 package fr.insa.stein.cours_s2.trellis.gui;
 
+
 import fr.insa.stein.cours_s2.trellis.dessin.Figure;
 import fr.insa.stein.cours_s2.trellis.dessin.Groupe;
+import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
 import fr.insa.stein.cours_s2.trellis.dessin.Point;
 import fr.insa.stein.cours_s2.trellis.dessin.Segment;
+import fr.insa.stein.cours_s2.trellis.model.TriangleTerrain;
+import fr.insa.stein.cours_s2.trellis.model.ZoneConstructible;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,9 +51,11 @@ public class Controleur {
 
     private int etat;
 
-    private double[] pos1 = new double[2];
+    private double[][] pos = new double[3][2];
 
     private List<Figure> selection;
+    
+    private Numeroteur<TriangleTerrain> numTT;
 
     public Controleur(MainPane vue) {
         this.vue = vue;
@@ -62,66 +68,93 @@ public class Controleur {
             this.selection.clear();
             this.vue.redrawAll();
         } else if (nouvelEtat == 30) {
-            // creation de points
-            this.vue.getRbPoints().setSelected(true);
+            this.vue.getRbTerrain().setSelected(true);
             this.selection.clear();
-            this.vue.getbGrouper().setDisable(true);
+            this.vue.getbDeplacer().setDisable(true);
+            this.vue.getbSupprimer().setDisable(true);
             this.vue.redrawAll();
         } else if (nouvelEtat == 40) {
-            // creation de segments étape 1
-            this.vue.getRbSegments().setSelected(true);
+            this.vue.getRbAppuisDouble().setSelected(true);
             this.selection.clear();
-            this.vue.getbGrouper().setDisable(true);
+            this.vue.getbDeplacer().setDisable(true);
+            this.vue.getbSupprimer().setDisable(true);
             this.vue.redrawAll();
-        } else if (nouvelEtat == 41) {
-            // creation de segments étape 2
+        } else if (nouvelEtat == 50) {
+            this.vue.getRbAppuisSimple().setSelected(true);
+            this.selection.clear();
+            this.vue.getbDeplacer().setDisable(true);
+            this.vue.getbSupprimer().setDisable(true);
+            this.vue.redrawAll();
+        } else if (nouvelEtat == 60) {
+            this.vue.getRbBarre1().setSelected(true);
+            this.selection.clear();
+            this.vue.getbDeplacer().setDisable(true);
+            this.vue.getbSupprimer().setDisable(true);
+            this.vue.redrawAll();
+        } else if (nouvelEtat == 70) {
+            this.vue.getRbBarre2().setSelected(true);
+            this.selection.clear();
+            this.vue.getbDeplacer().setDisable(true);
+            this.vue.getbSupprimer().setDisable(true);
+            this.vue.redrawAll();
         }
         this.etat = nouvelEtat;
     }
 
     void clicDansZoneDessin(MouseEvent t) {
-        if (this.etat == 20) {
-            Point pclic = new Point(t.getX(), t.getY());
-            // pas de limite de distance entre le clic et l'objet selectionné
-            Figure proche = this.vue.getModel().plusProche(pclic, Double.MAX_VALUE);
-            // il faut tout de même prévoir le cas ou le groupe est vide
-            // donc pas de plus proche
-            if (proche != null) {
-                if (t.isShiftDown()) {
-                    this.selection.add(proche);
-                } else if (t.isControlDown()) {
-                    if (this.selection.contains(proche)) {
-                        this.selection.remove(proche);
+        switch (this.etat) {
+            case 20:
+                Point pclic = new Point(t.getX(), t.getY());
+                // pas de limite de distance entre le clic et l'objet selectionné
+                Figure proche = this.vue.getZone().plusProche(pclic, Double.MAX_VALUE);
+                // il faut tout de même prévoir le cas ou le groupe est vide
+                // donc pas de plus proche
+                if (proche != null) {
+                    if (t.isShiftDown()) {
+                        this.selection.add(proche);
+                    } else if (t.isControlDown()) {
+                        if (this.selection.contains(proche)) {
+                            this.selection.remove(proche);
+                        } else {
+                            this.selection.add(proche);
+                        }
                     } else {
+                        this.selection.clear();
                         this.selection.add(proche);
                     }
-                } else {
-                    this.selection.clear();
-                    this.selection.add(proche);
+                    this.activeDeplacerSuivantSelection();
+                    this.activeSupprimerSuivantSelection();
+                    this.vue.redrawAll();
+                }   break;
+            case 30:
+                {
+                    this.pos[0][0] = t.getX();
+                    this.pos[0][1] = t.getY();
+                    this.changeEtat(31);
+                    break;
                 }
-                this.activeBoutonsSuivantSelection();
-                this.vue.redrawAll();
-            }
-        } else if (this.etat == 30) {
-            double px = t.getX();
-            double py = t.getY();
-            Color col = this.vue.getCpCouleur().getValue();
-            Groupe model = this.vue.getModel();
-            model.add(new Point(px, py, col));
-            this.vue.redrawAll();
-        } else if (this.etat == 40) {
-            this.pos1[0] = t.getX();
-            this.pos1[1] = t.getY();
-            this.changeEtat(41);
-        } else if (this.etat == 41) {
-            double px2 = t.getX();
-            double py2 = t.getY();
-            Color col = this.vue.getCpCouleur().getValue();
-            this.vue.getModel().add(
-                    new Segment(new Point(this.pos1[0], this.pos1[1]),
-                            new Point(px2, py2), col));
-            this.vue.redrawAll();
-            this.changeEtat(40);
+                    case 31:
+                {
+                    this.pos[1][0] = t.getX();
+                    this.pos[1][1] = t.getY();
+                    this.changeEtat(32);
+                    break;
+                }
+                case 32:
+                {
+                    this.pos[1][0] = t.getX();
+                    this.pos[1][1] = t.getY();
+                    Point PT0 = new Point(this.pos[0][0], this.pos[0][1], Color.LIGHTGREEN);
+                    Point PT1 = new Point(this.pos[1][0], this.pos[1][1], Color.LIGHTGREEN);
+                    Point PT2 = new Point(this.pos[2][0], this.pos[2][1], Color.LIGHTGREEN);
+                    TriangleTerrain TT = new TriangleTerrain(this.vue.getZone(), this.numTT, PT0, PT1, PT2, Color.LIGHTGREEN);
+                    this.vue.getZone().add(TT);
+                    this.vue.redrawAll();
+                    this.changeEtat(30);
+                    break;
+                }
+            default:
+                break;
         }
     }
 
@@ -129,39 +162,67 @@ public class Controleur {
         this.changeEtat(20);
     }
 
-    void boutonPoints(ActionEvent t) {
+    void boutonTerrain(ActionEvent t) {
         this.changeEtat(30);
     }
 
-    void boutonSegments(ActionEvent t) {
+    void boutonAppuisDouble(ActionEvent t) {
         this.changeEtat(40);
     }
 
-    private void activeBoutonsSuivantSelection() {
-        if (this.selection.size() < 2) {
-            this.vue.getbGrouper().setDisable(true);
+    void boutonAppuisSimple(ActionEvent t) {
+        this.changeEtat(50);
+    }
+    
+    void boutonBarre1(ActionEvent t) {
+        this.changeEtat(60);
+    }
+
+    void boutonBarre2(ActionEvent t) {
+        this.changeEtat(70);
+    }
+    
+    private void activeDeplacerSuivantSelection() {
+        if (this.selection.size() < 1) {
+            this.vue.getbDeplacer().setDisable(true);
         } else {
-            this.vue.getbGrouper().setDisable(false);
+            this.vue.getbDeplacer().setDisable(false);
         }
     }
 
-    /**
-     * @return the selection
-     */
+    private void activeSupprimerSuivantSelection() {
+        if (this.selection.size() < 1) {
+            this.vue.getbSupprimer().setDisable(true);
+        } else {
+            this.vue.getbSupprimer().setDisable(false);
+        }
+    }
+    
+    
     public List<Figure> getSelection() {
         return selection;
     }
 
-    void boutonGrouper(ActionEvent t) {
-        if (this.etat == 20 && this.selection.size() > 1) {
+    void boutonDeplacer(ActionEvent t) {
+     /*   if (this.etat == 20 && this.selection.size() > 1) {
             // normalement le bouton est disabled dans le cas contraire
             Groupe ssGroupe = this.vue.getModel().sousGroupe(selection);
             this.selection.clear();
             this.selection.add(ssGroupe);
             this.vue.redrawAll();
-        }
+        }*/
     }
 
+    void boutonSupprimer(ActionEvent t) {
+     /*   if (this.etat == 20 && this.selection.size() > 1) {
+            // normalement le bouton est disabled dans le cas contraire
+            Groupe ssGroupe = this.vue.getModel().sousGroupe(selection);
+            this.selection.clear();
+            this.selection.add(ssGroupe);
+            this.vue.redrawAll();
+        }*/
+    }
+    
     void changeColor(Color value) {
         if (this.etat == 20 && this.selection.size() > 0) {
             for (Figure f : this.selection) {
@@ -173,7 +234,7 @@ public class Controleur {
 
     void realSave(File f) {
         try {
-            this.vue.getModel().sauvegarde(f);
+            this.vue.getZone().sauvegarde(f);
             this.vue.setCurFile(f);
             this.vue.getInStage().setTitle(f.getName());
         } catch (IOException ex) {
@@ -210,10 +271,10 @@ public class Controleur {
         if (f != null) {
             try {
                 Figure lue = Figure.lecture(f);
-                Groupe glu = (Groupe) lue;
+                ZoneConstructible Zlu = (ZoneConstructible) lue;
                 Stage nouveau = new Stage();
                 nouveau.setTitle(f.getName());
-                Scene sc = new Scene(new MainPane(nouveau, f, glu), 800, 600);
+                Scene sc = new Scene(new MainPane(nouveau, f, Zlu), 800, 600);
                 nouveau.setScene(sc);
                 nouveau.show();
             } catch (Exception ex) {

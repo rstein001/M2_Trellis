@@ -20,6 +20,7 @@ package fr.insa.stein.cours_s2.trellis.dessin;
 
 import java.io.IOException;
 import java.io.Writer;
+import static java.lang.Math.sqrt;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import recup.Lire;
@@ -116,6 +117,18 @@ public class Point extends FigureSimple {
         double dy = this.py - p.py;
         return Math.sqrt(dx*dx+dy*dy);
 
+    }
+    
+    public Point Vecteur(Point fin){
+        return new Point(fin.getPx()-this.getPx() , fin.getPy()-this.getPy());
+    }
+    
+    public double Scalaire(Point vec2){
+        return this.getPx()*vec2.getPx()+this.getPy()*vec2.getPy();
+    }
+    
+    public double Norme(){
+        return sqrt(this.getPx()*this.getPx()+this.getPy()*this.getPy());
     }
 
     @Override
