@@ -25,21 +25,18 @@ public class TriangleTerrain extends Groupe {
     private int id;
     private Point[] PT= new Point[3];
     
-    public TriangleTerrain(ZoneConstructible Zone, Numeroteur<TriangleTerrain> num, Point PT0, Point PT1, Point PT2, Color col) {
-        if(Zone.dansLaZone(PT0)==false || Zone.dansLaZone(PT1)==false || Zone.dansLaZone(PT2)==false){
-            throw new Error("Pas dans la zone constructible");
-        }
+    public TriangleTerrain(Numeroteur<TriangleTerrain> num, Point PT0, Point PT1, Point PT2, Color col) {
         this.id = num.creeID(this);
-        //this.PT[0] = PT0;
-        //this.PT[1] = PT1;
-        //this.PT[2] = PT2;
+        this.PT[0] = PT0;
+        this.PT[1] = PT1;
+        this.PT[2] = PT2;
         this.add(new Segment(PT0,PT1, col));
         this.add(new Segment(PT1,PT2, col));
         this.add(new Segment(PT2,PT0, col));
     }
 
-    public TriangleTerrain(ZoneConstructible Zone, Numeroteur<TriangleTerrain> num, Point PT0, Point PT1, Point PT2) {
-        this(Zone, num, PT0, PT1, PT2, Color.LIGHTGREEN);
+    public TriangleTerrain(Numeroteur<TriangleTerrain> num, Point PT0, Point PT1, Point PT2) {
+        this(num, PT0, PT1, PT2, Color.LIGHTGREEN);
     }
 
     public Point getPT(int i) {

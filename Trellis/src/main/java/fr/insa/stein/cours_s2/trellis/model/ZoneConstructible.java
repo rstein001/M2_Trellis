@@ -5,8 +5,10 @@ import fr.insa.stein.cours_s2.trellis.dessin.Figure;
 import fr.insa.stein.cours_s2.trellis.dessin.Groupe;
 import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
 import fr.insa.stein.cours_s2.trellis.dessin.Point;
+import static fr.insa.stein.cours_s2.trellis.dessin.Point.demandePoint;
 import fr.insa.stein.cours_s2.trellis.dessin.Segment;
 import java.util.List;
+import javafx.scene.paint.Color;
 import recup.Lire;
 
 /*
@@ -121,10 +123,10 @@ public class ZoneConstructible extends Groupe {
     }
     
     public boolean dansLaZone(Figure f){
-        if(f.maxX()<=this.getXmax() || f.minX()>=this.getXmin() || f.maxY()<=this.getYmax() || f.minY()>=this.getYmin()){
-            return true;
-        }else{
+        if(f.maxX()>this.getXmax() || f.minX()<this.getXmin() || f.maxY()>this.getYmax() || f.minY()<this.getYmin()){
             return false;
+        }else{
+            return true;
         }
     }
     
@@ -143,65 +145,74 @@ public class ZoneConstructible extends Groupe {
         return false;
     }
 
-/*            
+            
     public void menuTexte() {
+        Numeroteur<TriangleTerrain> numTT = new Numeroteur<TriangleTerrain>();
         int rep = -1;
         while (rep != 0) {
-            System.out.println("1) afficher le groupe");
-            System.out.println("2) ajouter un point");
-            System.out.println("3) ajouter un segment avec deux nouveaux points");
-            System.out.println("4) ajouter un segment sur deux points existants");
-            System.out.println("5) créer un sous-groupe");
-            System.out.println("6) afficher le rectangle englobant");
-            System.out.println("7) calculer la distance à un point");
-            System.out.println("8) retirer des figures du groupe");
+            System.out.println("1) afficher le trellis");
+            System.out.println("2) modifier la zone constructible");
+            System.out.println("3) ajouter un triangle de terrain");
+            System.out.println("4) ajouter un appuis double");
+            System.out.println("5) ajouter un appuis simple");
+            System.out.println("6) ajouter un noeud simple");
+            System.out.println("7) ajouter un type de barres");
+            System.out.println("8) ajouter une barre à partir d'un noeud");
+            System.out.println("9) ajouter une barre à partir de deux noeuds");
+            System.out.println("10) ajouter une barre avec 2 nouveaux noeuds");
+            System.out.println("11) ajouter un type de barre");
+            
             System.out.println("0) quitter");
             System.out.println("votre choix : ");
             rep = Lire.i();
-            if (rep == 1) {
-                System.out.println(this);
-            } else if (rep == 2) {
-                Point np = Point.demandePoint();
-                this.add(np);
-            } else if (rep == 3) {
-                Segment ns = Segment.demandeSegment();
-                this.add(ns);
-            } else if (rep == 4) {
-                System.out.println("choisissez le début du segment");
-                Point deb = this.choisiPoint();
-                if (deb != null) {
-                    System.out.println("choisissez la fin du segment");
-                    Point fin = this.choisiPoint();
-                    Segment ns = new Segment(deb, fin);
-                    this.add(ns);
-                }
-            } else if (rep == 5) {
-                List<Figure> select = this.choisiFigures();
-                this.sousGroupe(select);
-            } else if (rep == 6) {
-                System.out.println("maxX = " + this.maxX() + " ; "
-                        + "minX = " + this.minX() + "\n"
-                        + "maxY = " + this.maxY() + " ; "
-                        + "minY = " + this.minY() + "\n");
-            } else if (rep == 7) {
-                System.out.println("entrez un point :");
-                Point p = Point.demandePoint();
-                System.out.println("distance : " + this.distancePoint(p));
-            } else if (rep == 8) {
-                List<Figure> select = this.choisiFigures();
-                this.removeAll(select);
+            switch (rep) {
+                case 1:
+                    System.out.println(this);
+                    break;
+                case 2:
+                    
+                    break;
+                case 3:
+                    System.out.println("choisissez le point 1");
+                    Point PT0 = demandePoint();
+                    System.out.println("choisissez le point 2");
+                    Point PT1 = demandePoint();
+                    System.out.println("choisissez le point 3");
+                    Point PT2 = demandePoint();
+                    if(this.dansLaZone(PT0) && this.dansLaZone(PT1) && this.dansLaZone(PT2)){
+                        TriangleTerrain TT = new TriangleTerrain(numTT, PT0, PT1, PT2);
+                        this.add(TT);
+                    }else{
+                        System.out.println("Pas dans la zone constructible");
+                       }
+                    break;
+                case 4:
+                    
+                    break;
+                case 5:
+                    
+                    break;
+                case 6:
+                    
+                    break;
+                case 7:
+                    
+                    break;
+                case 8:
+                    
+                    break;
+                default:
+                    break;
             }
         }
     }
 
-
-    public static void test1() {
-        System.out.println("groupe test : \n" + Groupe.groupeTest());
-    }
-
     public static void testMenu() {
-        Groupe g = groupeTest();
-        g.menuTexte();
+        ZoneConstructible Zone = new ZoneConstructible();
+        Zone.menuTexte();
     }
-*/
+    
+    public static void main(String[] args) {
+        testMenu();
+    }
 }

@@ -147,9 +147,13 @@ public class Controleur {
                     Point PT0 = new Point(this.pos[0][0], this.pos[0][1], Color.LIGHTGREEN);
                     Point PT1 = new Point(this.pos[1][0], this.pos[1][1], Color.LIGHTGREEN);
                     Point PT2 = new Point(this.pos[2][0], this.pos[2][1], Color.LIGHTGREEN);
-                    TriangleTerrain TT = new TriangleTerrain(this.vue.getZone(), this.numTT, PT0, PT1, PT2, Color.LIGHTGREEN);
-                    this.vue.getZone().add(TT);
-                    this.vue.redrawAll();
+                    if(this.vue.getZone().dansLaZone(PT0) && this.vue.getZone().dansLaZone(PT1) && this.vue.getZone().dansLaZone(PT2)){
+                        TriangleTerrain TT = new TriangleTerrain(this.numTT, PT0, PT1, PT2, Color.LIGHTGREEN);
+                        this.vue.getZone().add(TT);
+                        this.vue.redrawAll();
+                    }else{
+                        throw new Error("Pas dans la zone constructible");
+                       }
                     this.changeEtat(30);
                     break;
                 }

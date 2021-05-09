@@ -17,16 +17,16 @@ import javafx.scene.paint.Color;
  */
 public class NoeudSimple extends Noeud {
    
-    public NoeudSimple(ZoneConstructible Zone, Numeroteur<Noeud> num, Point point) {
-        super(Zone, num, point);
+    public NoeudSimple(Numeroteur<Noeud> num, Point point) {
+        super(num, point);
     }
     
-    public NoeudSimple(ZoneConstructible Zone, Numeroteur<Noeud> num, double x, double y, Color col) {
-        super(Zone, num, x, y, col);
+    public NoeudSimple(Numeroteur<Noeud> num, double x, double y, Color col) {
+        super(num, x, y, col);
     }
    
-    public NoeudSimple(ZoneConstructible Zone, Numeroteur<Noeud> num, double x, double y) {
-        super(Zone, num, x, y);
+    public NoeudSimple(Numeroteur<Noeud> num, double x, double y) {
+        super(num, x, y);
     }
     
     @Override

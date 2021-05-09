@@ -17,16 +17,16 @@ import javafx.scene.paint.Color;
  */
 public class AppuisSimple extends Appuis {
     
-    public AppuisSimple(ZoneConstructible Zone, Numeroteur<Noeud> num, TriangleTerrain TT, Point P) {
-        super(Zone, num, TT, P);
+    public AppuisSimple(Numeroteur<Noeud> num, TriangleTerrain TT, Point P) {
+        super(num, TT, P);
     }
     
-    public AppuisSimple(ZoneConstructible Zone, Numeroteur<Noeud> num, TriangleTerrain TT, double X, double Y, Color col) {
-        super(Zone, num, TT, X, Y, col);
+    public AppuisSimple(Numeroteur<Noeud> num, TriangleTerrain TT, double X, double Y, Color col) {
+        super(num, TT, X, Y, col);
     }
     
-    public AppuisSimple(ZoneConstructible Zone, Numeroteur<Noeud> num, TriangleTerrain TT, double X, double Y) {
-        super(Zone, num, TT, X, Y);
+    public AppuisSimple(Numeroteur<Noeud> num, TriangleTerrain TT, double X, double Y) {
+        super(num, TT, X, Y);
     }
     
     @Override

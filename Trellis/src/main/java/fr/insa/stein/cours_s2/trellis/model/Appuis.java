@@ -21,20 +21,20 @@ public abstract class Appuis extends Noeud {
     private int numPT;
     private double alpha;
     
-    public Appuis(ZoneConstructible Zone, Numeroteur<Noeud> num, TriangleTerrain TT, Point P) {
-        super(Zone, num, P);
+    public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, Point P) {
+        super(num, P);
         idTriangle= TT.getId();
         numPT= TT.numPoint(P, 1000);
         alpha= (P.getPx()- TT.getPT((numPT+1)%3).getPx())/(TT.getPT((numPT+1)%3).getPx()- TT.getPT(numPT).getPx());
     }
     
     
-    public Appuis(ZoneConstructible Zone, Numeroteur<Noeud> num, TriangleTerrain TT, double X, double Y, Color col) {
-        this(Zone, num, TT, new Point(X, Y, col));
+    public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, double X, double Y, Color col) {
+        this(num, TT, new Point(X, Y, col));
     }
     
-    public Appuis(ZoneConstructible Zone, Numeroteur<Noeud> num, TriangleTerrain TT, double X, double Y) {
-        this(Zone, num, TT, X, Y, Color.BLACK);
+    public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, double X, double Y) {
+        this(num, TT, X, Y, Color.BLACK);
     }
 
     public int getIdTriangle() {

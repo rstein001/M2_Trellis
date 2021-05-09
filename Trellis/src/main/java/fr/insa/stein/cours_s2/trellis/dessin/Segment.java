@@ -54,6 +54,14 @@ public class Segment extends FigureSimple {
         return fin;
     }
 
+    public void setDebut(Point debut) {
+        this.debut = debut;
+    }
+
+    public void setFin(Point fin) {
+        this.fin = fin;
+    }
+
     @Override
     public String toString() {
         return "[" + this.debut + "," + this.fin + ']';

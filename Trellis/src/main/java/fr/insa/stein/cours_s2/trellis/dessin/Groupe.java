@@ -217,7 +217,7 @@ public class Groupe extends Figure {
         }
         return res;
     }
-
+/*
     public void menuTexte() {
         int rep = -1;
         while (rep != 0) {
@@ -276,7 +276,7 @@ public class Groupe extends Figure {
         Groupe g = groupeTest();
         g.menuTexte();
     }
-
+*/
     public static void exempleProblemeSauvegarde() {
         Point p11 = new Point(1, 1);
         Point p12 = new Point(2, 2);
@@ -319,7 +319,7 @@ public class Groupe extends Figure {
 //        test1();
 //        testMenu();
 //        exempleProblemeSauvegarde();
-        testLecture();
+//        testLecture();
     }
 
     /**

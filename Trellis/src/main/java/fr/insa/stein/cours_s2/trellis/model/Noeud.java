@@ -18,26 +18,18 @@ import javafx.scene.paint.Color;
 public abstract class Noeud extends Point{
     
     private int id;
-    
-    public Noeud(ZoneConstructible Zone, Numeroteur<Noeud> num, Point P) {
-        if(Zone.dansLaZone(P)==false){
-            throw new Error("Pas dans la zone constructible");
-        }
-        if(Zone.dansLeTerrain(P)){
-            throw new Error("Noued dans un Triange Terrain");
-        }
-        this.setPx(P.getPx());
-        this.setPy(P.getPy());
-        this.setCouleur(P.getCouleur());
+
+    public Noeud(Numeroteur<Noeud> num, double x, double y, Color col) {
+        super(x, y, col);
         this.id = num.creeID(this);
     }
-
-    public Noeud(ZoneConstructible Zone, Numeroteur<Noeud> num, double x, double y, Color col) {
-        this(Zone, num, new Point(x,y,col));
+    
+    public Noeud(Numeroteur<Noeud> num, double x, double y) {
+        this(num, x, y, Color.BLACK);
     }
     
-    public Noeud(ZoneConstructible Zone, Numeroteur<Noeud> num, double x, double y) {
-        this(Zone, num, x, y, Color.BLACK);
+    public Noeud(Numeroteur<Noeud> num, Point P) {
+        this(num, P.getPx(), P.getPy(), P.getCouleur());
     }
 
     public int getId() {
