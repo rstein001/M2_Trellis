@@ -55,7 +55,8 @@ public class MainPane extends BorderPane {
     private Button bSupprimer;
     private ColorPicker cpCouleur;
     private ChoiceBox cbType;
-
+    private Button baddtype;
+    
     private DessinCanvas cDessin;
 
     private MainMenu menu;
@@ -118,6 +119,11 @@ public class MainPane extends BorderPane {
         /*this.cbType.setOnAction((t) -> {
             this.controleur.boutonSupprimer(t);
         });*/
+        
+        this.baddtype = new Button("Ajouter un type de barre");
+        this.baddtype.setOnAction((t) -> {
+            this.controleur.boutonaddtype(t);
+        });
 
         ToggleGroup bgEtat = new ToggleGroup();
         this.rbSelect.setToggleGroup(bgEtat);
@@ -129,12 +135,13 @@ public class MainPane extends BorderPane {
         this.rbTerrain.setSelected(true);
 
         VBox vbGauche = new VBox(this.rbSelect, this.rbTerrain, this.rbAppuisDouble, this.rbAppuisSimple,
-        this.rbBarre1, this.rbBarre2, this.bDeplacer, this.bSupprimer, this.cpCouleur, this.cbType);
+        this.baddtype, this.rbBarre1, this.rbBarre2, this.bDeplacer, this.bSupprimer, this.cpCouleur, this.cbType);
         Insets Inset = new Insets(10,10,0,10);
         VBox.setMargin(rbSelect, Inset);
         VBox.setMargin(rbTerrain, Inset);
         VBox.setMargin(rbAppuisDouble, Inset);
         VBox.setMargin(rbAppuisSimple, Inset);
+        VBox.setMargin(baddtype, Inset);
         VBox.setMargin(rbBarre1, Inset);
         VBox.setMargin(rbBarre2, Inset);
         VBox.setMargin(bDeplacer, Inset);
@@ -195,6 +202,14 @@ public class MainPane extends BorderPane {
 
     public Button getbSupprimer() {
         return bSupprimer;
+    }
+
+    public ChoiceBox getCbType() {
+        return cbType;
+    }
+
+    public Button getBaddtype() {
+        return baddtype;
     }
 
     public MainMenu getMenu() {

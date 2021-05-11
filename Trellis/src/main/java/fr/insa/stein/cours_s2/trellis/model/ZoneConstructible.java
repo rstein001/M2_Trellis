@@ -28,6 +28,8 @@ public class ZoneConstructible extends Groupe {
     private double Ymax;
     private double Ymin;
 
+    public List<TypeBarre> Catalogue;
+    
     public ZoneConstructible(double Xmax, double Xmin, double Ymax, double Ymin) {
         this.Xmax = Xmax;
         this.Xmin = Xmin;
@@ -70,6 +72,16 @@ public class ZoneConstructible extends Groupe {
     public void setYmin(double Ymin) {
         this.Ymin = Ymin;
     }
+
+    public List<TypeBarre> getCatalogue() {
+        return Catalogue;
+    }
+
+    public void setCatalogue(List<TypeBarre> Catalogue) {
+        this.Catalogue = Catalogue;
+    }
+    
+    
     
     @Override
     public String toString() {
@@ -145,6 +157,16 @@ public class ZoneConstructible extends Groupe {
         return false;
     }
 
+    public static ZoneConstructible trellisTest(){
+        Point PT0 = new Point(100,50);
+        Point PT1 = new Point(50,150);
+        Point PT2 = new Point(50,50);
+        Numeroteur<TriangleTerrain> numTT = new Numeroteur<TriangleTerrain>();
+        TriangleTerrain TT= new TriangleTerrain(numTT, PT0, PT1, PT2, Color.GREEN);
+        ZoneConstructible res = new ZoneConstructible();
+        res.add(TT);
+        return res;
+    }
             
     public void menuTexte() {
         Numeroteur<TriangleTerrain> numTT = new Numeroteur<TriangleTerrain>();
@@ -208,7 +230,7 @@ public class ZoneConstructible extends Groupe {
     }
 
     public static void testMenu() {
-        ZoneConstructible Zone = new ZoneConstructible();
+        ZoneConstructible Zone = trellisTest();
         Zone.menuTexte();
     }
     

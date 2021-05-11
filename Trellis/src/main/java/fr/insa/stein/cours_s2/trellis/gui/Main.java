@@ -19,6 +19,7 @@ along with CoursBeuvron.  If not, see <http://www.gnu.org/licenses/>.
 package fr.insa.stein.cours_s2.trellis.gui;
 
 import fr.insa.stein.cours_s2.trellis.dessin.Groupe;
+import fr.insa.stein.cours_s2.trellis.model.ZoneConstructible;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.scene.Scene;
@@ -34,7 +35,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        Scene sc = new Scene(new MainPane(stage),800,600);
+        Scene sc = new Scene(new MainPane(stage, ZoneConstructible.trellisTest()),800,600);
         stage.setScene(sc);
         stage.setTitle("Nouveau");
           stage.show();

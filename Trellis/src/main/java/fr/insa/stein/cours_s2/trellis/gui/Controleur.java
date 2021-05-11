@@ -20,22 +20,20 @@ package fr.insa.stein.cours_s2.trellis.gui;
 
 
 import fr.insa.stein.cours_s2.trellis.dessin.Figure;
-import fr.insa.stein.cours_s2.trellis.dessin.Groupe;
 import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
 import fr.insa.stein.cours_s2.trellis.dessin.Point;
-import fr.insa.stein.cours_s2.trellis.dessin.Segment;
+import fr.insa.stein.cours_s2.trellis.model.AppuisDouble;
+import fr.insa.stein.cours_s2.trellis.model.Noeud;
 import fr.insa.stein.cours_s2.trellis.model.TriangleTerrain;
 import fr.insa.stein.cours_s2.trellis.model.ZoneConstructible;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -52,14 +50,26 @@ public class Controleur {
     private int etat;
 
     private double[][] pos = new double[3][2];
+    private TriangleTerrain TT;
 
     private List<Figure> selection;
     
     private Numeroteur<TriangleTerrain> numTT;
+    private Numeroteur<Noeud> numN;
 
     public Controleur(MainPane vue) {
         this.vue = vue;
         this.selection = new ArrayList<>();
+        this.numTT = new Numeroteur<TriangleTerrain>();
+        this.numN = new Numeroteur<Noeud>();
+    }
+
+    public TriangleTerrain getTT() {
+        return TT;
+    }
+
+    public void setTT(TriangleTerrain TTproche) {
+        this.TT = TT;
     }
 
     public void changeEtat(int nouvelEtat) {
@@ -142,19 +152,41 @@ public class Controleur {
                 }
                 case 32:
                 {
-                    this.pos[1][0] = t.getX();
-                    this.pos[1][1] = t.getY();
-                    Point PT0 = new Point(this.pos[0][0], this.pos[0][1], Color.LIGHTGREEN);
-                    Point PT1 = new Point(this.pos[1][0], this.pos[1][1], Color.LIGHTGREEN);
-                    Point PT2 = new Point(this.pos[2][0], this.pos[2][1], Color.LIGHTGREEN);
+                    this.pos[2][0] = t.getX();
+                    this.pos[2][1] = t.getY();
+                    Point PT0 = new Point(this.pos[0][0], this.pos[0][1]);
+                    Point PT1 = new Point(this.pos[1][0], this.pos[1][1]);
+                    Point PT2 = new Point(this.pos[2][0], this.pos[2][1]);
                     if(this.vue.getZone().dansLaZone(PT0) && this.vue.getZone().dansLaZone(PT1) && this.vue.getZone().dansLaZone(PT2)){
-                        TriangleTerrain TT = new TriangleTerrain(this.numTT, PT0, PT1, PT2, Color.LIGHTGREEN);
+                        TriangleTerrain TT = new TriangleTerrain(this.numTT, PT0, PT1, PT2, Color.GREEN);
                         this.vue.getZone().add(TT);
                         this.vue.redrawAll();
                     }else{
                         throw new Error("Pas dans la zone constructible");
                        }
                     this.changeEtat(30);
+                    break;
+                }
+                case 40:
+                {
+                    Point P = new Point(t.getX(), t.getY());
+                    TriangleTerrain TTproche = this.vue.getZone().TTplusProche(numTT, P, Double.MAX_VALUE);
+                        if (TTproche != null) {
+                            this.changeEtat(30);
+                            throw new Error("Aucun Triangle Terrain");
+                        }else{
+                            this.setTT(TTproche);
+                            this.changeEtat(41); 
+                        }
+                    break;
+                }
+                case 41:
+                {
+                    Color col = this.vue.getCpCouleur().getValue();
+                    AppuisDouble AD = new AppuisDouble(this.numN, this.getTT(), t.getX(), t.getY(), col);
+                    this.vue.getZone().add(AD);
+                    this.vue.redrawAll();
+                    this.changeEtat(40);
                     break;
                 }
             default:
@@ -225,6 +257,10 @@ public class Controleur {
             this.selection.add(ssGroupe);
             this.vue.redrawAll();
         }*/
+    }
+    
+    void boutonaddtype(ActionEvent t){
+        
     }
     
     void changeColor(Color value) {
