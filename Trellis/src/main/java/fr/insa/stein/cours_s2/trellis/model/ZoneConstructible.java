@@ -7,6 +7,7 @@ import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
 import fr.insa.stein.cours_s2.trellis.dessin.Point;
 import static fr.insa.stein.cours_s2.trellis.dessin.Point.demandePoint;
 import fr.insa.stein.cours_s2.trellis.dessin.Segment;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.paint.Color;
 import recup.Lire;
@@ -30,11 +31,19 @@ public class ZoneConstructible extends Groupe {
 
     public List<TypeBarre> Catalogue;
     
+    private Numeroteur<TriangleTerrain> numTT;
+    private Numeroteur<Noeud> numN;
+    private Numeroteur<Barre> numB;
+    
     public ZoneConstructible(double Xmax, double Xmin, double Ymax, double Ymin) {
         this.Xmax = Xmax;
         this.Xmin = Xmin;
         this.Ymax = Ymax;
         this.Ymin = Ymin;
+        this.Catalogue = new ArrayList<TypeBarre>();
+        this.numTT = new Numeroteur<TriangleTerrain>();
+        this.numN = new Numeroteur<Noeud>();
+        this.numB = new Numeroteur<Barre>();
     }
     
     public ZoneConstructible() {
@@ -80,32 +89,46 @@ public class ZoneConstructible extends Groupe {
     public void setCatalogue(List<TypeBarre> Catalogue) {
         this.Catalogue = Catalogue;
     }
-    
-    
+
+    public Numeroteur<TriangleTerrain> getNumTT() {
+        return numTT;
+    }
+
+    public void setNumTT(Numeroteur<TriangleTerrain> numTT) {
+        this.numTT = numTT;
+    }
+
+    public Numeroteur<Noeud> getNumN() {
+        return numN;
+    }
+
+    public void setNumN(Numeroteur<Noeud> numN) {
+        this.numN = numN;
+    }
+
+    public Numeroteur<Barre> getNumB() {
+        return numB;
+    }
+
+    public void setNumB(Numeroteur<Barre> numB) {
+        this.numB = numB;
+    }
     
     @Override
     public String toString() {
         String res = "Trellis {\n";
         res = res + "Zone Constructible {\n" + "("+getXmin()+","+getYmin()+") ; "+ "("+getXmax()+","+getYmax()+")"+ "\n";
-        for (int i = 0; i < this.contient.size(); i++) {
-            if(this.contient.get(i) instanceof TriangleTerrain){
-                res = res + indente(this.contient.get(i).toString(), "  ") + "\n";
-            }
+        for (int i = 1; i <= this.numTT.getSize(); i++) {
+            res = res + indente(this.numTT.getObj(i).toString(), "  ") + "\n";
         }
-        for (int i = 0; i < this.contient.size(); i++) {
-            if(this.contient.get(i) instanceof TriangleTerrain){
-                res = res + indente(this.contient.get(i).toString(), "  ") + "\n";
-            }
+        for (int i = 0; i < this.Catalogue.size(); i++) {
+            res = res + indente(this.Catalogue.get(i).toString(), "  ") + "\n";
         }
-        for (int i = 0; i < this.contient.size(); i++) {
-            if(this.contient.get(i) instanceof Noeud){
-                res = res + indente(this.contient.get(i).toString(), "  ") + "\n";
-            }
+        for (int i = 1; i <= this.numN.getSize(); i++) {
+            res = res + indente(this.numN.getObj(i).toString(), "  ") + "\n";
         }
-        for (int i = 0; i < this.contient.size(); i++) {
-            if(this.contient.get(i) instanceof Barre){
-                res = res + indente(this.contient.get(i).toString(), "  ") + "\n";
-            }
+        for (int i = 1; i <= this.numB.getSize(); i++) {
+            res = res + indente(this.numB.getObj(i).toString(), "  ") + "\n";
         }
         return res + "}";
     }
@@ -156,20 +179,29 @@ public class ZoneConstructible extends Groupe {
         }
         return false;
     }
+    
+    public static Point alphaToCoordinate(TriangleTerrain TT, int numPT, double alpha){
+        double X= alpha*TT.getPT(numPT).getPx()+(1-alpha*TT.getPT((numPT+1)%3).getPx());
+        double Y= alpha*TT.getPT(numPT).getPy()+(1-alpha*TT.getPT((numPT+1)%3).getPy());
+        return new Point(X,Y);
+    }
 
     public static ZoneConstructible trellisTest(){
+        ZoneConstructible res = new ZoneConstructible();
         Point PT0 = new Point(100,50);
         Point PT1 = new Point(50,150);
         Point PT2 = new Point(50,50);
-        Numeroteur<TriangleTerrain> numTT = new Numeroteur<TriangleTerrain>();
-        TriangleTerrain TT= new TriangleTerrain(numTT, PT0, PT1, PT2, Color.GREEN);
-        ZoneConstructible res = new ZoneConstructible();
-        res.add(TT);
+        TriangleTerrain TT1= new TriangleTerrain(res.numTT, PT0, PT1, PT2, Color.GREEN);
+        res.add(TT1);
+        Point PT4 = new Point(10,20);
+        Point PT5 = new Point(10,10);
+        Point PT6 = new Point(20,10);
+        TriangleTerrain TT2= new TriangleTerrain(res.numTT, PT4, PT5, PT6, Color.GREEN);
+        res.add(TT2);
         return res;
     }
             
     public void menuTexte() {
-        Numeroteur<TriangleTerrain> numTT = new Numeroteur<TriangleTerrain>();
         int rep = -1;
         while (rep != 0) {
             System.out.println("1) afficher le trellis");
@@ -195,21 +227,36 @@ public class ZoneConstructible extends Groupe {
                     
                     break;
                 case 3:
-                    System.out.println("choisissez le point 1");
+                    System.out.println("entrez le point 1");
                     Point PT0 = demandePoint();
-                    System.out.println("choisissez le point 2");
+                    System.out.println("entrez le point 2");
                     Point PT1 = demandePoint();
-                    System.out.println("choisissez le point 3");
+                    System.out.println("entrez le point 3");
                     Point PT2 = demandePoint();
                     if(this.dansLaZone(PT0) && this.dansLaZone(PT1) && this.dansLaZone(PT2)){
-                        TriangleTerrain TT = new TriangleTerrain(numTT, PT0, PT1, PT2);
+                        TriangleTerrain TT = new TriangleTerrain(this.numTT, PT0, PT1, PT2);
                         this.add(TT);
                     }else{
-                        System.out.println("Pas dans la zone constructible");
+                        System.out.println("pas dans la zone constructible");
                        }
                     break;
                 case 4:
-                    
+                    System.out.println("choisissez un triangle terrain");
+                    for (int i = 1; i <= this.numTT.getSize(); i++) {
+                        System.out.println(i + ") " + this.numTT.getObj(i).toString());
+                    }
+                    int numero = Lire.i();
+                    TriangleTerrain TT = numTT.getObj(numero);
+                    System.out.println("choisissez un segment");
+                    for (int i=0; i <3; i++) {
+                        System.out.println(i+1 + ") " + TT.contient.get(i).toString());
+                    }
+                    int numPT = Lire.i()-1;
+                    System.out.println("entrez alpha");
+                    double alpha = Lire.d();
+                    Point PT = alphaToCoordinate(TT, numPT, alpha);
+                    AppuisDouble AD = new AppuisDouble(numN, TT, PT);
+                    this.add(AD);
                     break;
                 case 5:
                     

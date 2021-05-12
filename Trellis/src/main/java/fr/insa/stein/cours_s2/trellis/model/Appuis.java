@@ -3,6 +3,7 @@ package fr.insa.stein.cours_s2.trellis.model;
 
 import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
 import fr.insa.stein.cours_s2.trellis.dessin.Point;
+import fr.insa.stein.cours_s2.trellis.dessin.Segment;
 import javafx.scene.paint.Color;
 
 /*
@@ -25,7 +26,10 @@ public abstract class Appuis extends Noeud {
         super(num, P);
         idTriangle= TT.getId();
         numPT= TT.numPoint(P, 1000);
-        alpha= (P.getPx()- TT.getPT((numPT+1)%3).getPx())/(TT.getPT((numPT+1)%3).getPx()- TT.getPT(numPT).getPx());
+        Point P2 = ((Segment) TT.contient.get(numPT)).projOrtho(P);
+        this.setPx(P2.getPx());
+        this.setPy(P2.getPy());
+        alpha= (P2.getPx()- TT.getPT((numPT+1)%3).getPx())/(TT.getPT((numPT+1)%3).getPx()- TT.getPT(numPT).getPx());
     }
     
     
@@ -47,11 +51,5 @@ public abstract class Appuis extends Noeud {
 
     public double getAlpha() {
         return alpha;
-    }
-    
-    public Point getCoordinate(TriangleTerrain TT){
-        double X= this.getAlpha()*TT.getPT(numPT).getPx()+(1-this.getAlpha()*TT.getPT((numPT+1)%3).getPx());
-        double Y= this.getAlpha()*TT.getPT(numPT).getPy()+(1-this.getAlpha()*TT.getPT((numPT+1)%3).getPy());
-        return new Point(X,Y);
     }
 }

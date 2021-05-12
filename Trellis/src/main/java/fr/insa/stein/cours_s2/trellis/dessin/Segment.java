@@ -116,6 +116,19 @@ public class Segment extends FigureSimple {
         }
     }
     
+    public Point projOrtho(Point p){
+       double x1 = this.debut.getPx();
+        double y1 = this.debut.getPy();
+        double x2 = this.fin.getPx();
+        double y2 = this.fin.getPy();
+        double x3 = p.getPx();
+        double y3 = p.getPy();
+        double up = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1))
+                / (Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        Point p4 = new Point(x1 + up * (x2 - x1), y1 + up * (y2 - y1));
+        return p4;
+    }
+    
     @Override
     public void dessine(GraphicsContext context) {
         context.setStroke(this.getCouleur());

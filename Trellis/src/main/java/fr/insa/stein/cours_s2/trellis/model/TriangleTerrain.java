@@ -57,9 +57,9 @@ public class TriangleTerrain extends Groupe {
     }
     
     public int numPoint(Point P, double dmax){
-        double d1= this.getContient().get(3).distancePoint(P);
-        double d2= this.getContient().get(4).distancePoint(P);
-        double d3= this.getContient().get(5).distancePoint(P);
+        double d1= this.getContient().get(0).distancePoint(P);
+        double d2= this.getContient().get(1).distancePoint(P);
+        double d3= this.getContient().get(2).distancePoint(P);
         if(d1<=d2 && d1<=d3 && d1<=dmax){
             return 0;
         }

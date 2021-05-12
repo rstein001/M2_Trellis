@@ -23,6 +23,7 @@ import fr.insa.stein.cours_s2.trellis.dessin.Figure;
 import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
 import fr.insa.stein.cours_s2.trellis.dessin.Point;
 import fr.insa.stein.cours_s2.trellis.model.AppuisDouble;
+import fr.insa.stein.cours_s2.trellis.model.Barre;
 import fr.insa.stein.cours_s2.trellis.model.Noeud;
 import fr.insa.stein.cours_s2.trellis.model.TriangleTerrain;
 import fr.insa.stein.cours_s2.trellis.model.ZoneConstructible;
@@ -56,12 +57,14 @@ public class Controleur {
     
     private Numeroteur<TriangleTerrain> numTT;
     private Numeroteur<Noeud> numN;
+    private Numeroteur<Barre> numB;
 
     public Controleur(MainPane vue) {
         this.vue = vue;
         this.selection = new ArrayList<>();
         this.numTT = new Numeroteur<TriangleTerrain>();
         this.numN = new Numeroteur<Noeud>();
+        this.numB = new Numeroteur<Barre>();
     }
 
     public TriangleTerrain getTT() {

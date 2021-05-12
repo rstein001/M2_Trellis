@@ -34,7 +34,7 @@ public class Numeroteur<TO> {
     private int prochainID;
     
     public Numeroteur() {
-        this(0);
+        this(1);
     }
     
     private Numeroteur(int prochainID) {
