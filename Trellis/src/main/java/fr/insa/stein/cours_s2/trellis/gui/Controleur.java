@@ -52,6 +52,7 @@ public class Controleur {
 
     private double[][] pos = new double[3][2];
     private TriangleTerrain TT;
+    private int numeroPT;
 
     private List<Figure> selection;
     
@@ -74,6 +75,16 @@ public class Controleur {
     public void setTT(TriangleTerrain TTproche) {
         this.TT = TT;
     }
+
+    public int getNumeroPT() {
+        return numeroPT;
+    }
+
+    public void setNumeroPT(int numeroPT) {
+        this.numeroPT = numeroPT;
+    }
+    
+    
 
     public void changeEtat(int nouvelEtat) {
         if (nouvelEtat == 20) {
@@ -185,8 +196,15 @@ public class Controleur {
                 }
                 case 41:
                 {
+                    Point P = new Point(t.getX(), t.getY());
+                    this.numeroPT = TT.SegmentPlusProche(P, 1000);
+                    break;
+                }
+                case 42:
+                {
                     Color col = this.vue.getCpCouleur().getValue();
-                    AppuisDouble AD = new AppuisDouble(this.numN, this.getTT(), t.getX(), t.getY(), col);
+                    Point P = new Point(t.getX(), t.getY(), col);
+                    AppuisDouble AD = new AppuisDouble(this.numN, this.getTT(), this.getNumeroPT(), P);
                     this.vue.getZone().add(AD);
                     this.vue.redrawAll();
                     this.changeEtat(40);

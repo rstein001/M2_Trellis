@@ -56,7 +56,8 @@ public class TriangleTerrain extends Groupe {
         return  "Triangle Terrain {\n" + "id : "+getId()+" ; "+ PT[0].toString()+" ; "+ PT[1].toString()+" ; "+ PT[2].toString() + "\n}";
     }
     
-    public int numPoint(Point P, double dmax){
+    
+    public int SegmentPlusProche(Point P, double dmax){
         double d1= this.getContient().get(0).distancePoint(P);
         double d2= this.getContient().get(1).distancePoint(P);
         double d3= this.getContient().get(2).distancePoint(P);

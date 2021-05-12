@@ -180,9 +180,9 @@ public class ZoneConstructible extends Groupe {
         return false;
     }
     
-    public static Point alphaToCoordinate(TriangleTerrain TT, int numPT, double alpha){
-        double X= alpha*TT.getPT(numPT).getPx()+(1-alpha*TT.getPT((numPT+1)%3).getPx());
-        double Y= alpha*TT.getPT(numPT).getPy()+(1-alpha*TT.getPT((numPT+1)%3).getPy());
+    public static Point alphaToCoordinate(TriangleTerrain TT, int numeroPT, double alpha){
+        double X= alpha*TT.getPT(numeroPT).getPx()+(1-alpha*TT.getPT((numeroPT+1)%3).getPx());
+        double Y= alpha*TT.getPT(numeroPT).getPy()+(1-alpha*TT.getPT((numeroPT+1)%3).getPy());
         return new Point(X,Y);
     }
 
@@ -215,7 +215,6 @@ public class ZoneConstructible extends Groupe {
             System.out.println("9) ajouter une barre à partir de deux noeuds");
             System.out.println("10) ajouter une barre avec 2 nouveaux noeuds");
             System.out.println("11) ajouter un type de barre");
-            
             System.out.println("0) quitter");
             System.out.println("votre choix : ");
             rep = Lire.i();
@@ -251,11 +250,10 @@ public class ZoneConstructible extends Groupe {
                     for (int i=0; i <3; i++) {
                         System.out.println(i+1 + ") " + TT.contient.get(i).toString());
                     }
-                    int numPT = Lire.i()-1;
-                    System.out.println("entrez alpha");
+                    int numeroPT = Lire.i()-1;
+                    System.out.println("entrez alpha : ");
                     double alpha = Lire.d();
-                    Point PT = alphaToCoordinate(TT, numPT, alpha);
-                    AppuisDouble AD = new AppuisDouble(numN, TT, PT);
+                    AppuisDouble AD = new AppuisDouble(numN, TT, numeroPT, alpha);
                     this.add(AD);
                     break;
                 case 5:

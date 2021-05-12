@@ -31,6 +31,10 @@ public abstract class Noeud extends Point{
     public Noeud(Numeroteur<Noeud> num, Point P) {
         this(num, P.getPx(), P.getPy(), P.getCouleur());
     }
+    
+    public Noeud(Numeroteur<Noeud> num) {
+        this(num, new Point());
+    }
 
     public int getId() {
         return id;

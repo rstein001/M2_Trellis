@@ -35,7 +35,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        Scene sc = new Scene(new MainPane(stage, ZoneConstructible.trellisTest()),800,600);
+        Scene sc = new Scene(new MainPane(stage),800,600);
         stage.setScene(sc);
         stage.setTitle("Nouveau");
           stage.show();

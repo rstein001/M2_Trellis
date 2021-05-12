@@ -17,23 +17,22 @@ import javafx.scene.paint.Color;
  */
 public class AppuisDouble extends Appuis {
     
-    
-    public AppuisDouble(Numeroteur<Noeud> num, TriangleTerrain TT, Point P) {
-        super(num, TT, P);
+    public AppuisDouble(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, double alpha, Color col) {
+        super(num, TT, numeroPT, alpha, col);
+    }
+        
+    public AppuisDouble(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, double alpha) {
+        super(num, TT, numeroPT, alpha, Color.BLACK);
     }
     
-    public AppuisDouble(Numeroteur<Noeud> num, TriangleTerrain TT, double X, double Y, Color col) {
-        super(num, TT, X, Y, col);
-    }
-    
-    public AppuisDouble(Numeroteur<Noeud> num, TriangleTerrain TT, double X, double Y) {
-        super(num, TT, X, Y);
+    public AppuisDouble(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, Point P) {
+        super(num, TT, numeroPT, P);
     }
     
     @Override
     public String toString() {
         return  "Appui Double {\n" + "id : "+getId()+" ; "+ "idTriangle : "+getIdTriangle()+" ; " +
-                "Point TT : "+getNumPT()+" ; " + "alpha : "+getAlpha() + "\n}";
+                "Point TT : "+getNumeroPT()+" ; " + "alpha : "+getAlpha() + "\n}";
     }
     
 }
