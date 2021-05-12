@@ -34,6 +34,7 @@ public class ZoneConstructible extends Groupe {
     private Numeroteur<TriangleTerrain> numTT;
     private Numeroteur<Noeud> numN;
     private Numeroteur<Barre> numB;
+    private Numeroteur<TypeBarre> numTB;
     
     public ZoneConstructible(double Xmax, double Xmin, double Ymax, double Ymin) {
         this.Xmax = Xmax;
@@ -44,6 +45,7 @@ public class ZoneConstructible extends Groupe {
         this.numTT = new Numeroteur<TriangleTerrain>();
         this.numN = new Numeroteur<Noeud>();
         this.numB = new Numeroteur<Barre>();
+        this.numTB = new Numeroteur<TypeBarre>();
     }
     
     public ZoneConstructible() {
@@ -133,24 +135,24 @@ public class ZoneConstructible extends Groupe {
         return res + "}";
     }
     
-    public TriangleTerrain TTplusProche(Numeroteur<TriangleTerrain> num, Point p, double distMax) {
-        if (num.getSize()==0){
+    public TriangleTerrain TTplusProche(Numeroteur<TriangleTerrain> numTT, Point p, double distMax) {
+        if (numTT.getSize()==0){
             return null;
         } else {
-            TriangleTerrain fmin = (TriangleTerrain) this.contient.get(0);
-            double min = fmin.distancePoint(p);
+            TriangleTerrain TTmin = (TriangleTerrain) this.contient.get(0);
+            double min = TTmin.distancePoint(p);
             for (int i = 1; i < this.contient.size(); i++) {
                 if(this.contient.get(i) instanceof TriangleTerrain){
                     TriangleTerrain fcur = (TriangleTerrain) this.contient.get(i);
                     double cur = fcur.distancePoint(p);
-                    if ((cur < min) || ((fmin instanceof TriangleTerrain)==false)) {
+                    if ((cur < min) || ((TTmin instanceof TriangleTerrain)==false)) {
                        min = cur;
-                        fmin = fcur;
+                        TTmin = fcur;
                     }
                 }
             }
             if (min <= distMax) {
-                return fmin;
+                return TTmin;
             } else {
                 return null;
             }
@@ -203,6 +205,12 @@ public class ZoneConstructible extends Groupe {
             
     public void menuTexte() {
         int rep = -1;
+        TriangleTerrain TT;
+        int numeroPT;
+        double alpha;
+        Point P;
+        TypeBarre Type;
+        Noeud N;
         while (rep != 0) {
             System.out.println("1) afficher le trellis");
             System.out.println("2) modifier la zone constructible");
@@ -211,10 +219,9 @@ public class ZoneConstructible extends Groupe {
             System.out.println("5) ajouter un appuis simple");
             System.out.println("6) ajouter un noeud simple");
             System.out.println("7) ajouter un type de barres");
-            System.out.println("8) ajouter une barre à partir d'un noeud");
-            System.out.println("9) ajouter une barre à partir de deux noeuds");
+            System.out.println("8) ajouter une barre à partir de deux noeuds");
+            System.out.println("9) ajouter une barre à partir d'un noeud");
             System.out.println("10) ajouter une barre avec 2 nouveaux noeuds");
-            System.out.println("11) ajouter un type de barre");
             System.out.println("0) quitter");
             System.out.println("votre choix : ");
             rep = Lire.i();
@@ -233,40 +240,133 @@ public class ZoneConstructible extends Groupe {
                     System.out.println("entrez le point 3");
                     Point PT2 = demandePoint();
                     if(this.dansLaZone(PT0) && this.dansLaZone(PT1) && this.dansLaZone(PT2)){
-                        TriangleTerrain TT = new TriangleTerrain(this.numTT, PT0, PT1, PT2);
-                        this.add(TT);
+                        this.add(new TriangleTerrain(this.numTT, PT0, PT1, PT2));
                     }else{
                         System.out.println("pas dans la zone constructible");
-                       }
+                    }
                     break;
                 case 4:
                     System.out.println("choisissez un triangle terrain");
-                    for (int i = 1; i <= this.numTT.getSize(); i++) {
-                        System.out.println(i + ") " + this.numTT.getObj(i).toString());
+                    if(this.numTT.getSize()==0){
+                        for (int i = 1; i <= this.numTT.getSize(); i++) {
+                            System.out.println(i + ") " + this.numTT.getObj(i).toString());
+                        }
+                        TT = numTT.getObj(Lire.i());
+                    }else{
+                        System.out.println("créer d'abord un triangle terrain");
+                        break;
                     }
-                    int numero = Lire.i();
-                    TriangleTerrain TT = numTT.getObj(numero);
                     System.out.println("choisissez un segment");
                     for (int i=0; i <3; i++) {
                         System.out.println(i+1 + ") " + TT.contient.get(i).toString());
                     }
-                    int numeroPT = Lire.i()-1;
+                    numeroPT = Lire.i()-1;
                     System.out.println("entrez alpha : ");
-                    double alpha = Lire.d();
-                    AppuisDouble AD = new AppuisDouble(numN, TT, numeroPT, alpha);
-                    this.add(AD);
+                    alpha = Lire.d();
+                    if(alpha>=0 &&alpha<=1){
+                        this.add(new AppuisDouble(numN, TT, numeroPT, alpha)); 
+                    }else{
+                        System.out.println("alpha doit être compris entre 0 et 1");
+                    }
                     break;
                 case 5:
-                    
+                    System.out.println("choisissez un triangle terrain");
+                    for (int i = 1; i <= this.numTT.getSize(); i++) {
+                        System.out.println(i + ") " + this.numTT.getObj(i).toString());
+                    }
+                    TT = numTT.getObj(Lire.i());
+                    System.out.println("choisissez un segment");
+                    for (int i=0; i <3; i++) {
+                        System.out.println(i+1 + ") " + TT.contient.get(i).toString());
+                    }
+                    numeroPT = Lire.i()-1;
+                    System.out.println("entrez alpha : ");
+                    alpha = Lire.d();
+                    if(alpha>=0 &&alpha<=1){
+                        this.add(new AppuisSimple(numN, TT, numeroPT, alpha)); 
+                    }else{
+                        System.out.println("alpha doit être compris entre 0 et 1");
+                    }
                     break;
                 case 6:
-                    
+                    System.out.println("entrez le point");
+                    P = demandePoint();
+                    if(this.dansLaZone(P)){
+                        this.add(new NoeudSimple(this.numN, P));
+                    }else{
+                        System.out.println("pas dans la zone constructible");
+                    }
                     break;
                 case 7:
-                    
+                    System.out.println("entrez le cout/m");
+                    double cout = Lire.d();
+                    System.out.println("entrez la longueur minimale");
+                    double Lmin = Lire.d();
+                    System.out.println("entrez la longueur maximale");
+                    double Lmax = Lire.d();
+                    System.out.println("entrez la résistance maximale à la traction");
+                    double Rtract = Lire.d();
+                    System.out.println("entrez la résistance maximale à la compression");
+                    double Rcomp = Lire.d();
+                    this.Catalogue.add(new TypeBarre(this.numTB, cout, Lmin, Lmax, Rtract, Rcomp));     
                     break;
                 case 8:
-                    
+                    System.out.println("choisissez un type de barre");
+                    if(this.numTB.getSize()==0){
+                        for (int i = 1; i <= this.numTB.getSize(); i++) {
+                            System.out.println(i + ") " + this.numTB.getObj(i).toString());
+                        }
+                        Type = numTB.getObj(Lire.i());
+                    }else{
+                        System.out.println("créer d'abord un type de barre");
+                        break;
+                    }
+                    System.out.println("choisissez le noeud 1");
+                    if(this.numN.getSize()==0){
+                        for (int i = 1; i <= this.numN.getSize(); i++) {
+                            System.out.println(i + ") " + this.numN.getObj(i).toString());
+                        }
+                        N = numN.getObj(Lire.i());
+                    }else{
+                        System.out.println("créer d'abord un noeud");
+                        break;
+                    }
+                    System.out.println("choisissez le noeud  2");
+                    for (int i = 1; i <= this.numTB.getSize(); i++) {
+                        if(i!= N.getId()){
+                            System.out.println(i + ") " + this.numTB.getObj(i).toString());
+                        }
+                    }
+                    this.add(new Barre(this.numB, Type, N, numN.getObj(Lire.i())));
+                    break;
+                case 9:
+                    System.out.println("choisissez un type de barre");
+                    if(this.numTB.getSize()==0){
+                        for (int i = 1; i <= this.numTB.getSize(); i++) {
+                            System.out.println(i + ") " + this.numTB.getObj(i).toString());
+                        }
+                        Type = numTB.getObj(Lire.i());
+                    }else{
+                        System.out.println("créer d'abord un type de barre");
+                        break;
+                    }
+                    System.out.println("choisissez le noeud 1");
+                    if(this.numN.getSize()==0){
+                        for (int i = 1; i <= this.numN.getSize(); i++) {
+                            System.out.println(i + ") " + this.numN.getObj(i).toString());
+                        }
+                        N = numN.getObj(Lire.i());
+                    }else{
+                        System.out.println("créer d'abord un noeud");
+                        break;
+                    }
+                    System.out.println("choisissez le noeud  2");
+                    for (int i = 1; i <= this.numTB.getSize(); i++) {
+                        if(i!= N.getId()){
+                            System.out.println(i + ") " + this.numTB.getObj(i).toString());
+                        }
+                    }
+                    this.add(new Barre(this.numB, Type, N, numN.getObj(Lire.i())));
                     break;
                 default:
                     break;
