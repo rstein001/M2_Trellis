@@ -23,7 +23,10 @@ import fr.insa.stein.cours_s2.trellis.model.ZoneConstructible;
 import java.io.File;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.Scene;
+import javafx.scene.layout.TilePane;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -31,6 +34,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.scene.text.Text;
+import javafx.application.Application;
+import javafx.scene.control.TextInputDialog;
+
 
 /**
  *
@@ -56,6 +63,11 @@ public class MainPane extends BorderPane {
     private ColorPicker cpCouleur;
     private ChoiceBox cbType;
     private Button baddtype;
+    private TilePane tilePane;
+    private Text t;
+    
+
+   
     
     private DessinCanvas cDessin;
 
@@ -116,14 +128,27 @@ public class MainPane extends BorderPane {
             this.controleur.boutonSupprimer(t);
         });
         this.cbType = new ChoiceBox();
-        /*this.cbType.setOnAction((t) -> {
-            this.controleur.boutonSupprimer(t);
-        });*/
+        this.cbType.getItems().add("1");
+        this.cbType.getItems().add("2");
+        this.cbType.getItems().add("3");
+        this.tilePane= new TilePane();
+        Scene scene = new Scene (tilePane, 300, 300);
+        
+            
+            
+        
         
         this.baddtype = new Button("Ajouter un type de barre");
         this.baddtype.setOnAction((t) -> {
             this.controleur.boutonaddtype(t);
+            
         });
+        
+        this.t = new Text("Choisir une barre : ");
+        
+        
+       
+        
 
         ToggleGroup bgEtat = new ToggleGroup();
         this.rbSelect.setToggleGroup(bgEtat);
@@ -135,7 +160,7 @@ public class MainPane extends BorderPane {
         this.rbTerrain.setSelected(true);
 
         VBox vbGauche = new VBox(this.rbSelect, this.rbTerrain, this.rbAppuisDouble, this.rbAppuisSimple,
-        this.baddtype, this.rbBarre1, this.rbBarre2, this.bDeplacer, this.bSupprimer, this.cpCouleur, this.cbType);
+        this.baddtype, this.rbBarre1, this.rbBarre2, this.bDeplacer, this.bSupprimer, this.cpCouleur, this.t, this.cbType);
         Insets Inset = new Insets(10,10,0,10);
         VBox.setMargin(rbSelect, Inset);
         VBox.setMargin(rbTerrain, Inset);
@@ -147,7 +172,9 @@ public class MainPane extends BorderPane {
         VBox.setMargin(bDeplacer, Inset);
         VBox.setMargin(bSupprimer, Inset);
         VBox.setMargin(cpCouleur, Inset);
+        VBox.setMargin(t, Inset);
         VBox.setMargin(cbType, Inset);
+      
         this.setLeft(vbGauche);
        
         this.cDessin = new DessinCanvas(this);
@@ -237,5 +264,3 @@ public class MainPane extends BorderPane {
     }
 
 }
-
-blablabla
