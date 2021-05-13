@@ -1,14 +1,9 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
 
-import fr.insa.stein.cours_s2.trellis.dessin.Figure;
-import fr.insa.stein.cours_s2.trellis.dessin.Groupe;
-import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
-import fr.insa.stein.cours_s2.trellis.dessin.Point;
-import fr.insa.stein.cours_s2.trellis.dessin.Segment;
 import static java.lang.Math.acos;
-import java.util.List;
 import javafx.scene.paint.Color;
+import recup.Lire;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,43 +15,88 @@ import javafx.scene.paint.Color;
  *
  * @author renaud
  */
-public class TriangleTerrain extends Groupe {
+public class TriangleTerrain {
     
     private int id;
-    private Point[] PT= new Point[3];
+    private double[][] PT= new double[3][2];
+    private Color col;
     
-    public TriangleTerrain(Numeroteur<TriangleTerrain> num, Point PT0, Point PT1, Point PT2, Color col) {
+    public TriangleTerrain(Numeroteur<TriangleTerrain> num, double[][] PT, Color col) {
         this.id = num.creeID(this);
-        this.PT[0] = PT0;
-        this.PT[1] = PT1;
-        this.PT[2] = PT2;
-        this.add(new Segment(PT0,PT1, col));
-        this.add(new Segment(PT1,PT2, col));
-        this.add(new Segment(PT2,PT0, col));
+        this.col = col;
+        for(int i=0; i<3; i++){
+           for(int j=0; j<2; j++){
+               this.PT[i][j] = PT[i][j];
+            } 
+        }
     }
 
-    public TriangleTerrain(Numeroteur<TriangleTerrain> num, Point PT0, Point PT1, Point PT2) {
-        this(num, PT0, PT1, PT2, Color.LIGHTGREEN);
-    }
-
-    public Point getPT(int i) {
-        return PT[i];
-    }
-
-    public void setPT(Point PT, int i) {
-        this.PT[i] = PT;
+    public TriangleTerrain(Numeroteur<TriangleTerrain> num, double[][] PT) {
+        this(num, PT, Color.LIGHTGREEN);
     }
 
     public int getId() {
         return id;
     }
+
+    public double getPTx(int i) {
+        return PT[i][0];
+    }
+    
+    public double getPTy(int i) {
+        return PT[i][1];
+    }
+
+    public void setPTx(int i, double x) {
+        this.PT[i][0] = x;
+    }
+    
+    public void setPTy(int i, double y) {
+        this.PT[i][1] = y;
+    }
+
+    public Color getCol() {
+        return col;
+    }
+
+    public void setCol(Color col) {
+        this.col = col;
+    }
     
     @Override
     public String toString() {
-        return  "Triangle Terrain {\n" + "id : "+getId()+" ; "+ PT[0].toString()+" ; "+ PT[1].toString()+" ; "+ PT[2].toString() + "\n}";
+        return  "Triangle Terrain {\n" + "id : "+getId()+" ; (" + this.getPTx(0) + "," + this.getPTy(0) + ") ; (" +
+                this.getPTx(1) + "," + this.getPTy(1) + ") ; (" + this.getPTx(2) + "," + this.getPTy(2) + ") \n}";
     }
     
+    public static double[][] demandePT(Treillis Z){
+        double[][] pt = new double[3][2];
+        System.out.println("entrez les coordonées de PT0:");
+        double[] p = Z.demandePoint();
+        pt[0][0]= p[0];
+        pt[0][1]= p[1];
+        System.out.println("entrez les coordonées de PT1:");
+        p = Z.demandePoint();
+        pt[1][0]= p[0];
+        pt[1][1]= p[1];
+        System.out.println("entrez les coordonées de PT2:");
+        p = Z.demandePoint();
+        pt[2][0]= p[0];
+        pt[2][1]= p[1];
+        return pt;
+    }
     
+    public int choisiPT(){
+        System.out.println("choisissez un segment");
+        for (int i=0; i <3; i++) {
+            int j = (i+1)%3;
+            System.out.println( i+1 + ") [ (" + this.getPTx(i) + "," + this.getPTy(i) + ") , (" + 
+                    this.getPTx(j) + "," + this.getPTy(j) + ") ]");
+        }
+        return Lire.i()-1;
+    }
+    
+    /*
     public int SegmentPlusProche(Point P, double dmax){
         double d1= this.getContient().get(0).distancePoint(P);
         double d2= this.getContient().get(1).distancePoint(P);
@@ -80,4 +120,5 @@ public class TriangleTerrain extends Groupe {
         double scalaire = vec1.Scalaire(vec2);
         return acos(scalaire/(vec1.Norme()*vec2.Norme()));
     }
+*/
 }

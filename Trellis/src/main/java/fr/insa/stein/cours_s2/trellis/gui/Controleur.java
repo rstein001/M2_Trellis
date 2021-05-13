@@ -19,17 +19,11 @@ along with CoursBeuvron.  If not, see <http://www.gnu.org/licenses/>.
 package fr.insa.stein.cours_s2.trellis.gui;
 
 
-import fr.insa.stein.cours_s2.trellis.dessin.Figure;
-import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
-import fr.insa.stein.cours_s2.trellis.dessin.Point;
 import fr.insa.stein.cours_s2.trellis.model.AppuisDouble;
-import fr.insa.stein.cours_s2.trellis.model.Barre;
-import fr.insa.stein.cours_s2.trellis.model.Noeud;
+import fr.insa.stein.cours_s2.trellis.model.Treillis;
 import fr.insa.stein.cours_s2.trellis.model.TriangleTerrain;
-import fr.insa.stein.cours_s2.trellis.model.ZoneConstructible;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -45,7 +39,7 @@ import javafx.stage.Stage;
  * @author francois
  */
 public class Controleur {
-
+    
     private MainPane vue;
 
     private int etat;
@@ -54,18 +48,8 @@ public class Controleur {
     private TriangleTerrain TT;
     private int numeroPT;
 
-    private List<Figure> selection;
-    
-    private Numeroteur<TriangleTerrain> numTT;
-    private Numeroteur<Noeud> numN;
-    private Numeroteur<Barre> numB;
-
     public Controleur(MainPane vue) {
         this.vue = vue;
-        this.selection = new ArrayList<>();
-        this.numTT = new Numeroteur<TriangleTerrain>();
-        this.numN = new Numeroteur<Noeud>();
-        this.numB = new Numeroteur<Barre>();
     }
 
     public TriangleTerrain getTT() {
@@ -87,39 +71,20 @@ public class Controleur {
     
 
     public void changeEtat(int nouvelEtat) {
-        if (nouvelEtat == 20) {
-            this.vue.getRbSelect().setSelected(true);
-            this.selection.clear();
-            this.vue.redrawAll();
-        } else if (nouvelEtat == 30) {
+        if (nouvelEtat == 30) {
             this.vue.getRbTerrain().setSelected(true);
-            this.selection.clear();
-            this.vue.getbDeplacer().setDisable(true);
-            this.vue.getbSupprimer().setDisable(true);
             this.vue.redrawAll();
         } else if (nouvelEtat == 40) {
             this.vue.getRbAppuisDouble().setSelected(true);
-            this.selection.clear();
-            this.vue.getbDeplacer().setDisable(true);
-            this.vue.getbSupprimer().setDisable(true);
             this.vue.redrawAll();
         } else if (nouvelEtat == 50) {
             this.vue.getRbAppuisSimple().setSelected(true);
-            this.selection.clear();
-            this.vue.getbDeplacer().setDisable(true);
-            this.vue.getbSupprimer().setDisable(true);
             this.vue.redrawAll();
         } else if (nouvelEtat == 60) {
             this.vue.getRbBarre1().setSelected(true);
-            this.selection.clear();
-            this.vue.getbDeplacer().setDisable(true);
-            this.vue.getbSupprimer().setDisable(true);
             this.vue.redrawAll();
         } else if (nouvelEtat == 70) {
             this.vue.getRbBarre2().setSelected(true);
-            this.selection.clear();
-            this.vue.getbDeplacer().setDisable(true);
-            this.vue.getbSupprimer().setDisable(true);
             this.vue.redrawAll();
         }
         this.etat = nouvelEtat;
@@ -332,7 +297,7 @@ public class Controleur {
         if (f != null) {
             try {
                 Figure lue = Figure.lecture(f);
-                ZoneConstructible Zlu = (ZoneConstructible) lue;
+                Treillis Zlu = (Treillis) lue;
                 Stage nouveau = new Stage();
                 nouveau.setTitle(f.getName());
                 Scene sc = new Scene(new MainPane(nouveau, f, Zlu), 800, 600);

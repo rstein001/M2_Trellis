@@ -1,9 +1,8 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
 
-import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
-import fr.insa.stein.cours_s2.trellis.dessin.Point;
 import javafx.scene.paint.Color;
+import recup.Lire;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,10 +15,6 @@ import javafx.scene.paint.Color;
  * @author renaud
  */
 public class NoeudSimple extends Noeud {
-   
-    public NoeudSimple(Numeroteur<Noeud> num, Point point) {
-        super(num, point);
-    }
     
     public NoeudSimple(Numeroteur<Noeud> num, double x, double y, Color col) {
         super(num, x, y, col);
@@ -29,8 +24,21 @@ public class NoeudSimple extends Noeud {
         super(num, x, y);
     }
     
+    public NoeudSimple(Numeroteur<Noeud> num, double []p, Color col) {
+        super(num, p, col);
+    }
+   
+    public NoeudSimple(Numeroteur<Noeud> num, double []p) {
+        super(num, p);
+    }
+    
+    public NoeudSimple(Numeroteur<Noeud> num) {
+        super(num);
+    }
+    
     @Override
     public String toString() {
         return  "Noeud Simple {\n" + "id : "+getId()+" ; ("+ this.getPx() +","+ this.getPy() +")\n}";
     }
+
 }

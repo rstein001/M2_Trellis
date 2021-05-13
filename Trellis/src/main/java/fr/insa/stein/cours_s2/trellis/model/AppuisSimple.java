@@ -1,8 +1,6 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
 
-import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
-import fr.insa.stein.cours_s2.trellis.dessin.Point;
 import javafx.scene.paint.Color;
 
 /*
@@ -25,8 +23,20 @@ public class AppuisSimple extends Appuis {
         super(num, TT, numeroPT, alpha, Color.BLACK);
     }
     
-    public AppuisSimple(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, Point P) {
-        super(num, TT, numeroPT, P);
+    public AppuisSimple(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, double x, double y, Color col) {
+        super(num, TT, numeroPT, x, y, col);
+    }
+    
+    public AppuisSimple(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, double x, double y) {
+        super(num, TT, numeroPT, x, y);
+    }
+    
+    public AppuisSimple(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, double [] p, Color col) {
+        super(num, TT, numeroPT, p[0], p[1], col);
+    }
+    
+    public AppuisSimple(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, double [] p) {
+        super(num, TT, numeroPT, p[0], p[1]);
     }
     
     @Override

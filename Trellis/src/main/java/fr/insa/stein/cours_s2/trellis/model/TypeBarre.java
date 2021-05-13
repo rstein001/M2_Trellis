@@ -1,7 +1,6 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
-
-import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
+import recup.Lire;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -29,6 +28,20 @@ public class TypeBarre {
         this.Lmax = Lmax;
         this.Rtrac = Rtrac;
         this.Rcomp = Rcomp;
+    }
+    
+    public static TypeBarre demandeTypeBarre(Treillis Z){
+        System.out.println("entrez le cout/m");
+        double cout = Lire.d();
+        System.out.println("entrez la longueur minimale");
+        double Lmin = Lire.d();
+        System.out.println("entrez la longueur maximale");
+        double Lmax = Lire.d();
+        System.out.println("entrez la résistance maximale à la traction");
+        double Rtract = Lire.d();
+        System.out.println("entrez la résistance maximale à la compression");
+        double Rcomp = Lire.d();
+        return new TypeBarre(Z.getNumTB(), cout, Lmin, Lmax, Rtract, Rcomp);
     }
 
     public int getId() {

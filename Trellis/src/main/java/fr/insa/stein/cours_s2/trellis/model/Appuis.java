@@ -1,10 +1,8 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
 
-import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
-import fr.insa.stein.cours_s2.trellis.dessin.Point;
-import fr.insa.stein.cours_s2.trellis.dessin.Segment;
-import static fr.insa.stein.cours_s2.trellis.model.ZoneConstructible.alphaToCoordinate;
+import static fr.insa.stein.cours_s2.trellis.model.Treillis.alphaToPx;
+import static fr.insa.stein.cours_s2.trellis.model.Treillis.alphaToPy;
 import javafx.scene.paint.Color;
 
 /*
@@ -24,26 +22,35 @@ public abstract class Appuis extends Noeud {
     private double alpha;
     
     public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, double alpha, Color col) {
-        super(num);
+        super(num, col);
         idTriangle = TT.getId();
         this.numeroPT = numeroPT;
         this.alpha = alpha;
-        Point P = alphaToCoordinate(TT, numeroPT, alpha);
-        this.setPx(P.getPx());
-        this.setPy(P.getPy());
-        this.setCouleur(col);
+        this.setPx(alphaToPx(TT, numeroPT, alpha));
+        this.setPy(alphaToPy(TT, numeroPT, alpha));
     }
         
     public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, double alpha) {
         this(num, TT, numeroPT, alpha, Color.BLACK);
     }
     
-    public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, Point P) {
-        this(num, TT, numeroPT, 0, P.getCouleur());
-        Point P2 = ((Segment) TT.contient.get(numeroPT)).projOrtho(P);
-        this.setPx(P2.getPx());
-        this.setPy(P2.getPy());
-        this.alpha= (P2.getPx()- TT.getPT((numeroPT+1)%3).getPx())/(TT.getPT((numeroPT+1)%3).getPx()- TT.getPT(numeroPT).getPx());
+    public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, double x, double y, Color col) {
+        this(num, TT, numeroPT, 0, col);
+        this.setPx(x);
+        this.setPy(y);
+        this.alpha= (this.getPx()- TT.getPTx((numeroPT+1)%3))/(TT.getPTx(numeroPT)- TT.getPTx((numeroPT+1)%3));
+    }
+    
+    public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, double x, double y) {
+        this(num, TT, numeroPT, x, y, Color.BLACK);
+    }
+    
+    public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, double [] p, Color col) {
+        this(num, TT, numeroPT, p[0], p[1], col);
+    }
+    
+    public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, double [] p) {
+        this(num, TT, numeroPT, p[0], p[1], Color.BLACK);
     }
 
     public int getIdTriangle() {

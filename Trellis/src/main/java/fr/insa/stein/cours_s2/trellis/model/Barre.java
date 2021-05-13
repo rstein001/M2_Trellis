@@ -1,9 +1,6 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
 
-import fr.insa.stein.cours_s2.trellis.dessin.Numeroteur;
-import fr.insa.stein.cours_s2.trellis.dessin.Point;
-import fr.insa.stein.cours_s2.trellis.dessin.Segment;
 import javafx.scene.paint.Color;
 
 /*
@@ -16,24 +13,33 @@ import javafx.scene.paint.Color;
  *
  * @author renaud
  */
-public class Barre extends Segment {
+public class Barre {
     
     private int id;
     private int idType;
     private int idNoeud1;
     private int idNoeud2;
+    private Color col;
 
     
-    public Barre(Numeroteur<Barre> num, TypeBarre Type, Noeud Noeud1, Noeud Noeud2, Color col) {
-        super((Point) Noeud1, (Point) Noeud2, col);
+    public Barre(Numeroteur<Barre> num, TypeBarre Type, int idNoeud1, int idNoeud2, Color col) {
         this.id =  num.creeID(this);
         this.idType = Type.getId();
-        this.idNoeud1 = Noeud1.getId();
-        this.idNoeud2 = Noeud2.getId();
+        this.idNoeud1 = idNoeud1;
+        this.idNoeud2 = idNoeud2;
+        this.col = col;
+    }
+    
+    public Barre(Numeroteur<Barre> num, TypeBarre Type, int idNoeud1, int idNoeud2) {
+        this(num, Type, idNoeud1, idNoeud2, Color.BLACK);
+    }
+    
+    public Barre(Numeroteur<Barre> num, TypeBarre Type, Noeud Noeud1, Noeud Noeud2, Color col) {
+        this(num, Type, Noeud1.getId(), Noeud2.getId(), col);
     }
     
     public Barre(Numeroteur<Barre> num, TypeBarre Type, Noeud Noeud1, Noeud Noeud2) {
-        this(num, Type, Noeud1, Noeud2, Color.BLACK);
+        this(num, Type, Noeud1.getId(), Noeud2.getId(), Color.BLACK);
     }
 
     public int getId() {
@@ -50,6 +56,14 @@ public class Barre extends Segment {
 
     public int getIdNoeud2() {
         return idNoeud2;
+    }
+
+    public Color getCol() {
+        return col;
+    }
+
+    public void setCol(Color col) {
+        this.col = col;
     }
     
     @Override

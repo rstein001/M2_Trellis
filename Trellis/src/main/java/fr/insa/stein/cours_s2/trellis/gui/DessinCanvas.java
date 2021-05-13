@@ -18,8 +18,6 @@ along with CoursBeuvron.  If not, see <http://www.gnu.org/licenses/>.
  */
 package fr.insa.stein.cours_s2.trellis.gui;
 
-import fr.insa.stein.cours_s2.trellis.dessin.Figure;
-import fr.insa.stein.cours_s2.trellis.dessin.Groupe;
 import java.util.List;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
