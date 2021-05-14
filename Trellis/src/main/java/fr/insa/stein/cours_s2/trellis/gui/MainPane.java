@@ -26,6 +26,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
@@ -41,27 +42,25 @@ import javafx.stage.Stage;
  */
 public class MainPane extends BorderPane {
 
-    private Treillis Trellis;
+    private Treillis Treillis;
     private Controleur controleur;
 
     private Stage inStage;
     private File curFile;
 
-    private RadioButton rbTerrain;
-    private RadioButton rbAppuisDouble;
-    private RadioButton rbAppuisSimple;
-    private RadioButton rbBarre1;
-    private RadioButton rbBarre2;
+    private Button bTerrain;
+    private Button bAppuisDouble;
+    private Button bAppuisSimple;
+    private Button bBarre1;
+    private Button bBarre2;
 
-    private ColorPicker cpCouleur;
     private ChoiceBox cbType;
     private Button baddtype;
     private TilePane tilePane;
     private Text t;
+    private TextInputDialog at;
     
     private DessinCanvas cDessin;
-
-    private MainMenu menu;
 
     public MainPane(Stage inStage, Treillis Zone) {
         this(inStage, null, Zone);
@@ -74,37 +73,37 @@ public class MainPane extends BorderPane {
     public MainPane(Stage inStage, File fromFile, Treillis Treillis) {
         this.inStage = inStage;
         this.curFile = fromFile;
-        this.Trellis = Treillis;
+        this.Treillis = Treillis;
         this.controleur = new Controleur(this);
 
-        this.rbTerrain = new RadioButton("TriangleTerrain");
-        this.rbTerrain.setOnAction((t) -> {
+        this.bTerrain = new Button("TriangleTerrain");
+        this.bTerrain.setOnAction((t) -> {
             this.controleur.boutonTerrain(t);
         });
-        this.rbAppuisDouble = new RadioButton("Appuis Double");
-        this.rbAppuisDouble.setOnAction((t) -> {
+        this.bAppuisDouble = new Button("Appuis Double");
+        this.bAppuisDouble.setOnAction((t) -> {
             this.controleur.boutonAppuisDouble(t);
         });
-        this.rbAppuisDouble = new RadioButton("Appuis Double");
-        this.rbAppuisDouble.setOnAction((t) -> {
+        this.bAppuisDouble = new Button("Appuis Double");
+        this.bAppuisDouble.setOnAction((t) -> {
             this.controleur.boutonAppuisDouble(t);
         });
-        this.rbAppuisSimple = new RadioButton("Appuis Simple");
-        this.rbAppuisSimple.setOnAction((t) -> {
+        this.bAppuisSimple = new Button("Appuis Simple");
+        this.bAppuisSimple.setOnAction((t) -> {
             this.controleur.boutonAppuisSimple(t);
         });
-        this.rbBarre1 = new RadioButton("Barre (1 Noeud)");
-        this.rbBarre1.setOnAction((t) -> {
+        this.bBarre1 = new Button("Barre (1 Noeud)");
+        this.bBarre1.setOnAction((t) -> {
             this.controleur.boutonBarre1(t);
         });
-        this.rbBarre2 = new RadioButton("Barre (2 Noeud)");
-        this.rbBarre2.setOnAction((t) -> {
+        this.bBarre2 = new Button("Barre (2 Noeud)");
+        this.bBarre2.setOnAction((t) -> {
             this.controleur.boutonBarre2(t);
         });
-        this.cpCouleur = new ColorPicker(Color.BLACK);
-        this.cpCouleur.setOnAction((t) -> {
-            this.controleur.changeColor(this.cpCouleur.getValue());
-        });
+        this.at = new TextInputDialog("");
+        this.at.setHeaderText("Entrez des valeurs:");
+        this.at.setTitle("Ajoutez un type de barre");
+        
         this.cbType = new ChoiceBox();
         this.cbType.getItems().add("1");
         this.cbType.getItems().add("2");
@@ -124,26 +123,15 @@ public class MainPane extends BorderPane {
         
         this.t = new Text("Choisir une barre : ");
         
-        
-
-        ToggleGroup bgEtat = new ToggleGroup();
-        this.rbTerrain.setToggleGroup(bgEtat);
-        this.rbAppuisDouble.setToggleGroup(bgEtat);
-        this.rbAppuisSimple.setToggleGroup(bgEtat);
-        this.rbBarre1.setToggleGroup(bgEtat);
-        this.rbBarre2.setToggleGroup(bgEtat);
-        this.rbTerrain.setSelected(true);
-
-        VBox vbGauche = new VBox(this.rbTerrain, this.rbAppuisDouble, this.rbAppuisSimple,
-        this.baddtype, this.rbBarre1, this.rbBarre2, this.cpCouleur, this.t, this.cbType);
+        VBox vbGauche = new VBox(this.bTerrain, this.bAppuisDouble, this.bAppuisSimple,
+        this.baddtype, this.bBarre1, this.bBarre2, this.t, this.cbType);
         Insets Inset = new Insets(10,10,0,10);
-        VBox.setMargin(rbTerrain, Inset);
-        VBox.setMargin(rbAppuisDouble, Inset);
-        VBox.setMargin(rbAppuisSimple, Inset);
+        VBox.setMargin(bTerrain, Inset);
+        VBox.setMargin(bAppuisDouble, Inset);
+        VBox.setMargin(bAppuisSimple, Inset);
         VBox.setMargin(baddtype, Inset);
-        VBox.setMargin(rbBarre1, Inset);
-        VBox.setMargin(rbBarre2, Inset);
-        VBox.setMargin(cpCouleur, Inset);
+        VBox.setMargin(bBarre1, Inset);
+        VBox.setMargin(bBarre2, Inset);
         VBox.setMargin(t, Inset);
         VBox.setMargin(cbType, Inset);
       
@@ -152,43 +140,38 @@ public class MainPane extends BorderPane {
         this.cDessin = new DessinCanvas(this);
         this.setCenter(this.cDessin);
 
-        this.menu = new MainMenu(this);
-        this.setTop(this.menu);
-
-        this.controleur.changeEtat(20);
-
     }
-
+/*
     public void redrawAll() {
         this.cDessin.redrawAll();
     }
-
+*/
     public Treillis getZone() {
-        return Trellis;
+        return Treillis;
     }
 
     public Controleur getControleur() {
         return controleur;
     }
 
-    public RadioButton getRbTerrain() {
-        return rbTerrain;
+    public Button getbTerrain() {
+        return bTerrain;
     }
 
-    public RadioButton getRbAppuisDouble() {
-        return rbAppuisDouble;
+    public Button getbAppuisDouble() {
+        return bAppuisDouble;
     }
 
-    public RadioButton getRbAppuisSimple() {
-        return rbAppuisSimple;
+    public Button getbAppuisSimple() {
+        return bAppuisSimple;
     }
 
-    public RadioButton getRbBarre1() {
-        return rbBarre1;
+    public Button getbBarre1() {
+        return bBarre1;
     }
 
-    public RadioButton getRbBarre2() {
-        return rbBarre2;
+    public Button getbBarre2() {
+        return bBarre2;
     }
 
     public ChoiceBox getCbType() {
@@ -197,14 +180,6 @@ public class MainPane extends BorderPane {
 
     public Button getBaddtype() {
         return baddtype;
-    }
-
-    public MainMenu getMenu() {
-        return menu;
-    }
-
-    public ColorPicker getCpCouleur() {
-        return cpCouleur;
     }
 
     public DessinCanvas getcDessin() {
@@ -221,6 +196,10 @@ public class MainPane extends BorderPane {
 
     public void setCurFile(File curFile) {
         this.curFile = curFile;
+    }
+
+    public TextInputDialog getAt() {
+        return at;
     }
 
 }

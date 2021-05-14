@@ -39,19 +39,19 @@ public class DessinCanvas extends Pane {
         this.getChildren().add(this.realCanvas);
         this.realCanvas.heightProperty().bind(this.heightProperty());
         this.realCanvas.heightProperty().addListener((o) -> {
-            this.redrawAll();
+            //this.redrawAll();
         });
         this.realCanvas.widthProperty().bind(this.widthProperty());
         this.realCanvas.widthProperty().addListener((o) -> {
-            this.redrawAll();
+            //this.redrawAll();
         });
         this.realCanvas.setOnMouseClicked((t) -> {
             Controleur control = this.main.getControleur();
-            control.clicDansZoneDessin(t);
+            //control.clicDansZoneDessin(t);
         });
-        this.redrawAll();
+        //this.redrawAll();
     }
-
+/*
     public void redrawAll() {
         GraphicsContext context = this.realCanvas.getGraphicsContext2D();
         Groupe model = this.main.getZone();
@@ -63,4 +63,5 @@ public class DessinCanvas extends Pane {
             }
         }
     }
+*/
 }

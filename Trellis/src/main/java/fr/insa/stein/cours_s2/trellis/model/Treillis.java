@@ -220,6 +220,7 @@ public class Treillis {
         }
     }
     
+    /*
     public static double distanceAvecPoint(double x, double y, double x1, double y1){
         double dx = x - x1;
         double dy = y - y1;
@@ -229,6 +230,7 @@ public class Treillis {
     public static double distanceAvecSegment(double x, double y, double x1, double y1, double x2, double y2){
         return 0;
     }
+*/
             
     public void menuTexte() {
         int rep = -1;
@@ -250,9 +252,13 @@ public class Treillis {
                 case 1:
                     System.out.println(this);
                     break;
+                    
+                    
                 case 2:
                     this.demandeZone();
                     break;
+                    
+                    
                 case 3:
                     double[][] pt = demandePT(this);
                     if(pt==null){
@@ -261,6 +267,8 @@ public class Treillis {
                     }
                     this.TT.add(new TriangleTerrain(this.numTT, pt));
                     break;
+                    
+                    
                 case 4:
                     if(this.TT.isEmpty()){
                         System.out.println("créer d'abord un triangle terrain");
@@ -271,7 +279,9 @@ public class Treillis {
                         System.out.println(i + ") " + this.TT.get(i-1).toString());
                     }
                     TriangleTerrain TT1 = this.numTT.getObj(Lire.i());
+                    
                     int numeroPT = TT1.choisiPT();
+                    
                     System.out.println("entrez alpha : ");
                     double alpha = Lire.d();
                     if(alpha>=0 &&alpha<=1){
@@ -280,6 +290,8 @@ public class Treillis {
                         System.out.println("alpha doit être compris entre 0 et 1");
                     }
                     break;
+                    
+                    
                 case 5:
                     if(this.TT.isEmpty()){
                         System.out.println("créer d'abord un triangle terrain");
@@ -290,7 +302,9 @@ public class Treillis {
                         System.out.println(i + ") " + this.TT.get(i-1).toString());
                     }
                     TT1 = this.numTT.getObj(Lire.i());
+                    
                     numeroPT = TT1.choisiPT();
+                    
                     System.out.println("entrez alpha : ");
                     alpha = Lire.d();
                     if(alpha>=0 &&alpha<=1){
@@ -299,6 +313,8 @@ public class Treillis {
                         System.out.println("alpha doit être compris entre 0 et 1");
                     }
                     break;
+                    
+                    
                 case 6:
                     System.out.println("entrez les coordonnées : ");
                     double[] p = demandePoint();
@@ -308,9 +324,13 @@ public class Treillis {
                     }
                     this.Noeuds.add(new NoeudSimple(this.numN, p));
                     break;
+                    
+                    
                 case 7:
                     this.Catalogue.add(demandeTypeBarre(this));   
                     break;
+                    
+                    
                 case 8:
                     if(this.Catalogue.isEmpty()){
                         System.out.println("créer d'abord un type de barre");
@@ -321,6 +341,7 @@ public class Treillis {
                         System.out.println(i + ") " + this.Catalogue.get(i-1).toString());
                     }
                     TypeBarre Type = numTB.getObj(Lire.i());
+                    
                     if(this.Noeuds.size()<2){
                         System.out.println("créer d'abord 2 noeuds");
                         break;
@@ -330,6 +351,7 @@ public class Treillis {
                         System.out.println(i + ") " + this.Noeuds.get(i-1).toString());
                         }
                     int idN1 = Lire.i();
+                    
                     System.out.println("choisissez le noeud  2");
                     for (int i = 1; i <= this.Noeuds.size(); i++) {
                         if(i!= idN1){
@@ -338,6 +360,8 @@ public class Treillis {
                     }
                     this.Barres.add(new Barre(this.numB, Type, idN1, Lire.i()));
                     break;
+                    
+                    
                 case 9:
                     if(this.Catalogue.isEmpty()){
                         System.out.println("créer d'abord un type de barre");
@@ -348,6 +372,7 @@ public class Treillis {
                         System.out.println(i + ") " + this.Catalogue.get(i-1).toString());
                     }
                     Type = numTB.getObj(Lire.i());
+                    
                     if(this.Noeuds.isEmpty()){
                         System.out.println("créer d'abord un noeud");
                         break;
@@ -357,6 +382,7 @@ public class Treillis {
                         System.out.println(i + ") " + this.Noeuds.get(i-1).toString());
                         }
                     idN1 = Lire.i();
+                    
                     System.out.println("entrez les coordonnées du nouveaux noeud : ");
                     p = demandePoint();
                     if(p==null){
@@ -364,6 +390,7 @@ public class Treillis {
                         break;
                     }
                     this.Noeuds.add(new NoeudSimple(this.numN, p));
+                    
                     this.Barres.add(new Barre(this.numB, Type, idN1, this.numN.getSize()));
                     break;
                 default:
