@@ -46,7 +46,7 @@ public class DessinCanvas extends Pane {
             //this.redrawAll();
         });
         this.realCanvas.setOnMouseClicked((t) -> {
-            Controleur control = this.main.getControleur();
+            //Controleur control = this.main.getControleur();
             //control.clicDansZoneDessin(t);
         });
         //this.redrawAll();

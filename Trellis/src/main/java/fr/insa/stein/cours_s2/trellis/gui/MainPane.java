@@ -1,20 +1,7 @@
 /*
-Copyright 2000- Francois de Bertrand de Beuvron
-
-This file is part of CoursBeuvron.
-
-CoursBeuvron is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-CoursBeuvron is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with CoursBeuvron.  If not, see <http://www.gnu.org/licenses/>.
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package fr.insa.stein.cours_s2.trellis.gui;
 
@@ -24,30 +11,21 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
-/**
- *
- * @author francois
- */
 public class MainPane extends BorderPane {
 
     private Treillis Treillis;
-    private Controleur controleur;
 
     private Stage inStage;
-    private File curFile;
-
+    private DessinCanvas cDessin;
+    
     private Button bTerrain;
     private Button bAppuisDouble;
     private Button bAppuisSimple;
@@ -60,7 +38,7 @@ public class MainPane extends BorderPane {
     private Text t;
     private TextInputDialog at;
     
-    private DessinCanvas cDessin;
+
 
     public MainPane(Stage inStage, Treillis Zone) {
         this(inStage, null, Zone);
@@ -72,34 +50,37 @@ public class MainPane extends BorderPane {
 
     public MainPane(Stage inStage, File fromFile, Treillis Treillis) {
         this.inStage = inStage;
-        this.curFile = fromFile;
         this.Treillis = Treillis;
-        this.controleur = new Controleur(this);
 
         this.bTerrain = new Button("TriangleTerrain");
-        this.bTerrain.setOnAction((t) -> {
-            this.controleur.boutonTerrain(t);
+        this.bTerrain.setOnAction(() -> {
+            System.out.println();
         });
         this.bAppuisDouble = new Button("Appuis Double");
         this.bAppuisDouble.setOnAction((t) -> {
-            this.controleur.boutonAppuisDouble(t);
+            System.out.println();
         });
         this.bAppuisDouble = new Button("Appuis Double");
         this.bAppuisDouble.setOnAction((t) -> {
-            this.controleur.boutonAppuisDouble(t);
+            System.out.println();
         });
         this.bAppuisSimple = new Button("Appuis Simple");
         this.bAppuisSimple.setOnAction((t) -> {
-            this.controleur.boutonAppuisSimple(t);
+            System.out.println();
         });
         this.bBarre1 = new Button("Barre (1 Noeud)");
         this.bBarre1.setOnAction((t) -> {
-            this.controleur.boutonBarre1(t);
+            System.out.println();
         });
         this.bBarre2 = new Button("Barre (2 Noeud)");
         this.bBarre2.setOnAction((t) -> {
-            this.controleur.boutonBarre2(t);
+            System.out.println();
         });
+        this.baddtype = new Button("Ajouter un type de barre");
+        this.baddtype.setOnAction((t) -> {
+            Dialogue.DialogTB(Treillis);
+        });
+        
         this.at = new TextInputDialog("");
         this.at.setHeaderText("Entrez des valeurs:");
         this.at.setTitle("Ajoutez un type de barre");
@@ -115,11 +96,7 @@ public class MainPane extends BorderPane {
             
         
         
-        this.baddtype = new Button("Ajouter un type de barre");
-        this.baddtype.setOnAction((t) -> {
-            this.controleur.boutonaddtype(t);
-            
-        });
+        
         
         this.t = new Text("Choisir une barre : ");
         
@@ -148,10 +125,6 @@ public class MainPane extends BorderPane {
 */
     public Treillis getZone() {
         return Treillis;
-    }
-
-    public Controleur getControleur() {
-        return controleur;
     }
 
     public Button getbTerrain() {
@@ -188,14 +161,6 @@ public class MainPane extends BorderPane {
 
     public Stage getInStage() {
         return inStage;
-    }
-
-    public File getCurFile() {
-        return curFile;
-    }
-
-    public void setCurFile(File curFile) {
-        this.curFile = curFile;
     }
 
     public TextInputDialog getAt() {

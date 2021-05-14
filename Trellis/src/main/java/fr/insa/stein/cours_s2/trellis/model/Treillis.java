@@ -88,6 +88,22 @@ public class Treillis {
         this.Ymin = Ymin;
     }
 
+    public List<Noeud> getNoeuds() {
+        return Noeuds;
+    }
+
+    public List<TriangleTerrain> getTT() {
+        return TT;
+    }
+
+    public List<Barre> getBarres() {
+        return Barres;
+    }
+
+    public List<TypeBarre> getCatalogue() {
+        return Catalogue;
+    }
+
     public Numeroteur<TriangleTerrain> getNumTT() {
         return numTT;
     }
@@ -181,14 +197,7 @@ public class Treillis {
     }
     */
     
-    public static double alphaToPx(TriangleTerrain TT, int numeroPT, double alpha){
-        return alpha*TT.getPTx(numeroPT)+(1-alpha*TT.getPTx((numeroPT+1)%3));
-    }
     
-    public static double alphaToPy(TriangleTerrain TT, int numeroPT, double alpha){
-        return alpha*TT.getPTy(numeroPT)+(1-alpha*TT.getPTy((numeroPT+1)%3));
-        
-    }
 
     public static Treillis treillisTest(){
         Treillis res = new Treillis();

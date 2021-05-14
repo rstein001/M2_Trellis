@@ -1,8 +1,6 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
 
-import static fr.insa.stein.cours_s2.trellis.model.Treillis.alphaToPx;
-import static fr.insa.stein.cours_s2.trellis.model.Treillis.alphaToPy;
 import javafx.scene.paint.Color;
 
 /*
@@ -63,5 +61,18 @@ public abstract class Appuis extends Noeud {
 
     public double getAlpha() {
         return alpha;
+    }
+    
+    public double getPx() {
+        return alpha;
+    }
+    
+    public static double alphaToPx(TriangleTerrain TT, int numeroPT, double alpha){
+        return alpha*TT.getPTx(numeroPT)+(1-alpha*TT.getPTx((numeroPT+1)%3));
+    }
+    
+    public static double alphaToPy(TriangleTerrain TT, int numeroPT, double alpha){
+        return alpha*TT.getPTy(numeroPT)+(1-alpha*TT.getPTy((numeroPT+1)%3));
+        
     }
 }
