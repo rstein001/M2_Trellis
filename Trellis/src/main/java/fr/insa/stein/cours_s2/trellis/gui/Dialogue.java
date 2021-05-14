@@ -26,7 +26,7 @@ import javafx.scene.layout.GridPane;
  */
 public class Dialogue {
 
-    public static void DialogTB(Treillis Trellis) {
+    public static List<String> DialogTB(Treillis Trellis) {
         // Create the custom dialog.
         Dialog<List<String>> dialogTB = new Dialog<>();
         dialogTB.setTitle("ajoutez un type de barre");
@@ -69,7 +69,7 @@ public class Dialogue {
         bValider.setDisable(true);
 
         // Do some validation (using the Java 8 lambda syntax).
-        tfCout.textProperty().addListener((observable, oldValue, newValue) -> {
+        tfRcomp.textProperty().addListener((observable, oldValue, newValue) -> {
             bValider.setDisable(newValue.trim().isEmpty());
         });
         
@@ -96,8 +96,9 @@ public class Dialogue {
         Optional<List<String>> result = dialogTB.showAndWait();
         
         if (result.isPresent()) {
-            System.out.println("Result: " + result.get());
+            return result.get();
         }
+        return null;
     }
     
 }

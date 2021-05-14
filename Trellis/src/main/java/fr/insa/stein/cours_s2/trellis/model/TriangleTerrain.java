@@ -73,14 +73,23 @@ public class TriangleTerrain {
         double[][] pt = new double[3][2];
         System.out.println("entrez les coordonées de PT0:");
         double[] p = Z.demandePoint();
+        if(p==null){
+            return null;
+        }
         pt[0][0]= p[0];
         pt[0][1]= p[1];
         System.out.println("entrez les coordonées de PT1:");
         p = Z.demandePoint();
+        if(p==null){
+            return null;
+        }
         pt[1][0]= p[0];
         pt[1][1]= p[1];
         System.out.println("entrez les coordonées de PT2:");
         p = Z.demandePoint();
+        if(p==null){
+            return null;
+        }
         pt[2][0]= p[0];
         pt[2][1]= p[1];
         return pt;
@@ -95,30 +104,12 @@ public class TriangleTerrain {
         }
         return Lire.i()-1;
     }
-    
-    /*
-    public int SegmentPlusProche(Point P, double dmax){
-        double d1= this.getContient().get(0).distancePoint(P);
-        double d2= this.getContient().get(1).distancePoint(P);
-        double d3= this.getContient().get(2).distancePoint(P);
-        if(d1<=d2 && d1<=d3 && d1<=dmax){
-            return 0;
-        }
-        if(d2<=d1 && d2<=d3 && d2<=dmax){
-            return 1;
-        }
-        if(d3<=d2 && d3<=d1 && d3<=dmax){
-            return 2;
-        }else{
-            throw new Error("Trop loin du terrain");
-        }
-    }
-    
+ /*   
     public double Angle(int i1, int i2, Point P){
         Point vec1 = this.getPT(i1).Vecteur(this.getPT(i2));
         Point vec2 = this.getPT(i1).Vecteur(P);
         double scalaire = vec1.Scalaire(vec2);
         return acos(scalaire/(vec1.Norme()*vec2.Norme()));
-    }
-*/
+    }*/
+
 }

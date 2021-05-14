@@ -12,12 +12,18 @@ package fr.insa.stein.cours_s2.trellis.model;
  */
 public class Force {
     
+    private int idN;
     private double Fx;
     private double Fy;
 
-    public Force(double Fx, double Fy) {
+    public Force(int idN, double Fx, double Fy) {
+        this.idN = idN;
         this.Fx = Fx;
         this.Fy = Fy;
+    }
+
+    public int getIdN() {
+        return idN;
     }
 
     public double getFx() {
