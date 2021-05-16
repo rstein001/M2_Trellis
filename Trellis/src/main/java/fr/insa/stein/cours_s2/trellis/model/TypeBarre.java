@@ -1,6 +1,5 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
-import recup.Lire;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

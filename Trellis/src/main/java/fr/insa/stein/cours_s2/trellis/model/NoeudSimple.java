@@ -38,7 +38,8 @@ public class NoeudSimple extends Noeud {
     
     @Override
     public String toString() {
-        return  "Noeud Simple {\n" + "id : "+getId()+" ; ("+ this.getPx() +","+ this.getPy() +")\n}";
+        return  "Noeud Simple {\n" + "id : "+getId()+" ; ("+ this.getPx() +","+ this.getPy() 
+                +") ; Fx : "+ this.getFx()+" ; Fy : "+ this.getFy()+"\n}";
     }
 
 }

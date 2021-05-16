@@ -2,7 +2,6 @@ package fr.insa.stein.cours_s2.trellis.model;
 
 
 import static fr.insa.stein.cours_s2.trellis.model.TriangleTerrain.demandePT;
-import static fr.insa.stein.cours_s2.trellis.model.TypeBarre.demandeTypeBarre;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.paint.Color;
@@ -29,13 +28,11 @@ public class Treillis {
     private List<TriangleTerrain> TT;
     private List<Barre> Barres;
     private List<TypeBarre> Catalogue;
-    private List<Force> Force;
     
     private Numeroteur<TriangleTerrain> numTT;
     private Numeroteur<Noeud> numN;
     private Numeroteur<Barre> numB;
     private Numeroteur<TypeBarre> numTB;
-    private Numeroteur<Force> numF;
     
     public Treillis(double Xmax, double Xmin, double Ymax, double Ymin) {
         this.Xmax = Xmax;
@@ -47,13 +44,11 @@ public class Treillis {
         this.TT = new ArrayList<>();
         this.Barres = new ArrayList<>();
         this.Catalogue = new ArrayList<>();
-        this.Force = new ArrayList<>();
         
         this.numTT = new Numeroteur<>();
         this.numN = new Numeroteur<>();
         this.numB = new Numeroteur<>();
         this.numTB = new Numeroteur<>();
-        this.numF = new Numeroteur<>();
     }
     
     public Treillis() {
@@ -122,14 +117,6 @@ public class Treillis {
 
     public Numeroteur<TypeBarre> getNumTB() {
         return numTB;
-    }
-
-    public List<Force> getForce() {
-        return Force;
-    }
-
-    public Numeroteur<Force> getNumF() {
-        return numF;
     }
     
     public static String indente(String toIndente, String prefix) {
@@ -289,23 +276,19 @@ public class Treillis {
         return alpha;
     }
     
-    public double[] demandeForce(){
+    public void demandeForce(){
         if(this.Noeuds.isEmpty()){
             System.out.println("créer d'abord un noeud");
-            return null;
         }
-        System.out.println("entrez Fx : ");
-        double fx = Lire.d();
-        System.out.println("entrez Fx : ");
-        double fy = Lire.d();
         System.out.println("choisissez le noeud");
         for (int i = 1; i <= this.Noeuds.size(); i++) {
             System.out.println(i + ") " + this.Noeuds.get(i-1).toString());
         }
-        int i = Lire.i();
-        double[] f = {i, fx, fy};
-        
-        return f;
+        Noeud N = this.numN.getObj(Lire.i());
+        System.out.println("entrez Fx : ");
+        N.setFx(Lire.d());
+        System.out.println("entrez Fy : ");
+        N.setFy(Lire.d());
     }
     
     public TypeBarre demandeTypeBarre(){
@@ -371,7 +354,7 @@ public class Treillis {
             System.out.println("8) ajouter une barre à partir de deux noeuds");
             System.out.println("9) ajouter une barre avec 1 nouveau noeud simple");
             System.out.println("10) ajouter une barre avec 2 nouveaux noeuds simples");
-            System.out.println("11) ajouter un type de barres");
+            System.out.println("11) ajouter une force");
             System.out.println("0) quitter");
             System.out.println("votre choix : ");
             rep = Lire.i();
@@ -556,12 +539,7 @@ public class Treillis {
                     break;
                     
                     case 11:
-                    double[] f = demandeForce();
-                    if(f==null){
-                        break;
-                    }
-                    this.Force.add(new Force(this.numF, (int)f[0], f[1], f[2]));
-                    this.Noeuds.get(this.Force.get(this.numF.getSize()-1).getIdN()-1).getForceN().add(this.numF.getSize()-1);
+                        demandeForce();
                     break;
                 default:
                     break;

@@ -24,7 +24,8 @@ public abstract class Noeud{
     private Color col;
     private int id;
     private List<Integer> barre;
-    private List<Integer> force;
+    private double fx;
+    private double fy;
 
     public Noeud(Numeroteur<Noeud> num, double x, double y, Color col) {
         this.px = x;
@@ -32,7 +33,8 @@ public abstract class Noeud{
         this.col = col;
         this.id = num.creeID(this);
         this.barre = new ArrayList();
-        this.force = new ArrayList();
+        this.fx = 0;
+        this.fy = 0;
     }
     
     public Noeud(Numeroteur<Noeud> num, double x, double y) {
@@ -87,8 +89,22 @@ public abstract class Noeud{
         return barre;
     }
 
-    public List<Integer> getForceN() {
-        return force;
+    public double getFx() {
+        return fx;
     }
+
+    public void setFx(double fx) {
+        this.fx = fx;
+    }
+
+    public double getFy() {
+        return fy;
+    }
+
+    public void setFy(double fy) {
+        this.fy = fy;
+    }
+    
+    
     
 }

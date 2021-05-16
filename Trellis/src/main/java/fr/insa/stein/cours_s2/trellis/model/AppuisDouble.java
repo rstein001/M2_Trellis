@@ -41,8 +41,8 @@ public class AppuisDouble extends Appuis {
     
     @Override
     public String toString() {
-        return  "Appui Double {\n" + "id : "+getId()+" ; "+ "idTriangle : "+getIdTriangle()+" ; " +
-                "Point TT : "+getNumeroPT()+" ; " + "alpha : "+getAlpha() + "\n}";
+        return  "Appui Double {\n" + "id : "+getId()+" ; idTriangle : "+getIdTriangle()+
+                " ; Point TT : "+getNumeroPT()+" ; alpha : "+getAlpha() +" ; Fx : "+ this.getFx()+" ; Fy : "+ this.getFy()+ "\n}";
     }
     
 }
