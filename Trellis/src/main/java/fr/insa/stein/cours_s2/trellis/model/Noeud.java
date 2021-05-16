@@ -1,6 +1,8 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.paint.Color;
 
 /*
@@ -21,12 +23,16 @@ public abstract class Noeud{
     private double py;
     private Color col;
     private int id;
+    private List<Integer> barre;
+    private List<Integer> force;
 
     public Noeud(Numeroteur<Noeud> num, double x, double y, Color col) {
         this.px = x;
         this.py = y;
         this.col = col;
         this.id = num.creeID(this);
+        this.barre = new ArrayList();
+        this.force = new ArrayList();
     }
     
     public Noeud(Numeroteur<Noeud> num, double x, double y) {
@@ -75,5 +81,14 @@ public abstract class Noeud{
     
     public int getId() {
         return id;
-    }   
+    }
+
+    public List<Integer> getBarreN() {
+        return barre;
+    }
+
+    public List<Integer> getForceN() {
+        return force;
+    }
+    
 }

@@ -29,11 +29,13 @@ public class Treillis {
     private List<TriangleTerrain> TT;
     private List<Barre> Barres;
     private List<TypeBarre> Catalogue;
+    private List<Force> Force;
     
     private Numeroteur<TriangleTerrain> numTT;
     private Numeroteur<Noeud> numN;
     private Numeroteur<Barre> numB;
     private Numeroteur<TypeBarre> numTB;
+    private Numeroteur<Force> numF;
     
     public Treillis(double Xmax, double Xmin, double Ymax, double Ymin) {
         this.Xmax = Xmax;
@@ -45,11 +47,13 @@ public class Treillis {
         this.TT = new ArrayList<>();
         this.Barres = new ArrayList<>();
         this.Catalogue = new ArrayList<>();
+        this.Force = new ArrayList<>();
         
         this.numTT = new Numeroteur<>();
         this.numN = new Numeroteur<>();
         this.numB = new Numeroteur<>();
         this.numTB = new Numeroteur<>();
+        this.numF = new Numeroteur<>();
     }
     
     public Treillis() {
@@ -119,6 +123,14 @@ public class Treillis {
     public Numeroteur<TypeBarre> getNumTB() {
         return numTB;
     }
+
+    public List<Force> getForce() {
+        return Force;
+    }
+
+    public Numeroteur<Force> getNumF() {
+        return numF;
+    }
     
     public static String indente(String toIndente, String prefix) {
         return prefix + toIndente.replaceAll("\n", "\n" + prefix);
@@ -141,29 +153,6 @@ public class Treillis {
             res = res + indente(this.numB.getObj(i).toString(), "  ") + "\n";
         }
         return res + "}";
-    }    
-    /*
-    public boolean dansLeTerrain(double x, double y){
-        for (int i = 0; i < this.TT.size(); i++) {
-            double angle1 = this.TT.get(i).Angle(0, 1, x, y);
-            double angle2 = this.TT.get(i).Angle(1, 2, x, y);
-            double angle3 = this.TT.get(i).Angle(2, 0, x, y);
-            if((angle1<=0 && angle2<=0 && angle3<=0)||(angle1>=0 && angle2>=0 && angle3>=0)){
-                return true;        
-            }
-        }
-        return false;
-    }*/
-    
-    public static Treillis treillisTest(){
-        Treillis res = new Treillis();
-        double [][] PT1 ={{100,50},{50,100},{50,50}};
-        TriangleTerrain TT1= new TriangleTerrain(res.numTT, PT1, Color.GREEN);
-        res.TT.add(TT1);
-        double [][] PT2 ={{10,20},{10,10},{20,10}};
-        TriangleTerrain TT2= new TriangleTerrain(res.numTT, PT2, Color.GREEN);
-        res.TT.add(TT2);
-        return res;
     }
     
     public boolean pointDansLaZone(double x, double y){
@@ -172,6 +161,37 @@ public class Treillis {
         }else{
             return true;
         }
+    }
+
+    public static double angleHoriz(double x1, double y1, double x2, double y2){
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        return Math.atan2(dy, dx);
+    }
+    
+    public static double angle3pt(double x1, double y1, double x2, double y2, double x3, double y3){
+        double ang1 = angleHoriz(x1, y1, x3, y3);
+        double ang2 = angleHoriz(x1, y1, x2, y2);        
+        double angDel= ang1-ang2;
+        if (angDel <= -Math.PI){
+            return angDel + 2*Math.PI;
+        }    
+        if (angDel > Math.PI){
+            return angDel - 2*Math.PI;
+        }    
+	return angDel;
+    }
+    
+    public boolean dansLeTerrain(double x, double y){
+        for (int i = 0; i < this.TT.size(); i++) {
+            double angle1 = this.TT.get(i).angleAvecPoint(0, 1, x, y);
+            double angle2 = this.TT.get(i).angleAvecPoint(1, 2, x, y);
+            double angle3 = this.TT.get(i).angleAvecPoint(2, 0, x, y);
+            if((angle1<=0 && angle2<=0 && angle3<=0)||(angle1>=0 && angle2>=0 && angle3>=0)){
+                return true;        
+            }
+        }
+        return false;
     }
     
     public static double distanceAvecPoint(double x, double y, double x1, double y1){
@@ -186,6 +206,34 @@ public class Treillis {
         double x1 = this.Noeuds.get(id2-1).getPx();
         double y1 = this.Noeuds.get(id2-1).getPy();
         return distanceAvecPoint(x,y,x1,y1);
+    }
+    
+    public int nbrAppuisSimple(){
+        int n=0;
+        for (int i = 1; i <= this.Noeuds.size(); i++) {
+            if(this.Noeuds.get(i) instanceof AppuisSimple){
+                n=n+1;
+            }
+        }
+        return n;
+    }
+    
+    public int nbrAppuisDouble(){
+        int n=0;
+        for (int i = 1; i <= this.Noeuds.size(); i++) {
+            if(this.Noeuds.get(i) instanceof AppuisDouble){
+                n=n+1;
+            }
+        }
+        return n;
+    }
+    
+    public boolean estIsostat(){
+        if(2*this.Noeuds.size()==this.Barres.size()+this.nbrAppuisSimple()+2*this.nbrAppuisDouble()){
+            return true;
+        }else{
+            return false;
+        }
     }
     
     public void demandeZone(){
@@ -206,6 +254,10 @@ public class Treillis {
         double y= Lire.d();
         if(this.pointDansLaZone(x, y)==false){
             System.out.println("pas dans la zone constructible");
+            return null;
+        }
+        if(this.dansLeTerrain(x, y)==true){
+            System.out.println("dans un triangle terrain");
             return null;
         }
         double[] p = {x, y};
@@ -229,12 +281,45 @@ public class Treillis {
     
     public static double demandeAlpha(){
         System.out.println("entrez alpha : ");
-            double alpha = Lire.d();
+        double alpha = Lire.d();
             if(alpha<0 &&alpha>1){
                 System.out.println("alpha doit être compris entre 0 et 1");
                 return -1;
             }
         return alpha;
+    }
+    
+    public double[] demandeForce(){
+        if(this.Noeuds.isEmpty()){
+            System.out.println("créer d'abord un noeud");
+            return null;
+        }
+        System.out.println("entrez Fx : ");
+        double fx = Lire.d();
+        System.out.println("entrez Fx : ");
+        double fy = Lire.d();
+        System.out.println("choisissez le noeud");
+        for (int i = 1; i <= this.Noeuds.size(); i++) {
+            System.out.println(i + ") " + this.Noeuds.get(i-1).toString());
+        }
+        int i = Lire.i();
+        double[] f = {i, fx, fy};
+        
+        return f;
+    }
+    
+    public TypeBarre demandeTypeBarre(){
+        System.out.println("entrez le cout/m");
+        double cout = Lire.d();
+        System.out.println("entrez la longueur minimale");
+        double Lmin = Lire.d();
+        System.out.println("entrez la longueur maximale");
+        double Lmax = Lire.d();
+        System.out.println("entrez la résistance maximale à la traction");
+        double Rtract = Lire.d();
+        System.out.println("entrez la résistance maximale à la compression");
+        double Rcomp = Lire.d();
+        return new TypeBarre(this.numTB, cout, Lmin, Lmax, Rtract, Rcomp);
     }
     
     public TriangleTerrain choisiTT(){
@@ -284,8 +369,9 @@ public class Treillis {
             System.out.println("6) ajouter un noeud simple");
             System.out.println("7) ajouter un type de barres");
             System.out.println("8) ajouter une barre à partir de deux noeuds");
-            System.out.println("9) ajouter une barre à partir d'un noeud");
-            System.out.println("10) ajouter une barre avec 2 nouveaux noeuds");
+            System.out.println("9) ajouter une barre avec 1 nouveau noeud simple");
+            System.out.println("10) ajouter une barre avec 2 nouveaux noeuds simples");
+            System.out.println("11) ajouter un type de barres");
             System.out.println("0) quitter");
             System.out.println("votre choix : ");
             rep = Lire.i();
@@ -367,7 +453,7 @@ public class Treillis {
                     
                     
                 case 7:
-                    this.Catalogue.add(demandeTypeBarre(this));   
+                    this.Catalogue.add(demandeTypeBarre());   
                     break;
                     
                     
@@ -399,6 +485,8 @@ public class Treillis {
                         break;
                     }
                     this.Barres.add(new Barre(this.numB, Type, idN1, idN2));
+                    this.Noeuds.get(this.Barres.get(this.numTB.getSize()-1).getIdNoeud1()-1).getBarreN().add(this.numTB.getSize()-1);
+                    this.Noeuds.get(this.Barres.get(this.numTB.getSize()-1).getIdNoeud2()-1).getBarreN().add(this.numTB.getSize()-1);
                     break;
                     
                     
@@ -430,6 +518,8 @@ public class Treillis {
                         break;
                     }
                     this.Barres.add(new Barre(this.numB, Type, idN1, this.numN.getSize()));
+                    this.Noeuds.get(this.Barres.get(this.numTB.getSize()-1).getIdNoeud1()-1).getBarreN().add(this.numTB.getSize()-1);
+                    this.Noeuds.get(this.Barres.get(this.numTB.getSize()-1).getIdNoeud2()-1).getBarreN().add(this.numTB.getSize()-1);
                     break;
                     
                     case 10:
@@ -461,13 +551,34 @@ public class Treillis {
                         break;
                     }
                     this.Barres.add(new Barre(this.numB, Type, this.numN.getSize()-1, this.numN.getSize()));
+                    this.Noeuds.get(this.Barres.get(this.numTB.getSize()-1).getIdNoeud1()-1).getBarreN().add(this.numTB.getSize()-1);
+                    this.Noeuds.get(this.Barres.get(this.numTB.getSize()-1).getIdNoeud2()-1).getBarreN().add(this.numTB.getSize()-1);
+                    break;
+                    
+                    case 11:
+                    double[] f = demandeForce();
+                    if(f==null){
+                        break;
+                    }
+                    this.Force.add(new Force(this.numF, (int)f[0], f[1], f[2]));
+                    this.Noeuds.get(this.Force.get(this.numF.getSize()-1).getIdN()-1).getForceN().add(this.numF.getSize()-1);
                     break;
                 default:
                     break;
             }
         }
     }
-
+    
+    public static Treillis treillisTest(){
+        Treillis res = new Treillis();
+        double [][] PT2 ={{10,20},{10,10},{20,10}};
+        TriangleTerrain TT1= new TriangleTerrain(res.numTT, PT2, Color.GREEN);
+        NoeudSimple N =new NoeudSimple(res.numN, 5, 5);
+        res.TT.add(TT1);
+        res.Noeuds.add(N);
+        return res;
+    }
+    
     public static void testMenu(){
         Treillis Zone = treillisTest();
         Zone.menuTexte();

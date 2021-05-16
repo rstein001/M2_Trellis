@@ -1,7 +1,7 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
 
-import static java.lang.Math.acos;
+import static fr.insa.stein.cours_s2.trellis.model.Treillis.angle3pt;
 import javafx.scene.paint.Color;
 import recup.Lire;
 
@@ -104,12 +104,9 @@ public class TriangleTerrain {
         }
         return Lire.i()-1;
     }
- /*   
-    public double Angle(int i1, int i2, Point P){
-        Point vec1 = this.getPT(i1).Vecteur(this.getPT(i2));
-        Point vec2 = this.getPT(i1).Vecteur(P);
-        double scalaire = vec1.Scalaire(vec2);
-        return acos(scalaire/(vec1.Norme()*vec2.Norme()));
-    }*/
+   
+    public double angleAvecPoint(int i1, int i2, double x, double y){
+        return angle3pt(this.getPTx(i1),this.getPTy(i1), this.getPTx(i2),this.getPTy(i2), x, y);
+    }
 
 }

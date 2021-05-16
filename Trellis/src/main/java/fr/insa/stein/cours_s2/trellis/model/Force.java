@@ -12,14 +12,21 @@ package fr.insa.stein.cours_s2.trellis.model;
  */
 public class Force {
     
+    
+    private int id;
     private int idN;
     private double Fx;
     private double Fy;
 
-    public Force(int idN, double Fx, double Fy) {
+    public Force(Numeroteur<Force> num, int idN, double Fx, double Fy) {
+        this.id = num.creeID(this);
         this.idN = idN;
         this.Fx = Fx;
         this.Fy = Fy;
+    }
+    
+    public Force(Numeroteur<Force> num, int idN, double[] F) {
+        this(num, idN, F[0],F[0]);
     }
 
     public int getIdN() {
