@@ -68,11 +68,11 @@ public abstract class Appuis extends Noeud {
     }
     
     public static double alphaToPx(TriangleTerrain TT, int numeroPT, double alpha){
-        return alpha*TT.getPTx(numeroPT)+(1-alpha*TT.getPTx((numeroPT+1)%3));
+        return alpha*TT.getPTx(numeroPT)+(1-alpha)*TT.getPTx((numeroPT+1)%3);
     }
     
     public static double alphaToPy(TriangleTerrain TT, int numeroPT, double alpha){
-        return alpha*TT.getPTy(numeroPT)+(1-alpha*TT.getPTy((numeroPT+1)%3));
+        return alpha*TT.getPTy(numeroPT)+(1-alpha)*TT.getPTy((numeroPT+1)%3);
         
     }
 }

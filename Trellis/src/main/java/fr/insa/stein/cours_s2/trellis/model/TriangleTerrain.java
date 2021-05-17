@@ -71,27 +71,22 @@ public class TriangleTerrain {
     
     public static double[][] demandePT(Treillis Z){
         double[][] pt = new double[3][2];
+        
         System.out.println("entrez les coordonées de PT0:");
-        double[] p = Z.demandePoint();
-        if(p==null){
-            return null;
-        }
-        pt[0][0]= p[0];
-        pt[0][1]= p[1];
+        System.out.println("abscisse : ");
+        pt[0][0]= Lire.d();
+        System.out.println("ordonnée : ");
+        pt[0][1]= Lire.d();
         System.out.println("entrez les coordonées de PT1:");
-        p = Z.demandePoint();
-        if(p==null){
-            return null;
-        }
-        pt[1][0]= p[0];
-        pt[1][1]= p[1];
+        System.out.println("abscisse : ");
+        pt[1][0]= Lire.d();
+        System.out.println("ordonnée : ");
+        pt[1][1]= Lire.d();
         System.out.println("entrez les coordonées de PT2:");
-        p = Z.demandePoint();
-        if(p==null){
-            return null;
-        }
-        pt[2][0]= p[0];
-        pt[2][1]= p[1];
+        System.out.println("abscisse : ");
+        pt[2][0]= Lire.d();
+        System.out.println("ordonnée : ");
+        pt[2][1]= Lire.d();
         return pt;
     }
     

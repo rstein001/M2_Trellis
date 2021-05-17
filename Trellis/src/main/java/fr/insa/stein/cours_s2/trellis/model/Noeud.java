@@ -104,7 +104,4 @@ public abstract class Noeud{
     public void setFy(double fy) {
         this.fy = fy;
     }
-    
-    
-    
 }

@@ -1,6 +1,7 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
 
+import static fr.insa.stein.cours_s2.trellis.model.Treillis.angleHoriz;
 import javafx.scene.paint.Color;
 import recup.Lire;
 
@@ -40,6 +41,10 @@ public class NoeudSimple extends Noeud {
     public String toString() {
         return  "Noeud Simple {\n" + "id : "+getId()+" ; ("+ this.getPx() +","+ this.getPy() 
                 +") ; Fx : "+ this.getFx()+" ; Fy : "+ this.getFy()+"\n}";
+    }
+    
+    public double angleBarre(Numeroteur<Noeud> num, int idN2){
+        return angleHoriz(this.getPx(), this.getPy(), num.getObj(idN2).getPx(), num.getObj(idN2).getPy());
     }
 
 }
