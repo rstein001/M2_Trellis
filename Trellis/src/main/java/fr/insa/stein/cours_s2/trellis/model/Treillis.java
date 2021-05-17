@@ -332,7 +332,6 @@ public class Treillis {
                         }
                     
                     double angle = ((AppuisSimple) Ncur).angleTT(numTT);
-                    System.out.println(angle);
                     matA.set(cur, nb+2*nad+compteurAS-1, Math.cos(angle));
                     matA.set(cur+1, nb+2*nad+compteurAS-1, Math.sin(angle));
                     matI [nb+2*compteurAD+compteurAS-1]=("R"+String.valueOf(idNcur));  
@@ -341,16 +340,23 @@ public class Treillis {
             }
             cur=cur+2;
         }
-        System.out.println(matF);
-        System.out.println(matA);
+        
         Matrice matR = matA.inverse().mult(matF);
         for (int i = 0; i < 2*ns; i++) {
              System.out.println(matI[i]+" = "+matR.get(i, 0));
         }
+        for (int i = 0; i < nb; i++) {
+            double contrainte =matR.get(i, 0);
+             if(contrainte>=0){
+                 double Rt=this.Catalogue.get(this.Barres.get(i).getIdType()-1).getRtrac();
+                 System.out.println("La barre "+(i+1)+" est en traction : "+contrainte*100/Rt+"% de sa résistance max");
+             }else{
+                 double Rc=this.Catalogue.get(this.Barres.get(i).getIdType()-1).getRcomp();
+                 System.out.println("La barre "+(i+1)+" est en compression : "+Math.abs(contrainte)*100/Rc+"% de sa résistance max");
+             }
+        }
         }
     }
-    
-    
     
     public void demandeZone(){
         System.out.println("entrez Xmin");
@@ -484,6 +490,7 @@ public class Treillis {
             System.out.println("9) ajouter une barre avec 1 nouveau noeud simple");
             System.out.println("10) ajouter une barre avec 2 nouveaux noeuds simples");
             System.out.println("11) ajouter une force");
+            System.out.println("12) afficher les résultats");
             System.out.println("0) quitter");
             System.out.println("votre choix : ");
             rep = Lire.i();
@@ -670,6 +677,10 @@ public class Treillis {
                     case 11:
                         demandeForce();
                     break;
+                    
+                    case 12:
+                        this.calculs();
+                    break;
                 default:
                     break;
             }
@@ -693,8 +704,6 @@ public class Treillis {
     
     public static void testMenu(){
         Treillis Zone = treillisTest();
-        Zone.calculs();
-        
         Zone.menuTexte();
     }
     
