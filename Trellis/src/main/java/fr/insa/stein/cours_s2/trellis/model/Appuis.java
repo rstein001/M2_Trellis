@@ -1,6 +1,7 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
 
+import static fr.insa.stein.cours_s2.trellis.model.Treillis.angleHoriz;
 import javafx.scene.paint.Color;
 
 /*
@@ -33,10 +34,12 @@ public abstract class Appuis extends Noeud {
     }
     
     public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, double x, double y, Color col) {
-        this(num, TT, numeroPT, 0, col);
+        super(num, col);
+        idTriangle = TT.getId();
+        this.numeroPT = numeroPT;
         this.setPx(x);
         this.setPy(y);
-        this.alpha= (this.getPx()- TT.getPTx((numeroPT+1)%3))/(TT.getPTx(numeroPT)- TT.getPTx((numeroPT+1)%3));
+        this.alpha= 0;
     }
     
     public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, double x, double y) {

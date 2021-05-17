@@ -236,14 +236,23 @@ public class Treillis {
         int compteurAS=0;
         
         Matrice matA = new Matrice(2*ns, 2*ns);
-        Matrice matR = new Matrice(2*ns, 1);
+        String[] matI = new String[2*ns];
+        Matrice matF = new Matrice(2*ns, 1);
+        
+        if (!this.estIsostat()){
+            System.out.println("le treillis est hyperstatique");
+        }else{
+            
+        for(int i=0; i<nb; i++){
+            matI[i]=('T'+String.valueOf(i+1));
+        }
         
         for(int i=0; i<ns; i++){
             Noeud Ncur = this.Noeuds.get(i);
             int idNcur = Ncur.getId();
             
-            matR.set(cur, 0, -Ncur.getFx());
-            matR.set(cur+1, 0, -Ncur.getFy());
+            matF.set(cur, 0, -Ncur.getFx());
+            matF.set(cur+1, 0, -Ncur.getFy());
             
             if(Ncur instanceof NoeudSimple){
                 
@@ -255,14 +264,12 @@ public class Treillis {
                     
                     if(idNcur==idN1Bcur){
                         double angle = ((NoeudSimple) Ncur).angleBarre(numN, idN2Bcur);
-                        System.out.println(angle);
-                        matA.set(cur, idBcur, Math.cos(angle));
-                        matA.set(cur+1, idBcur, Math.sin(angle));
+                        matA.set(cur, idBcur-1, Math.cos(angle));
+                        matA.set(cur+1, idBcur-1, Math.sin(angle));
                         
                     }else{
                         if(idNcur==idN2Bcur){
-                            double angle = ((NoeudSimple) Ncur).angleBarre(numN, idN1Bcur);
-                            System.out.println(angle);
+                            double angle = Ncur.angleBarre(numN, idN1Bcur);
                             matA.set(cur, idBcur-1, Math.cos(angle));
                             matA.set(cur+1, idBcur-1, Math.sin(angle));
                         } 
@@ -281,21 +288,23 @@ public class Treillis {
                     int idN2Bcur = Bcur.getIdNoeud2();
                     
                     if(idNcur==idN1Bcur){
-                        //double angle = Ncur.angleBarre(numN, idN2Bcur);
-                        //matA.set(cur, idBcur, Math.cos(angle));
-                        //matA.set(cur+1, idBcur, Math.sin(angle));
+                        double angle = Ncur.angleBarre(numN, idN2Bcur);
+                        matA.set(cur, idBcur-1, Math.cos(angle));
+                        matA.set(cur+1, idBcur-1, Math.sin(angle));
                         
                     }else{
                         if(idNcur==idN2Bcur){
-                            //double angle = Ncur.angleBarre(numN, idN1Bcur);
-                            //matA.set(cur, idBcur-1, Math.cos(angle));
-                            //.set(cur+1, idBcur-1, Math.sin(angle));
+                            double angle = Ncur.angleBarre(numN, idN1Bcur);
+                            matA.set(cur, idBcur-1, Math.cos(angle));
+                            matA.set(cur+1, idBcur-1, Math.sin(angle));
                         } 
                     }
                 }
                     
-                matA.set(cur, nb+compteurAD-1, 1);
-                matA.set(cur+1, nb+compteurAD, 1);
+                matA.set(cur, nb+2*(compteurAD-1), 1);
+                matA.set(cur+1, nb+2*compteurAD-1, 1);
+                matI [nb+2*(compteurAD-1)]=("Rx"+String.valueOf(idNcur));
+                matI [nb+2*compteurAD-1]=("Ry"+String.valueOf(idNcur));
                     
                 }else{   
                     if(Ncur instanceof AppuisSimple){
@@ -309,30 +318,39 @@ public class Treillis {
                             int idN2Bcur = Bcur.getIdNoeud2();
                     
                             if(idNcur==idN1Bcur){
-                                //double angle = Ncur.angleBarre(numN, idN2Bcur);
-                                //matA.set(cur, idBcur, Math.cos(angle));
-                                //matA.set(cur+1, idBcur, Math.sin(angle));
+                                double angle = Ncur.angleBarre(numN, idN2Bcur);
+                                matA.set(cur, idBcur-1, Math.cos(angle));
+                                matA.set(cur+1, idBcur-1, Math.sin(angle));
                         
                             }else{
                                 if(idNcur==idN2Bcur){
-                                    //double angle = Ncur.angleBarre(numN, idN1Bcur);
-                                    //matA.set(cur, idBcur-1, Math.cos(angle));
-                                    //.set(cur+1, idBcur-1, Math.sin(angle));
+                                    double angle = Ncur.angleBarre(numN, idN1Bcur);
+                                    matA.set(cur, idBcur-1, Math.cos(angle));
+                                    matA.set(cur+1, idBcur-1, Math.sin(angle));
                                 } 
                             }
                         }
                     
-                    matA.set(cur, nb+2*nad+compteurAS-1, 1);
-                    matA.set(cur+1, nb+2*nad+compteurAS-1, 1);
-                        
+                    double angle = ((AppuisSimple) Ncur).angleTT(numTT);
+                    System.out.println(angle);
+                    matA.set(cur, nb+2*nad+compteurAS-1, Math.cos(angle));
+                    matA.set(cur+1, nb+2*nad+compteurAS-1, Math.sin(angle));
+                    matI [nb+2*compteurAD+compteurAS-1]=("R"+String.valueOf(idNcur));  
                     }
                 }
             }
             cur=cur+2;
         }
-        System.out.println(matR);
+        System.out.println(matF);
         System.out.println(matA);
+        Matrice matR = matA.inverse().mult(matF);
+        for (int i = 0; i < 2*ns; i++) {
+             System.out.println(matI[i]+" = "+matR.get(i, 0));
+        }
+        }
     }
+    
+    
     
     public void demandeZone(){
         System.out.println("entrez Xmin");
@@ -660,11 +678,11 @@ public class Treillis {
     
     public static Treillis treillisTest(){
         Treillis res = new Treillis();
-        double [][] PT1 ={{0,0},{0,2},{-3,1}};
-        res.TT.add(new TriangleTerrain(res.numTT, PT1, Color.GREEN));
+        double [][] PT ={{0,-2},{0,4},{-3,4}};
+        res.TT.add(new TriangleTerrain(res.numTT, PT, Color.GREEN));
         res.Catalogue.add(new TypeBarre(res.numTB, 100,1,5,1000,2000));
-        res.Noeuds.add(new AppuisDouble(res.numN,res.numTT.getObj(1),0,1));
-        res.Noeuds.add(new AppuisSimple(res.numN,res.numTT.getObj(1),0,0));
+        res.Noeuds.add(new AppuisDouble(res.numN,res.numTT.getObj(1), 0, 0, 2));
+        res.Noeuds.add(new AppuisSimple(res.numN,res.numTT.getObj(1), 0, 0, 0));
         res.Noeuds.add(new NoeudSimple(res.numN, 1, 1));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),1,3));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),2,3));

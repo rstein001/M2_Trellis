@@ -1,6 +1,7 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
 
+import static fr.insa.stein.cours_s2.trellis.model.Treillis.angleHoriz;
 import javafx.scene.paint.Color;
 
 /*
@@ -42,6 +43,13 @@ public class AppuisSimple extends Appuis {
     @Override
     public String toString() {
         return  "Appui Simple {\n" + "id : "+getId()+" ; idTriangle : "+getIdTriangle()+
-                " ; Point TT : "+getNumeroPT()+" ; alpha : "+getAlpha() +" ; Fx : "+ this.getFx()+" ; Fy : "+ this.getFy() + this.getPx()+ this.getPy()+ "\n}";
+                " ; Point TT : "+getNumeroPT()+" ; alpha : "+getAlpha() +" ; Fx : "+ this.getFx()+" ; Fy : "+ this.getFy() + "\n}";
+    }
+    
+    public double angleTT(Numeroteur<TriangleTerrain> numTT){
+        int idTT = this.getIdTriangle();
+        int idPT =this.getNumeroPT();
+        return angleHoriz(numTT.getObj(idTT).getPTx(idPT), numTT.getObj(idTT).getPTy(idPT),
+                numTT.getObj(idTT).getPTx((idPT+1)%3),numTT.getObj(idTT).getPTy((idPT+1)%3))+Math.PI/2;
     }
 }

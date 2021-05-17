@@ -528,70 +528,6 @@ public class Matrice {
                 this.transvection(e, lig);
             }
         }
-    }    public static class ResSysLin {
-
-        /**
-         * vrai ssi le système admet une solution unique
-         */
-        private boolean solUnique;
-        /**
-         * solution du système linéaire. contient null si {@link #solUnique} est
-         * false sinon, contient le vecteur solution sous la forme d'une Matrice
-         * d'une seule colonne.
-         */
-        private Matrice sol;
-
-        private ResSysLin() {
-            this.solUnique = false;
-        }
-
-        private ResSysLin(Matrice sol) {
-            this.solUnique = true;
-            this.sol = sol;
-        }
-
-        public static ResSysLin pasDeSolUnique() {
-            return new ResSysLin();
-        }
-
-        public static ResSysLin sol(Matrice sol) {
-            return new ResSysLin(sol);
-        }
-
-        public String toString() {
-            if (this.solUnique) {
-                return this.sol.toString();
-            } else {
-                return "{pas de sol unique}";
-            }
-        }
-
-    }
-
-    public Matrice getColonne(int col) {
-        Matrice res = new Matrice(this.getNbrLig(), 1);
-        for (int lig = 0; lig < this.getNbrLig(); lig++) {
-            res.set(lig, 0, this.get(lig, col));
-        }
-        return res;
-    }
-
-    public ResSysLin resoudSysLin(Matrice secondMembre) {
-        if (this.getNbrLig() != this.getNbrCol()) {
-            throw new Error("La matrice n'est pas carrée");
-        }
-        if (secondMembre.getNbrCol() != 1) {
-            throw new Error("Le second membre n'est pas un vecteur");
-        }
-        Matrice toGauss = this.concatCol(secondMembre);
-        ResGauss res = toGauss.descenteGauss();
-        if (res.rang == this.getNbrLig()) {
-            toGauss.pivotsUnitaires(res.rang);
-            toGauss.remonteeGauss(res.rang);
-            return ResSysLin.sol(toGauss.getColonne(res.rang));
-        } else {
-            return ResSysLin.pasDeSolUnique();
-        }
     }
 
     /**
@@ -600,7 +536,7 @@ public class Matrice {
      * @return un Optional contenant la matrice inverse si this est inversible,
      * null sinon.
      */
-    public Optional<Matrice> inverse() {
+    public Matrice inverse() {
         if (this.getNbrLig() != this.getNbrCol()) {
             throw new Error("inverse seulement pour les matrices carrées");
         }
@@ -610,133 +546,9 @@ public class Matrice {
             toGauss.pivotsUnitaires(triSup.rang);
             toGauss.remonteeGauss(triSup.rang);
             Matrice inverse = toGauss.subCols(this.getNbrCol(), 2 * this.getNbrCol() - 1);
-            return Optional.of(inverse);
+            return inverse;
         } else {
-            return Optional.ofNullable(null);
+            return null;
         }
     }
-
-    // quelque petites méthodes utilitaires pour tester que le calcul
-    // de l'inverse (et donc de la descente et de la remontée) est correct
-    // en particulier, à cause des erreur d'arrondi, on a besoin de tester
-    // non pas l'égalité exacte, mais l'égalité approchée de deux matrice
-    // on utilisera la norme la plus simple : le max des coeffs (en val absolue)
-    /**
-     * calcule la norme sup, aussi appelée norme "infinie".
-     * {@code ||M|| = sup(i in 0..nbrLig-1 ; j in 0..nbrCol-1 ; | M_i,j |}
-     *
-     * @return
-     */
-    public double normeSup() {
-        double max = 0;
-        for (int lig = 0; lig < this.getNbrLig(); lig++) {
-            for (int col = 0; col < this.getNbrCol(); col++) {
-                double cur = Math.abs(this.get(lig, col));
-                if (cur > max) {
-                    max = cur;
-                }
-            }
-        }
-        return max;
-    }
-
-    /**
-     * distance entre deux matrice basée sur la norme sup : {@link #normeSup()
-     * }.
-     *
-     * @param m2
-     * @return distance(this,m2) suivant la norme {@link #normeSup() }
-     */
-    public double distSup(Matrice m2) {
-        return this.moins(m2).normeSup();
-    }
-
-    public static void testTraceInverse() {
-        Matrice m = Matrice.matTest2();
-        System.out.println("M : \n" + m);
-        Matrice toGauss = m.concatCol(Matrice.identite(m.getNbrLig()));
-        System.out.println("toGauss : \n" + toGauss);
-        ResGauss triSup = toGauss.descenteGauss();
-        System.out.println("après descente : \n" + toGauss);
-        System.out.println("res = " + triSup);
-        if (triSup.rang == m.getNbrLig()) {
-            toGauss.pivotsUnitaires(triSup.rang);
-            System.out.println("après pivots unitaires : \n" + toGauss);
-            toGauss.remonteeGauss(triSup.rang);
-            System.out.println("après remontée : \n" + toGauss);
-            Matrice inverse = toGauss.subCols(m.getNbrCol(), 2 * m.getNbrCol() - 1);
-            System.out.println("inverse : \n" + inverse);
-            Matrice idCalc = m.mult(inverse);
-            System.out.println("M . M-1 : \n" + idCalc);
-            System.out.println("dist(M . M-1 , Id) = "
-                    + idCalc.distSup(Matrice.identite(m.getNbrLig())));
-        } else {
-            System.out.println("non inversible");
-        }
-
-    }
-
-    /**
-     * test le calcul d'inverse nbrTest fois sur des matrice alea 0-1-2 de
-     * taille taille avec une proportion de 0 de 0.33 taille. affiche une erreur
-     * si printErreurs est vrai, et M est inversible, et distSup(M.M-1,Id) >
-     * epsilonDistAcceptable
-     *
-     * @param nbrTest
-     * @param taille
-     * @param epsilonDistAcceptable
-     */
-    public static void testInverse(int nbrTest, int taille, double epsilonDistAcceptable,
-            boolean printErreurs) {
-        System.out.println("test distance(M . M-1,Identite) < epsilon");
-        System.out.println("nbr Tests : " + nbrTest);
-        System.out.println("taille des matrices : " + taille);
-        System.out.println("Matrices contenant 0,1, ou 2 avec probas ~ 1/3;1/3;1/3");
-        System.out.println("epsilon : " + epsilonDistAcceptable);
-        int nbrNonInversible = 0;
-        int nbrErreur = 0;
-        for (int i = 0; i < nbrTest; i++) {
-            Matrice m = Matrice.matAleaZeroUnDeux(taille, taille, 0.33);
-            Matrice id = Matrice.identite(taille);
-            Matrice mc = m.copie().concatCol(id);
-            ResGauss rg = mc.descenteGauss();
-            if (rg.rang != taille) {
-                nbrNonInversible++;
-            } else {
-                mc.pivotsUnitaires(taille);
-                mc.remonteeGauss(taille);
-                Matrice inverse = mc.subCols(taille, 2 * taille - 1);
-                Matrice idCalc = m.mult(inverse);
-                double dist = id.distSup(idCalc);
-                if (dist > epsilonDistAcceptable) {
-                    nbrErreur++;
-                    if (printErreurs) {
-                        System.out.println("--------- problème ------------");
-                        System.out.println("M =");
-                        System.out.println(m);
-                        System.out.println("M-1 = ");
-                        System.out.println(inverse);
-                        System.out.println("M . M-1 =");
-                        System.out.println(idCalc);
-                        System.out.println("distance sup = " + dist);
-                    }
-                }
-            }
-        }
-        System.out.println("non inversible : " + nbrNonInversible + "/" + nbrTest
-                + " ~ " + (nbrNonInversible * 100.0 / nbrTest) + " %");
-        System.out.println("nombre d'inverses avec dist > " + epsilonDistAcceptable + " : "
-                + nbrErreur + " (devrait être 0)");
-    }
-    
-    public static void main(String[] args) {
-    //    test1();
-    //    test2();
-    //    test3();
-    //    test4();
-        testInverse(4,4,1e-6, true);
-       
-
-    }
-
 }
