@@ -243,118 +243,118 @@ public class Treillis {
             System.out.println("le treillis est hyperstatique");
         }else{
             
-        for(int i=0; i<nb; i++){
-            matI[i]=('T'+String.valueOf(i+1));
-        }
+            for(int i=0; i<nb; i++){
+                matI[i]=('T'+String.valueOf(i+1));
+            }
         
-        for(int i=0; i<ns; i++){
-            Noeud Ncur = this.Noeuds.get(i);
-            int idNcur = Ncur.getId();
+            for(int i=0; i<ns; i++){
+                Noeud Ncur = this.Noeuds.get(i);
+                int idNcur = Ncur.getId();
             
-            matF.set(cur, 0, -Ncur.getFx());
-            matF.set(cur+1, 0, -Ncur.getFy());
+                matF.set(cur, 0, -Ncur.getFx());
+                matF.set(cur+1, 0, -Ncur.getFy());
             
-            if(Ncur instanceof NoeudSimple){
+                if(Ncur instanceof NoeudSimple){
                 
-                for(int j=0; j<nb; j++){
-                    Barre Bcur = this.Barres.get(j);
-                    int idBcur = Bcur.getId();
-                    int idN1Bcur = Bcur.getIdNoeud1();
-                    int idN2Bcur = Bcur.getIdNoeud2();
-                    
-                    if(idNcur==idN1Bcur){
-                        double angle = ((NoeudSimple) Ncur).angleBarre(numN, idN2Bcur);
-                        matA.set(cur, idBcur-1, Math.cos(angle));
-                        matA.set(cur+1, idBcur-1, Math.sin(angle));
-                        
-                    }else{
-                        if(idNcur==idN2Bcur){
-                            double angle = Ncur.angleBarre(numN, idN1Bcur);
-                            matA.set(cur, idBcur-1, Math.cos(angle));
-                            matA.set(cur+1, idBcur-1, Math.sin(angle));
-                        } 
-                    }
-                }
-                
-                
-            }else{
-                if(Ncur instanceof AppuisDouble){
-                    compteurAD++;
-                    
                     for(int j=0; j<nb; j++){
-                    Barre Bcur = this.Barres.get(j);
-                    int idBcur = Bcur.getId();
-                    int idN1Bcur = Bcur.getIdNoeud1();
-                    int idN2Bcur = Bcur.getIdNoeud2();
+                        Barre Bcur = this.Barres.get(j);
+                        int idBcur = Bcur.getId();
+                        int idN1Bcur = Bcur.getIdNoeud1();
+                        int idN2Bcur = Bcur.getIdNoeud2();
                     
-                    if(idNcur==idN1Bcur){
-                        double angle = Ncur.angleBarre(numN, idN2Bcur);
-                        matA.set(cur, idBcur-1, Math.cos(angle));
-                        matA.set(cur+1, idBcur-1, Math.sin(angle));
-                        
-                    }else{
-                        if(idNcur==idN2Bcur){
-                            double angle = Ncur.angleBarre(numN, idN1Bcur);
+                        if(idNcur==idN1Bcur){
+                            double angle = ((NoeudSimple) Ncur).angleBarre(numN, idN2Bcur);
                             matA.set(cur, idBcur-1, Math.cos(angle));
                             matA.set(cur+1, idBcur-1, Math.sin(angle));
-                        } 
-                    }
-                }
-                    
-                matA.set(cur, nb+2*(compteurAD-1), 1);
-                matA.set(cur+1, nb+2*compteurAD-1, 1);
-                matI [nb+2*(compteurAD-1)]=("Rx"+String.valueOf(idNcur));
-                matI [nb+2*compteurAD-1]=("Ry"+String.valueOf(idNcur));
-                    
-                }else{   
-                    if(Ncur instanceof AppuisSimple){
-                    compteurAS++;
-                    
                         
-                        for(int j=0; j<nb; j++){
-                            Barre Bcur = this.Barres.get(j);
-                            int idBcur = Bcur.getId();
-                            int idN1Bcur = Bcur.getIdNoeud1();
-                            int idN2Bcur = Bcur.getIdNoeud2();
-                    
-                            if(idNcur==idN1Bcur){
-                                double angle = Ncur.angleBarre(numN, idN2Bcur);
+                        }else{
+                            if(idNcur==idN2Bcur){
+                                double angle = Ncur.angleBarre(numN, idN1Bcur);
                                 matA.set(cur, idBcur-1, Math.cos(angle));
                                 matA.set(cur+1, idBcur-1, Math.sin(angle));
+                            } 
+                        }
+                    }
+                
+                
+                }else{
+                    if(Ncur instanceof AppuisDouble){
+                        compteurAD++;
+                    
+                        for(int j=0; j<nb; j++){
+                        Barre Bcur = this.Barres.get(j);
+                        int idBcur = Bcur.getId();
+                        int idN1Bcur = Bcur.getIdNoeud1();
+                        int idN2Bcur = Bcur.getIdNoeud2();
+                    
+                        if(idNcur==idN1Bcur){
+                            double angle = Ncur.angleBarre(numN, idN2Bcur);
+                            matA.set(cur, idBcur-1, Math.cos(angle));
+                            matA.set(cur+1, idBcur-1, Math.sin(angle));
                         
-                            }else{
-                                if(idNcur==idN2Bcur){
-                                    double angle = Ncur.angleBarre(numN, idN1Bcur);
+                        }else{
+                            if(idNcur==idN2Bcur){
+                                double angle = Ncur.angleBarre(numN, idN1Bcur);
+                                matA.set(cur, idBcur-1, Math.cos(angle));
+                                matA.set(cur+1, idBcur-1, Math.sin(angle));
+                            } 
+                        }
+                    }
+                    
+                    matA.set(cur, nb+2*(compteurAD-1), 1);
+                    matA.set(cur+1, nb+2*compteurAD-1, 1);
+                    matI [nb+2*(compteurAD-1)]=("Rx"+String.valueOf(idNcur));
+                    matI [nb+2*compteurAD-1]=("Ry"+String.valueOf(idNcur));
+                    
+                    }else{   
+                        if(Ncur instanceof AppuisSimple){
+                        compteurAS++;
+                    
+                        
+                            for(int j=0; j<nb; j++){
+                                Barre Bcur = this.Barres.get(j);
+                                int idBcur = Bcur.getId();
+                                int idN1Bcur = Bcur.getIdNoeud1();
+                                int idN2Bcur = Bcur.getIdNoeud2();
+                    
+                                if(idNcur==idN1Bcur){
+                                    double angle = Ncur.angleBarre(numN, idN2Bcur);
                                     matA.set(cur, idBcur-1, Math.cos(angle));
                                     matA.set(cur+1, idBcur-1, Math.sin(angle));
-                                } 
+                        
+                                }else{
+                                    if(idNcur==idN2Bcur){
+                                        double angle = Ncur.angleBarre(numN, idN1Bcur);
+                                        matA.set(cur, idBcur-1, Math.cos(angle));
+                                        matA.set(cur+1, idBcur-1, Math.sin(angle));
+                                    } 
+                                }
                             }
-                        }
                     
-                    double angle = ((AppuisSimple) Ncur).angleTT(numTT);
-                    matA.set(cur, nb+2*nad+compteurAS-1, Math.cos(angle));
-                    matA.set(cur+1, nb+2*nad+compteurAS-1, Math.sin(angle));
-                    matI [nb+2*compteurAD+compteurAS-1]=("R"+String.valueOf(idNcur));  
+                        double angle = ((AppuisSimple) Ncur).angleTT(numTT);
+                        matA.set(cur, nb+2*nad+compteurAS-1, Math.cos(angle));
+                        matA.set(cur+1, nb+2*nad+compteurAS-1, Math.sin(angle));
+                        matI [nb+2*compteurAD+compteurAS-1]=("R"+String.valueOf(idNcur));  
+                        }
                     }
                 }
+                cur=cur+2;
             }
-            cur=cur+2;
-        }
         
-        Matrice matR = matA.inverse().mult(matF);
-        for (int i = 0; i < 2*ns; i++) {
-             System.out.println(matI[i]+" = "+matR.get(i, 0));
-        }
-        for (int i = 0; i < nb; i++) {
-            double contrainte =matR.get(i, 0);
-             if(contrainte>=0){
-                 double Rt=this.Catalogue.get(this.Barres.get(i).getIdType()-1).getRtrac();
-                 System.out.println("La barre "+(i+1)+" est en traction : "+contrainte*100/Rt+"% de sa résistance max");
-             }else{
-                 double Rc=this.Catalogue.get(this.Barres.get(i).getIdType()-1).getRcomp();
-                 System.out.println("La barre "+(i+1)+" est en compression : "+Math.abs(contrainte)*100/Rc+"% de sa résistance max");
-             }
-        }
+            Matrice matR = matA.inverse().mult(matF);
+            for (int i = 0; i < 2*ns; i++) {
+                System.out.println(matI[i]+" = "+matR.get(i, 0));
+            }
+            for (int i = 0; i < nb; i++) {
+                double contrainte =matR.get(i, 0);
+                if(contrainte>=0){
+                    double Rt=this.Catalogue.get(this.Barres.get(i).getIdType()-1).getRtrac();
+                    System.out.println("La barre "+(i+1)+" est en traction : "+contrainte*100/Rt+"% de sa résistance max");
+                }else{
+                    double Rc=this.Catalogue.get(this.Barres.get(i).getIdType()-1).getRcomp();
+                    System.out.println("La barre "+(i+1)+" est en compression : "+Math.abs(contrainte)*100/Rc+"% de sa résistance max");
+                }
+            }
         }
     }
     
@@ -702,9 +702,32 @@ public class Treillis {
         return res;
     }
     
+    public static Treillis treillisTest2(){
+        Treillis res = new Treillis();
+        double [][] PT ={{0,0},{-3,0},{0,-2}};
+        res.TT.add(new TriangleTerrain(res.numTT, PT));
+        double [][] PT2 ={{10,0},{10,-2},{13,1}};
+        res.TT.add(new TriangleTerrain(res.numTT, PT2));
+        res.Catalogue.add(new TypeBarre(res.numTB, 100,1,6,1000,2000));
+        res.Noeuds.add(new AppuisDouble(res.numN,res.numTT.getObj(1), 0, 0, 0));
+        res.Noeuds.add(new NoeudSimple(res.numN, 5, 0));
+        res.Noeuds.add(new AppuisSimple(res.numN,res.numTT.getObj(2), 0, 10, 0));
+        res.Noeuds.add(new NoeudSimple(res.numN, 2.5, 4.5));
+        res.Noeuds.add(new NoeudSimple(res.numN, 7.5, 4.5));
+        res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),1,2));
+        res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),2,3));
+        res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),1,4));
+        res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),2,4));
+        res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),2,5));
+        res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),3,5));
+        res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),4,5));
+        res.numN.getObj(2).setFy(-1000);
+        return res;
+    }
+    
     public static void testMenu(){
-        Treillis Zone = treillisTest();
-        Zone.menuTexte();
+        Treillis treillis = treillisTest();
+        treillis.menuTexte();
     }
     
     public static void main(String[] args) {
