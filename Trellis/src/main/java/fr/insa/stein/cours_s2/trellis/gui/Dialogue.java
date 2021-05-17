@@ -7,6 +7,7 @@ package fr.insa.stein.cours_s2.trellis.gui;
 
 import fr.insa.stein.cours_s2.trellis.model.Treillis;
 import fr.insa.stein.cours_s2.trellis.model.TypeBarre;
+import fr.insa.stein.cours_s2.trellis.model.TriangleTerrain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -101,4 +102,86 @@ public class Dialogue {
         return null;
     }
     
+    public static List<String> DialogTT (Treillis Trellis) 
+    
+    {
+        // Create the custom dialog.
+        Dialog<List<String>> dialogTT = new Dialog<>();
+        dialogTT.setTitle("ajoutez un triangle terrain");
+
+        // Set the button types.
+        ButtonType btValider = new ButtonType("Valider", ButtonData.OK_DONE);
+        dialogTT.getDialogPane().getButtonTypes().add(btValider);
+
+        // Create the username and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        
+        TextField tfCoordonnees1x = new TextField();
+        tfCoordonnees1x.setPromptText("entrez un double");
+        TextField tfCoordonnees1y = new TextField();
+        tfCoordonnees1y.setPromptText("entrez un double");
+        TextField tfCoordonnees2x = new TextField();
+        tfCoordonnees2x.setPromptText("entrez un double");
+        TextField tfCoordonnees2y = new TextField();
+        tfCoordonnees2y.setPromptText("entrez un double");
+        TextField tfCoordonnees3x = new TextField();
+        tfCoordonnees3x.setPromptText("entrez un double");
+        TextField tfCoordonnees3y = new TextField();
+        tfCoordonnees3y.setPromptText("entrez un double");
+
+        grid.add(new Label("Premier point en x :"), 0, 0);
+        grid.add(tfCoordonnees1x, 1, 0);
+        grid.add(new Label("Premier point en y:"), 0, 1);
+        grid.add(tfCoordonnees1y, 1, 1);
+        grid.add(new Label("Deuxieme point en x :"), 0, 2);
+        grid.add(tfCoordonnees2x, 1, 2);
+        grid.add(new Label("Deuxieme point en y :"), 0, 3);
+        grid.add(tfCoordonnees2y, 1, 3);
+        grid.add(new Label("Troisieme point en x:"), 0, 4);
+        grid.add(tfCoordonnees3x, 1, 4);
+        grid.add(new Label("Troisieme point en y :"), 0, 5);
+        grid.add(tfCoordonnees3y, 1, 5);
+
+
+        // Enable/Disable login button depending on whether a username was entered.
+        Node bValider = dialogTT.getDialogPane().lookupButton(btValider);
+        bValider.setDisable(true);
+
+        // Do some validation (using the Java 8 lambda syntax).
+        tfCoordonnees3y.textProperty().addListener((observable, oldValue, newValue) -> {
+            bValider.setDisable(newValue.trim().isEmpty());
+        });
+        
+
+        dialogTT.getDialogPane().setContent(grid);
+
+        // Request focus on the username field by default.
+        Platform.runLater(() -> tfCoordonnees1x.requestFocus());
+
+        // Convert the result to a username-password-pair when the login button is clicked.
+        dialogTT.setResultConverter(dialogButton -> {
+            if (dialogButton == btValider) {
+                List<String> List = new ArrayList<>();
+                List.add(tfCoordonnees1x.getText());
+                List.add(tfCoordonnees1y.getText());
+                List.add(tfCoordonnees2x.getText());
+                List.add(tfCoordonnees2y.getText());
+                List.add(tfCoordonnees3x.getText());
+                List.add(tfCoordonnees3y.getText());
+               
+                return List;
+            }
+            return null;
+        });
+
+        Optional<List<String>> result = dialogTT.showAndWait();
+        
+        if (result.isPresent()) {
+            return result.get();
+        }
+        return null;
+    }
 }
