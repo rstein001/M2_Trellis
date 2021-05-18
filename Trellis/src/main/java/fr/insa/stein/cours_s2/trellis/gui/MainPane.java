@@ -7,11 +7,13 @@ package fr.insa.stein.cours_s2.trellis.gui;
 
 import fr.insa.stein.cours_s2.trellis.model.Treillis;
 import fr.insa.stein.cours_s2.trellis.model.TypeBarre;
+import fr.insa.stein.cours_s2.trellis.model.TriangleTerrain;
 import java.io.File;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
@@ -33,6 +35,8 @@ public class MainPane extends BorderPane {
     
     private ColorPicker cpCouleur;
     private Color col;
+    
+    private TriangleTerrain TriangleTerrain;
     
     private Button bTerrain;
     private Button bAppuisDouble;
@@ -62,7 +66,27 @@ public class MainPane extends BorderPane {
 
         this.bTerrain = new Button("TriangleTerrain");
         this.bTerrain.setOnAction((t) -> {
-            System.out.println();
+            List<String> List = Dialogue.DialogTT(Treillis);
+            int i =0;
+            while(i<6){
+                if(List.get(0).matches("[+-]?\\d*(\\.\\d+)?")){
+                    i++;
+                }else{
+                    System.out.println("erreur double");
+                    i=6;
+                }
+            }
+            double P1x = Double.parseDouble(List.get(0));
+            double P1y = Double.parseDouble(List.get(1));
+            double P2x = Double.parseDouble(List.get(2));
+            double P2y = Double.parseDouble(List.get(3));
+            double P3x = Double.parseDouble(List.get(4));
+            double P3y = Double.parseDouble(List.get(5));
+            double [][] PT ={{P1x,P1y},{P2x,P2y},{P3x,P3y}};
+            
+            Treillis.getTT().add(new TriangleTerrain(Treillis.getNumTT(),PT));
+            
+            
         });
         this.bAppuisDouble = new Button("Appuis Double");
         this.bAppuisDouble.setOnAction((t) -> {
@@ -78,11 +102,29 @@ public class MainPane extends BorderPane {
         });
         this.bBarre1 = new Button("Barre (1 Noeud)");
         this.bBarre1.setOnAction((t) -> {
-            System.out.println();
+            List<String> List = Dialogue.DialogN1(Treillis);
+            int i =0;
+            while(i<3){
+                if(List.get(0).matches("[+-]?\\d*(\\.\\d+)?")){
+                    i++;
+                }else{
+                    System.out.println("erreur double");
+                    i=3;
+                }
+            }
         });
         this.bBarre2 = new Button("Barre (2 Noeud)");
         this.bBarre2.setOnAction((t) -> {
-            System.out.println();
+            List<String> List = Dialogue.DialogN2(Treillis);
+            int i =0;
+            while(i<3){
+                if(List.get(0).matches("[+-]?\\d*(\\.\\d+)?")){
+                    i++;
+                }else{
+                    System.out.println("erreur double");
+                    i=3;
+                }
+            }
         });
         this.baddtype = new Button("Ajouter un type de barre");
         this.baddtype.setOnAction((ActionEvent t1) -> {
@@ -145,11 +187,11 @@ public class MainPane extends BorderPane {
         this.setCenter(this.cDessin);
 
     }
-/*
-    public void redrawAll() {
-        this.cDessin.redrawAll();
-    }
-*/
+
+//  public void redrawAll() {
+//      this.cDessin.redrawAll();
+//  }
+
     public Treillis getZone() {
         return Treillis;
     }
@@ -201,5 +243,7 @@ public class MainPane extends BorderPane {
     public void setCol(Color col) {
         this.col = col;
     }
+    
+   
 
 }
