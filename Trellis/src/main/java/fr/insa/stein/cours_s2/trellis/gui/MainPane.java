@@ -141,7 +141,7 @@ public class MainPane extends BorderPane {
             }
             int N1 = Integer.parseInt(List.get(0));
             int N2 = Integer.parseInt(List.get(1));
-            Treillis.getBarres().add(new Barre(Treillis.getNumB(), Treillis.getCatalogue().get((int)this.cbType.getValue()) ,N1,N2, this.getCol()));
+            Treillis.getBarres().add(new Barre(Treillis.getNumB(), Treillis.getCatalogue().get((int)this.cbType.getValue()-1) ,N1,N2, this.getCol()));
             this.redrawAll();
         });
         this.baddtype = new Button("Ajouter un type de barre");

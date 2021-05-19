@@ -23,6 +23,7 @@ import static javafx.application.Application.launch;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import static fr.insa.stein.cours_s2.trellis.model.Treillis.treillisTest;
+import static fr.insa.stein.cours_s2.trellis.model.Treillis.treillisTest2;
 
 /**
  *

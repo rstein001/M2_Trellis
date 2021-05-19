@@ -1,6 +1,7 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
 
+
 import fr.insa.stein.cours_s2.trellis.matrice.Matrice;
 import static fr.insa.stein.cours_s2.trellis.model.TriangleTerrain.demandePT;
 import java.util.ArrayList;
@@ -340,8 +341,11 @@ public class Treillis {
                 }
                 cur=cur+2;
             }
-        
+            System.out.println(matA);
+            System.out.println(matA.inverse());
+            System.out.println(matF);
             Matrice matR = matA.inverse().mult(matF);
+            System.out.println(matR);
             for (int i = 0; i < 2*ns; i++) {
                 System.out.println(matI[i]+" = "+matR.get(i, 0));
             }
@@ -689,12 +693,12 @@ public class Treillis {
     
     public static Treillis treillisTest(){
         Treillis res = new Treillis();
-        double [][] PT ={{0,-200},{0,400},{-300,400}};
+        double [][] PT ={{0,0},{0,2},{1,-2}};
         res.TT.add(new TriangleTerrain(res.numTT, PT, Color.GREEN));
         res.Catalogue.add(new TypeBarre(res.numTB, 100,1,500,1000,2000));
         res.Catalogue.add(new TypeBarre(res.numTB, 100,1,500,599,2000));
-        res.Noeuds.add(new AppuisDouble(res.numN,res.numTT.getObj(1), 0, 0, 200));
-        res.Noeuds.add(new AppuisSimple(res.numN,res.numTT.getObj(1), 0, 0, 0));
+        res.Noeuds.add(new AppuisDouble(res.numN,res.numTT.getObj(1), 0, 1));
+        res.Noeuds.add(new AppuisSimple(res.numN,res.numTT.getObj(1), 0, 0));
         res.Noeuds.add(new NoeudSimple(res.numN, 100, 100));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),1,3));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),2,3));
@@ -710,9 +714,9 @@ public class Treillis {
         double [][] PT2 ={{10,0},{10,-2},{13,1}};
         res.TT.add(new TriangleTerrain(res.numTT, PT2));
         res.Catalogue.add(new TypeBarre(res.numTB, 100,1,6,1000,2000));
-        res.Noeuds.add(new AppuisDouble(res.numN,res.numTT.getObj(1), 0, 0, 0));
+        res.Noeuds.add(new AppuisDouble(res.numN,res.numTT.getObj(1), 0, 0));
         res.Noeuds.add(new NoeudSimple(res.numN, 5, 0));
-        res.Noeuds.add(new AppuisSimple(res.numN,res.numTT.getObj(2), 0, 10, 0));
+        res.Noeuds.add(new AppuisSimple(res.numN,res.numTT.getObj(2), 0, 0));
         res.Noeuds.add(new NoeudSimple(res.numN, 2.5, 4.5));
         res.Noeuds.add(new NoeudSimple(res.numN, 7.5, 4.5));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),1,2));
@@ -727,7 +731,7 @@ public class Treillis {
     }
     
     public static void testMenu(){
-        Treillis treillis = treillisTest2();
+        Treillis treillis = treillisTest();
         treillis.menuTexte();
     }
     

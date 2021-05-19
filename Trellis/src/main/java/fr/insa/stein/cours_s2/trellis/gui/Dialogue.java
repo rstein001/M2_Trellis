@@ -6,8 +6,6 @@
 package fr.insa.stein.cours_s2.trellis.gui;
 
 import fr.insa.stein.cours_s2.trellis.model.Treillis;
-import fr.insa.stein.cours_s2.trellis.model.TypeBarre;
-import fr.insa.stein.cours_s2.trellis.model.TriangleTerrain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

@@ -37,9 +37,9 @@ public abstract class Appuis extends Noeud {
         super(num, col);
         idTriangle = TT.getId();
         this.numeroPT = numeroPT;
+        this.alpha = 0;
         this.setPx(x);
         this.setPy(y);
-        this.alpha= 0;
     }
     
     public Appuis(Numeroteur<Noeud> num, TriangleTerrain TT, int numeroPT, double x, double y) {
@@ -66,16 +66,14 @@ public abstract class Appuis extends Noeud {
         return alpha;
     }
     
-    public double getPx() {
-        return alpha;
-    }
-    
     public static double alphaToPx(TriangleTerrain TT, int numeroPT, double alpha){
-        return alpha*TT.getPTx(numeroPT)+(1-alpha)*TT.getPTx((numeroPT+1)%3);
+        return TT.getPTx(numeroPT)+(TT.getPTx((numeroPT+1)%3)-TT.getPTx(numeroPT))*alpha;
+        //return TT.getPTx(numeroPT) + alpha*TT.getPTx(numeroPT)+(1-alpha)*TT.getPTx((numeroPT+1)%3);
     }
     
     public static double alphaToPy(TriangleTerrain TT, int numeroPT, double alpha){
-        return alpha*TT.getPTy(numeroPT)+(1-alpha)*TT.getPTy((numeroPT+1)%3);
+        return TT.getPTy(numeroPT)+(TT.getPTy((numeroPT+1)%3)-TT.getPTy(numeroPT))*alpha;
+        //return TT.getPTy(numeroPT) + alpha*TT.getPTy(numeroPT)+(1-alpha)*TT.getPTy((numeroPT+1)%3);
         
     }
 }

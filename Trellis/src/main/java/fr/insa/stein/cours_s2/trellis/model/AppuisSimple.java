@@ -43,7 +43,8 @@ public class AppuisSimple extends Appuis {
     @Override
     public String toString() {
         return  "Appui Simple {\n" + "id : "+getId()+" ; idTriangle : "+getIdTriangle()+
-                " ; Point TT : "+getNumeroPT()+" ; alpha : "+getAlpha() +" ; Fx : "+ this.getFx()+" ; Fy : "+ this.getFy() + "\n}";
+                " ; Point TT : "+getNumeroPT()+" ; alpha : "+getAlpha() +" ("+ this.getPx() +","+ this.getPy() 
+                +") ; Fx : "+ this.getFx()+" ; Fy : "+ this.getFy() + "\n}";
     }
     
     public double angleTT(Numeroteur<TriangleTerrain> numTT){
