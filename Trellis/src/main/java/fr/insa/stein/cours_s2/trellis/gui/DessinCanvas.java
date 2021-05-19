@@ -18,6 +18,9 @@ along with CoursBeuvron.  If not, see <http://www.gnu.org/licenses/>.
  */
 package fr.insa.stein.cours_s2.trellis.gui;
 
+import fr.insa.stein.cours_s2.trellis.model.Noeud;
+import fr.insa.stein.cours_s2.trellis.model.Treillis;
+import fr.insa.stein.cours_s2.trellis.model.TriangleTerrain;
 import java.util.List;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -39,30 +42,37 @@ public class DessinCanvas extends Pane {
         this.getChildren().add(this.realCanvas);
         this.realCanvas.heightProperty().bind(this.heightProperty());
         this.realCanvas.heightProperty().addListener((o) -> {
-            //this.redrawAll();
+            this.redrawAll();
         });
         this.realCanvas.widthProperty().bind(this.widthProperty());
         this.realCanvas.widthProperty().addListener((o) -> {
-            //this.redrawAll();
+            this.redrawAll();
         });
         this.realCanvas.setOnMouseClicked((t) -> {
             //Controleur control = this.main.getControleur();
             //control.clicDansZoneDessin(t);
         });
-        //this.redrawAll();
+        this.redrawAll();
     }
-/*
+
     public void redrawAll() {
         GraphicsContext context = this.realCanvas.getGraphicsContext2D();
-        Groupe model = this.main.getZone();
-        model.dessine(context);
-        List<Figure> select = this.main.getControleur().getSelection();
-        if (! select.isEmpty()) {
-            for (Figure f : select) {
-                f.dessineSelection(context);
+        Treillis model = this.main.getTreillis();
+        
+       
+        
+            for (TriangleTerrain TT: model.getTT()){
+                
+                TT.dessine(context);
             }
-        }
+            
+            for (Noeud N: model.getNoeuds()){
+                
+                N.dessine(context);
+            }
+           
+        
     }
-*/  
+
 
 }

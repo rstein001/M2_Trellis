@@ -113,7 +113,7 @@ public abstract class Noeud{
     }  
      public void dessine (GraphicsContext context){
          context.setFill(this.getCol());
-         context.fillOval(px, px, px, px);
+         context.fillOval(this.px-RAYON_IN_DRAW,this.py-RAYON_IN_DRAW,2*RAYON_IN_DRAW, 2*RAYON_IN_DRAW);
      }   
     
 }

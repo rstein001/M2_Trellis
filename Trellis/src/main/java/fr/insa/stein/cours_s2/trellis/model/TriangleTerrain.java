@@ -111,12 +111,13 @@ public class TriangleTerrain {
     public void dessine(GraphicsContext context) {
         
         context.setStroke(this.getCol());
+        context.strokeLine(this.getPTx(0),this.getPTy(0), this.getPTx(1), this.getPTy(1) );
         context.strokeLine(this.getPTx(1),this.getPTy(1), this.getPTx(2), this.getPTy(2) );
-        context.strokeLine(this.getPTx(2),this.getPTy(2), this.getPTx(3), this.getPTy(3) );
-        context.strokeLine(this.getPTx(3),this.getPTy(3), this.getPTx(1), this.getPTy(2) );
+        context.strokeLine(this.getPTx(2),this.getPTy(2), this.getPTx(0), this.getPTy(0) );
         
        
     }
+    
     
     
 }

@@ -185,14 +185,14 @@ public class Dialogue {
         return null;
     }
     
-    public static List<String> DialogN1(Treillis Trellis) {
+    public static List<String> DialogNoeud(Treillis Trellis) {
         // Create the custom dialog.
-        Dialog<List<String>> dialogN1 = new Dialog<>();
-        dialogN1.setTitle("ajoutez un nouveau noeud");
+        Dialog<List<String>> dialogNoeud = new Dialog<>();
+        dialogNoeud.setTitle("ajoutez un nouveau noeud");
 
         // Set the button types.
         ButtonType btValider = new ButtonType("Valider", ButtonData.OK_DONE);
-        dialogN1.getDialogPane().getButtonTypes().add(btValider);
+        dialogNoeud.getDialogPane().getButtonTypes().add(btValider);
 
         // Create the username and password labels and fields.
         GridPane grid = new GridPane();
@@ -213,7 +213,7 @@ public class Dialogue {
         
 
         // Enable/Disable login button depending on whether a username was entered.
-        Node bValider = dialogN1.getDialogPane().lookupButton(btValider);
+        Node bValider = dialogNoeud.getDialogPane().lookupButton(btValider);
         bValider.setDisable(true);
 
         // Do some validation (using the Java 8 lambda syntax).
@@ -222,13 +222,13 @@ public class Dialogue {
         });
         
 
-        dialogN1.getDialogPane().setContent(grid);
+        dialogNoeud.getDialogPane().setContent(grid);
 
         // Request focus on the username field by default.
         Platform.runLater(() -> tfP1x.requestFocus());
 
         // Convert the result to a username-password-pair when the login button is clicked.
-        dialogN1.setResultConverter(dialogButton -> {
+        dialogNoeud.setResultConverter(dialogButton -> {
             if (dialogButton == btValider) {
                 List<String> List = new ArrayList<>();
                 List.add(tfP1x.getText());
@@ -239,7 +239,7 @@ public class Dialogue {
             return null;
         });
 
-        Optional<List<String>> result = dialogN1.showAndWait();
+        Optional<List<String>> result = dialogNoeud.showAndWait();
         
         if (result.isPresent()) {
             return result.get();
