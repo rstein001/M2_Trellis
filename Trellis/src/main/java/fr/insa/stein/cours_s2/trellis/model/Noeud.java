@@ -4,6 +4,7 @@ package fr.insa.stein.cours_s2.trellis.model;
 import static fr.insa.stein.cours_s2.trellis.model.Treillis.angleHoriz;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /*
@@ -108,5 +109,11 @@ public abstract class Noeud{
     
     public double angleBarre(Numeroteur<Noeud> num, int idN2){
         return angleHoriz(this.getPx(), this.getPy(), num.getObj(idN2).getPx(), num.getObj(idN2).getPy());
-    }
+        
+    }  
+     public void dessine (GraphicsContext context){
+         context.setFill(this.getCol());
+         context.fillOval(px, px, px, px);
+     }   
+    
 }

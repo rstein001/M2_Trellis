@@ -726,7 +726,7 @@ public class Treillis {
     }
     
     public static void testMenu(){
-        Treillis treillis = treillisTest();
+        Treillis treillis = treillisTest2();
         treillis.menuTexte();
     }
     

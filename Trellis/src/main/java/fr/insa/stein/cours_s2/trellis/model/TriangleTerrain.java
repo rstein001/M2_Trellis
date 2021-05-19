@@ -2,8 +2,11 @@ package fr.insa.stein.cours_s2.trellis.model;
 
 
 import static fr.insa.stein.cours_s2.trellis.model.Treillis.angle3pt;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import recup.Lire;
+import javafx.event.ActionEvent;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -104,4 +107,16 @@ public class TriangleTerrain {
         return angle3pt(this.getPTx(i1),this.getPTy(i1), this.getPTx(i2),this.getPTy(i2), x, y);
     }
 
+    
+    public void dessine(GraphicsContext context) {
+        
+        context.setStroke(this.getCol());
+        context.strokeLine(this.getPTx(1),this.getPTy(1), this.getPTx(2), this.getPTy(2) );
+        context.strokeLine(this.getPTx(2),this.getPTy(2), this.getPTx(3), this.getPTy(3) );
+        context.strokeLine(this.getPTx(3),this.getPTy(3), this.getPTx(1), this.getPTy(2) );
+        
+       
+    }
+    
+    
 }

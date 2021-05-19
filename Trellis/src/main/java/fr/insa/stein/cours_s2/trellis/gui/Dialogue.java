@@ -119,31 +119,31 @@ public class Dialogue {
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
         
-        TextField tfCoordonnees1x = new TextField();
-        tfCoordonnees1x.setPromptText("entrez un double");
-        TextField tfCoordonnees1y = new TextField();
-        tfCoordonnees1y.setPromptText("entrez un double");
-        TextField tfCoordonnees2x = new TextField();
-        tfCoordonnees2x.setPromptText("entrez un double");
-        TextField tfCoordonnees2y = new TextField();
-        tfCoordonnees2y.setPromptText("entrez un double");
-        TextField tfCoordonnees3x = new TextField();
-        tfCoordonnees3x.setPromptText("entrez un double");
-        TextField tfCoordonnees3y = new TextField();
-        tfCoordonnees3y.setPromptText("entrez un double");
+        TextField tfP1x = new TextField();
+        tfP1x.setPromptText("entrez un double");
+        TextField tfP1y = new TextField();
+        tfP1y.setPromptText("entrez un double");
+        TextField tfP2x = new TextField();
+        tfP2x.setPromptText("entrez un double");
+        TextField tfP2y = new TextField();
+        tfP2y.setPromptText("entrez un double");
+        TextField tfP3x = new TextField();
+        tfP3x.setPromptText("entrez un double");
+        TextField tfP3y = new TextField();
+        tfP3y.setPromptText("entrez un double");
 
-        grid.add(new Label("Premier point en x :"), 0, 0);
-        grid.add(tfCoordonnees1x, 1, 0);
+        grid.add(new Label("Premier point en x:"), 0, 0);
+        grid.add(tfP1x, 1, 0);
         grid.add(new Label("Premier point en y:"), 0, 1);
-        grid.add(tfCoordonnees1y, 1, 1);
-        grid.add(new Label("Deuxieme point en x :"), 0, 2);
-        grid.add(tfCoordonnees2x, 1, 2);
-        grid.add(new Label("Deuxieme point en y :"), 0, 3);
-        grid.add(tfCoordonnees2y, 1, 3);
+        grid.add(tfP1y, 1, 1);
+        grid.add(new Label("Deuxieme point en x:"), 0, 2);
+        grid.add(tfP2x, 1, 2);
+        grid.add(new Label("Deuxieme point en y:"), 0, 3);
+        grid.add(tfP2y, 1, 3);
         grid.add(new Label("Troisieme point en x:"), 0, 4);
-        grid.add(tfCoordonnees3x, 1, 4);
-        grid.add(new Label("Troisieme point en y :"), 0, 5);
-        grid.add(tfCoordonnees3y, 1, 5);
+        grid.add(tfP3x, 1, 4);
+        grid.add(new Label("Troisieme point en y:"), 0, 5);
+        grid.add(tfP3y, 1, 5);
 
 
         // Enable/Disable login button depending on whether a username was entered.
@@ -151,7 +151,7 @@ public class Dialogue {
         bValider.setDisable(true);
 
         // Do some validation (using the Java 8 lambda syntax).
-        tfCoordonnees3y.textProperty().addListener((observable, oldValue, newValue) -> {
+        tfP3y.textProperty().addListener((observable, oldValue, newValue) -> {
             bValider.setDisable(newValue.trim().isEmpty());
         });
         
@@ -159,18 +159,18 @@ public class Dialogue {
         dialogTT.getDialogPane().setContent(grid);
 
         // Request focus on the username field by default.
-        Platform.runLater(() -> tfCoordonnees1x.requestFocus());
+        Platform.runLater(() -> tfP1x.requestFocus());
 
         // Convert the result to a username-password-pair when the login button is clicked.
         dialogTT.setResultConverter(dialogButton -> {
             if (dialogButton == btValider) {
                 List<String> List = new ArrayList<>();
-                List.add(tfCoordonnees1x.getText());
-                List.add(tfCoordonnees1y.getText());
-                List.add(tfCoordonnees2x.getText());
-                List.add(tfCoordonnees2y.getText());
-                List.add(tfCoordonnees3x.getText());
-                List.add(tfCoordonnees3y.getText());
+                List.add(tfP1x.getText());
+                List.add(tfP1y.getText());
+                List.add(tfP2x.getText());
+                List.add(tfP2y.getText());
+                List.add(tfP3x.getText());
+                List.add(tfP3y.getText());
                
                 return List;
             }
@@ -178,6 +178,130 @@ public class Dialogue {
         });
 
         Optional<List<String>> result = dialogTT.showAndWait();
+        
+        if (result.isPresent()) {
+            return result.get();
+        }
+        return null;
+    }
+    
+    public static List<String> DialogN1(Treillis Trellis) {
+        // Create the custom dialog.
+        Dialog<List<String>> dialogN1 = new Dialog<>();
+        dialogN1.setTitle("ajoutez un nouveau noeud");
+
+        // Set the button types.
+        ButtonType btValider = new ButtonType("Valider", ButtonData.OK_DONE);
+        dialogN1.getDialogPane().getButtonTypes().add(btValider);
+
+        // Create the username and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        
+        TextField tfP1x = new TextField();
+        tfP1x.setPromptText("entrez un double");
+        TextField tfP1y = new TextField();
+        tfP1y.setPromptText("entrez un double");
+       
+
+        grid.add(new Label("Coordonnées en x:"), 0, 0);
+        grid.add(tfP1x, 1, 0);
+        grid.add(new Label("Coordonnées en y:"), 0, 1);
+        grid.add(tfP1y, 1, 1);
+        
+
+        // Enable/Disable login button depending on whether a username was entered.
+        Node bValider = dialogN1.getDialogPane().lookupButton(btValider);
+        bValider.setDisable(true);
+
+        // Do some validation (using the Java 8 lambda syntax).
+        tfP1y.textProperty().addListener((observable, oldValue, newValue) -> {
+            bValider.setDisable(newValue.trim().isEmpty());
+        });
+        
+
+        dialogN1.getDialogPane().setContent(grid);
+
+        // Request focus on the username field by default.
+        Platform.runLater(() -> tfP1x.requestFocus());
+
+        // Convert the result to a username-password-pair when the login button is clicked.
+        dialogN1.setResultConverter(dialogButton -> {
+            if (dialogButton == btValider) {
+                List<String> List = new ArrayList<>();
+                List.add(tfP1x.getText());
+                List.add(tfP1y.getText());
+                
+                return List;
+            }
+            return null;
+        });
+
+        Optional<List<String>> result = dialogN1.showAndWait();
+        
+        if (result.isPresent()) {
+            return result.get();
+        }
+        return null;
+    }
+    
+    public static List<String> DialogN2(Treillis Trellis) {
+        // Create the custom dialog.
+        Dialog<List<String>> dialogN2 = new Dialog<>();
+        dialogN2.setTitle("ajoutez un nouveau noeud");
+
+        // Set the button types.
+        ButtonType btValider = new ButtonType("Valider", ButtonData.OK_DONE);
+        dialogN2.getDialogPane().getButtonTypes().add(btValider);
+
+        // Create the username and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        
+        TextField tfP2x = new TextField();
+        tfP2x.setPromptText("entrez un double");
+        TextField tfP2y = new TextField();
+        tfP2y.setPromptText("entrez un double");
+       
+
+        grid.add(new Label("Coordonnées en x:"), 0, 0);
+        grid.add(tfP2x, 1, 0);
+        grid.add(new Label("Coordonnées en y:"), 0, 1);
+        grid.add(tfP2y, 1, 1);
+        
+
+        // Enable/Disable login button depending on whether a username was entered.
+        Node bValider = dialogN2.getDialogPane().lookupButton(btValider);
+        bValider.setDisable(true);
+
+        // Do some validation (using the Java 8 lambda syntax).
+        tfP2y.textProperty().addListener((observable, oldValue, newValue) -> {
+            bValider.setDisable(newValue.trim().isEmpty());
+        });
+        
+
+        dialogN2.getDialogPane().setContent(grid);
+
+        // Request focus on the username field by default.
+        Platform.runLater(() -> tfP2x.requestFocus());
+
+        // Convert the result to a username-password-pair when the login button is clicked.
+        dialogN2.setResultConverter(dialogButton -> {
+            if (dialogButton == btValider) {
+                List<String> List = new ArrayList<>();
+                List.add(tfP2x.getText());
+                List.add(tfP2y.getText());
+                
+                return List;
+            }
+            return null;
+        });
+
+        Optional<List<String>> result = dialogN2.showAndWait();
         
         if (result.isPresent()) {
             return result.get();
