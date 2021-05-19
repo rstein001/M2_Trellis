@@ -111,9 +111,13 @@ public abstract class Noeud{
         return angleHoriz(this.getPx(), this.getPy(), num.getObj(idN2).getPx(), num.getObj(idN2).getPy());
         
     }  
-     public void dessine (GraphicsContext context){
+    
+    
+    
+    public void dessine (GraphicsContext context){
          context.setFill(this.getCol());
          context.fillOval(this.px-RAYON_IN_DRAW,this.py-RAYON_IN_DRAW,2*RAYON_IN_DRAW, 2*RAYON_IN_DRAW);
+         context.fillText (Integer.toString(this.id), this.px+10, this.py+10);
      }   
     
 }

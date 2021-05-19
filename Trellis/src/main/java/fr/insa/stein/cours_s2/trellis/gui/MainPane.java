@@ -5,12 +5,14 @@
  */
 package fr.insa.stein.cours_s2.trellis.gui;
 
+import fr.insa.stein.cours_s2.trellis.model.Barre;
 import fr.insa.stein.cours_s2.trellis.model.NoeudSimple;
 import fr.insa.stein.cours_s2.trellis.model.Treillis;
 import fr.insa.stein.cours_s2.trellis.model.TypeBarre;
 import fr.insa.stein.cours_s2.trellis.model.TriangleTerrain;
 import java.io.File;
 import java.util.List;
+
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -24,6 +26,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javax.swing.event.ChangeListener;
 
 
 public class MainPane extends BorderPane {
@@ -107,7 +110,7 @@ public class MainPane extends BorderPane {
             }
             double Px = Double.parseDouble(List.get(0));
             double Py = Double.parseDouble(List.get(1));
-            Treillis.getNoeuds().add(new NoeudSimple(Treillis.getNumN(),Px,Py));
+            Treillis.getNoeuds().add(new NoeudSimple(Treillis.getNumN(),Px,Py, getCol()));
             this.redrawAll();
             
             
@@ -129,13 +132,17 @@ public class MainPane extends BorderPane {
             List<String> List = Dialogue.DialogN2(Treillis);
             int i =0;
             while(i<3){
-                if(List.get(0).matches("[+-]?\\d*(\\.\\d+)?")){
+                if(List.get(0).matches("[0-9]*")){
                     i++;
                 }else{
-                    System.out.println("erreur double");
+                    System.out.println("erreur int");
                     i=3;
                 }
             }
+            int N1 = Integer.parseInt(List.get(0));
+            int N2 = Integer.parseInt(List.get(1));
+            Treillis.getBarres().add(new Barre(Treillis.getNumB(), Treillis.getCatalogue().get((int)this.cbType.getValue()) ,N1,N2, this.getCol()));
+            this.redrawAll();
         });
         this.baddtype = new Button("Ajouter un type de barre");
         this.baddtype.setOnAction((ActionEvent t1) -> {
@@ -155,6 +162,7 @@ public class MainPane extends BorderPane {
             double rtract = Double.parseDouble(List.get(3));
             double rcomp = Double.parseDouble(List.get(4));
             Treillis.getCatalogue().add(new TypeBarre(Treillis.getNumTB(),cout,lmin,lmax,rtract,rcomp));
+            this.cbType.getItems().add(this.Treillis.getCatalogue().size());
         });
         
         this.t = new Text("Choisir une barre : ");
@@ -163,12 +171,14 @@ public class MainPane extends BorderPane {
         this.at.setHeaderText("Entrez des valeurs:");
         this.at.setTitle("Ajoutez un type de barre");
         
-        this.cbType = new ChoiceBox();
-        this.cbType.getItems().add("1");
-        this.cbType.getItems().add("2");
-        this.cbType.getItems().add("3");
-        this.tilePane= new TilePane();
-        Scene scene = new Scene (tilePane, 300, 300);
+        this.cbType = new ChoiceBox<Integer>();
+        for (int i=0; i<this.Treillis.getCatalogue().size();i++){
+            this.cbType.getItems().add(i+1);
+            this.tilePane= new TilePane();
+            Scene scene = new Scene (tilePane, 600, 300);
+        }
+       this.cbType.getSelectionModel().select(0);
+      
         
         
         

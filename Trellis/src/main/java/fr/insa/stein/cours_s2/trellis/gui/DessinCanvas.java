@@ -18,6 +18,7 @@ along with CoursBeuvron.  If not, see <http://www.gnu.org/licenses/>.
  */
 package fr.insa.stein.cours_s2.trellis.gui;
 
+import fr.insa.stein.cours_s2.trellis.model.Barre;
 import fr.insa.stein.cours_s2.trellis.model.Noeud;
 import fr.insa.stein.cours_s2.trellis.model.Treillis;
 import fr.insa.stein.cours_s2.trellis.model.TriangleTerrain;
@@ -70,6 +71,11 @@ public class DessinCanvas extends Pane {
                 
                 N.dessine(context);
             }
+            for ( Barre Barre: model.getBarres()){
+                
+                Barre.dessine(context, main.getTreillis());
+            }
+            
            
         
     }

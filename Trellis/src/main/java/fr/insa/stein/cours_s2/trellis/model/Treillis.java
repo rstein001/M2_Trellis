@@ -692,6 +692,7 @@ public class Treillis {
         double [][] PT ={{0,-200},{0,400},{-300,400}};
         res.TT.add(new TriangleTerrain(res.numTT, PT, Color.GREEN));
         res.Catalogue.add(new TypeBarre(res.numTB, 100,1,500,1000,2000));
+        res.Catalogue.add(new TypeBarre(res.numTB, 100,1,500,599,2000));
         res.Noeuds.add(new AppuisDouble(res.numN,res.numTT.getObj(1), 0, 0, 200));
         res.Noeuds.add(new AppuisSimple(res.numN,res.numTT.getObj(1), 0, 0, 0));
         res.Noeuds.add(new NoeudSimple(res.numN, 100, 100));

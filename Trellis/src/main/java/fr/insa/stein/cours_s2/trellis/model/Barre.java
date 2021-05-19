@@ -1,6 +1,7 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /*
@@ -71,5 +72,10 @@ public class Barre {
         return  "Barre {\n" + "id : "+getId()+" ; "+ "idType : "+getIdType()+" ; "+
                 "idNoued1 : "+getIdNoeud1()+" ; "+"idNoeud2 : "+getIdNoeud2()+" ; " + "\n}";
     }
-    
+    public void dessine(GraphicsContext context, Treillis treillis) {
+        
+        context.setStroke(this.getCol());
+        context.strokeLine(treillis.getNumN().getObj(this.idNoeud1).getPx(),
+        treillis.getNumN().getObj(this.idNoeud1).getPy(),treillis.getNumN().getObj(this.idNoeud2).getPx(), treillis.getNumN().getObj(this.idNoeud2).getPy());
+    }
 }

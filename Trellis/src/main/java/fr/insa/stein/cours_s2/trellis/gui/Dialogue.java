@@ -250,7 +250,7 @@ public class Dialogue {
     public static List<String> DialogN2(Treillis Trellis) {
         // Create the custom dialog.
         Dialog<List<String>> dialogN2 = new Dialog<>();
-        dialogN2.setTitle("ajoutez un nouveau noeud");
+        dialogN2.setTitle("Choisissez vos 2 noeuds");
 
         // Set the button types.
         ButtonType btValider = new ButtonType("Valider", ButtonData.OK_DONE);
@@ -268,9 +268,9 @@ public class Dialogue {
         tfP2y.setPromptText("entrez un double");
        
 
-        grid.add(new Label("Coordonnées en x:"), 0, 0);
+        grid.add(new Label("ID premier noeud:"), 0, 0);
         grid.add(tfP2x, 1, 0);
-        grid.add(new Label("Coordonnées en y:"), 0, 1);
+        grid.add(new Label("ID deuxième noeud:"), 0, 1);
         grid.add(tfP2y, 1, 1);
         
 

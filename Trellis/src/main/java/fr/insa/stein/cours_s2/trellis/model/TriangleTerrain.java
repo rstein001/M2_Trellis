@@ -35,7 +35,7 @@ public class TriangleTerrain {
     }
 
     public TriangleTerrain(Numeroteur<TriangleTerrain> num, double[][] PT) {
-        this(num, PT, Color.LIGHTGREEN);
+        this(num, PT, Color.GREEN);
     }
 
     public int getId() {
@@ -114,6 +114,9 @@ public class TriangleTerrain {
         context.strokeLine(this.getPTx(0),this.getPTy(0), this.getPTx(1), this.getPTy(1) );
         context.strokeLine(this.getPTx(1),this.getPTy(1), this.getPTx(2), this.getPTy(2) );
         context.strokeLine(this.getPTx(2),this.getPTy(2), this.getPTx(0), this.getPTy(0) );
+        context.fillText (Integer.toString(0), this.getPTx(0)+10, this.getPTy(0)+10);
+        context.fillText (Integer.toString(1), this.getPTx(1)+10, this.getPTy(1)+10);
+        context.fillText (Integer.toString(2), this.getPTx(2)+10, this.getPTy(2)+10);
         
        
     }
