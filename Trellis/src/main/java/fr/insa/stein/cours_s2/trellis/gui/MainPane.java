@@ -125,6 +125,24 @@ public class MainPane extends BorderPane {
         });
         this.bBarre1 = new Button("Barre (1 Noeud)");
         this.bBarre1.setOnAction((t) -> {
+            List<String> List = Dialogue.DialogN1(Treillis);
+            int i =0;
+            while(i<4){
+                if(List.get(0).matches("[+-]?\\d*(\\.\\d+)?")){
+                    i++;
+                }else{
+                    System.out.println("erreur double");
+                    i=4;
+                }
+            }
+            int N1 = Integer.parseInt(List.get(0));
+            double Px = Double.parseDouble(List.get(1));
+            double Py = Double.parseDouble(List.get(2));
+            Treillis.getNoeuds().add(new NoeudSimple(Treillis.getNumN(),Px,Py, getCol()));
+            int N2 = 2;
+            Treillis.getBarres().add(new Barre(Treillis.getNumB(), Treillis.getCatalogue().get((int)this.cbType.getValue()-1) ,N1,N2, this.getCol()));
+            this.redrawAll();
+            
             
         });
         this.bBarre2 = new Button("Barre (2 Noeud)");

@@ -245,6 +245,74 @@ public class Dialogue {
         return null;
     }
     
+    public static List<String> DialogN1(Treillis Trellis) {
+        // Create the custom dialog.
+        Dialog<List<String>> dialogN1 = new Dialog<>();
+        dialogN1.setTitle("Choisissez vos 2 noeuds");
+
+        // Set the button types.
+        ButtonType btValider = new ButtonType("Valider", ButtonData.OK_DONE);
+        dialogN1.getDialogPane().getButtonTypes().add(btValider);
+
+        // Create the username and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        
+        TextField tfP2x = new TextField();
+        tfP2x.setPromptText("entrez un double");
+        TextField tfP2y = new TextField();
+        tfP2y.setPromptText("entrez un double");
+        TextField tfP2z = new TextField();
+        tfP2z.setPromptText("entrez un double");
+       
+       
+
+        grid.add(new Label("ID premier noeud:"), 0, 0);
+        grid.add(tfP2x, 1, 0);
+        grid.add(new Label("Coordonnées en x du deuxieme noeud :"), 0, 1);
+        grid.add(tfP2y, 1, 1);
+        grid.add(new Label("Coordonnées en y du deuxieme noeud :"), 0, 2);
+        grid.add(tfP2z, 1, 2);
+        
+
+        // Enable/Disable login button depending on whether a username was entered.
+        Node bValider = dialogN1.getDialogPane().lookupButton(btValider);
+        bValider.setDisable(true);
+
+        // Do some validation (using the Java 8 lambda syntax).
+        tfP2y.textProperty().addListener((observable, oldValue, newValue) -> {
+            bValider.setDisable(newValue.trim().isEmpty());
+        });
+        
+
+        dialogN1.getDialogPane().setContent(grid);
+
+        // Request focus on the username field by default.
+        Platform.runLater(() -> tfP2x.requestFocus());
+
+        // Convert the result to a username-password-pair when the login button is clicked.
+        dialogN1.setResultConverter(dialogButton -> {
+            if (dialogButton == btValider) {
+                List<String> List = new ArrayList<>();
+                List.add(tfP2x.getText());
+                List.add(tfP2y.getText());
+                List.add(tfP2z.getText());
+                
+                return List;
+            }
+            return null;
+        });
+
+        Optional<List<String>> result = dialogN1.showAndWait();
+        
+        if (result.isPresent()) {
+            return result.get();
+        }
+        return null;
+    }
+    
     public static List<String> DialogN2(Treillis Trellis) {
         // Create the custom dialog.
         Dialog<List<String>> dialogN2 = new Dialog<>();
@@ -307,3 +375,5 @@ public class Dialogue {
         return null;
     }
 }
+
+

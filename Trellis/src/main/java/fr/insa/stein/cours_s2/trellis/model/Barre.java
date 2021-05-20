@@ -78,4 +78,8 @@ public class Barre {
         context.strokeLine(treillis.getNumN().getObj(this.idNoeud1).getPx(),
         treillis.getNumN().getObj(this.idNoeud1).getPy(),treillis.getNumN().getObj(this.idNoeud2).getPx(), treillis.getNumN().getObj(this.idNoeud2).getPy());
     }
+    
+    
+        
+    
 }
