@@ -5,6 +5,7 @@
  */
 package fr.insa.stein.cours_s2.trellis.gui;
 
+import fr.insa.stein.cours_s2.trellis.model.AppuisDouble;
 import fr.insa.stein.cours_s2.trellis.model.Barre;
 import fr.insa.stein.cours_s2.trellis.model.NoeudSimple;
 import fr.insa.stein.cours_s2.trellis.model.Treillis;
@@ -117,35 +118,50 @@ public class MainPane extends BorderPane {
         });
         this.bAppuisDouble = new Button("Appuis Double");
         this.bAppuisDouble.setOnAction((t) -> {
-            System.out.println();
+            List<String> List = Dialogue.DialogAD(Treillis);
+            int i =0;
+            while(i<2){
+                if(List.get(0).matches("[+-]?\\d*(\\.\\d+)?")){
+                    i++;
+                }else{
+                    System.out.println("erreur double");
+                    i=2;
+                }
+            }
+            double A = Double.parseDouble(List.get(2));
+            
+            
+            
+            this.redrawAll();
         });
         this.bAppuisSimple = new Button("Appuis Simple");
         this.bAppuisSimple.setOnAction((t) -> {
             System.out.println();
         });
-        this.bBarre1 = new Button("Barre (1 Noeud)");
+        this.bBarre1 = new Button("Barre (1 seul noeud construit)");
         this.bBarre1.setOnAction((t) -> {
             List<String> List = Dialogue.DialogN1(Treillis);
             int i =0;
-            while(i<4){
+            while(i<5){
                 if(List.get(0).matches("[+-]?\\d*(\\.\\d+)?")){
                     i++;
                 }else{
                     System.out.println("erreur double");
-                    i=4;
+                    i=5;
                 }
             }
             int N1 = Integer.parseInt(List.get(0));
-            double Px = Double.parseDouble(List.get(1));
-            double Py = Double.parseDouble(List.get(2));
+            int N2 = Integer.parseInt(List.get(1));
+            double Px = Double.parseDouble(List.get(2));
+            double Py = Double.parseDouble(List.get(3));
             Treillis.getNoeuds().add(new NoeudSimple(Treillis.getNumN(),Px,Py, getCol()));
-            int N2 = 2;
+            
             Treillis.getBarres().add(new Barre(Treillis.getNumB(), Treillis.getCatalogue().get((int)this.cbType.getValue()-1) ,N1,N2, this.getCol()));
             this.redrawAll();
             
             
         });
-        this.bBarre2 = new Button("Barre (2 Noeud)");
+        this.bBarre2 = new Button("Barre (2 noeuds construits)");
         this.bBarre2.setOnAction((t) -> {
             List<String> List = Dialogue.DialogN2(Treillis);
             int i =0;

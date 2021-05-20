@@ -261,7 +261,9 @@ public class Dialogue {
         grid.setPadding(new Insets(20, 150, 10, 10));
         
         TextField tfP2x = new TextField();
-        tfP2x.setPromptText("entrez un double");
+        tfP2x.setPromptText("entrez un entier");
+        TextField tfP2w = new TextField();
+        tfP2w.setPromptText("entrez un entier");
         TextField tfP2y = new TextField();
         tfP2y.setPromptText("entrez un double");
         TextField tfP2z = new TextField();
@@ -271,10 +273,12 @@ public class Dialogue {
 
         grid.add(new Label("ID premier noeud:"), 0, 0);
         grid.add(tfP2x, 1, 0);
-        grid.add(new Label("Coordonnées en x du deuxieme noeud :"), 0, 1);
-        grid.add(tfP2y, 1, 1);
-        grid.add(new Label("Coordonnées en y du deuxieme noeud :"), 0, 2);
-        grid.add(tfP2z, 1, 2);
+        grid.add(new Label("ID nouveau noeud :"), 0, 1);
+        grid.add(tfP2w, 1, 1);
+        grid.add(new Label("Coordonnées en x du nouveau noeud :"), 0, 2);
+        grid.add(tfP2y, 1, 2);
+        grid.add(new Label("Coordonnées en y du nouveau noeud :"), 0, 3);
+        grid.add(tfP2z, 1, 3);
         
 
         // Enable/Disable login button depending on whether a username was entered.
@@ -297,6 +301,7 @@ public class Dialogue {
             if (dialogButton == btValider) {
                 List<String> List = new ArrayList<>();
                 List.add(tfP2x.getText());
+                List.add(tfP2w.getText());
                 List.add(tfP2y.getText());
                 List.add(tfP2z.getText());
                 
@@ -368,6 +373,77 @@ public class Dialogue {
         });
 
         Optional<List<String>> result = dialogN2.showAndWait();
+        
+        if (result.isPresent()) {
+            return result.get();
+        }
+        return null;
+    }
+    
+    public static List<String> DialogAD(Treillis Trellis) {
+        // Create the custom dialog.
+        Dialog<List<String>> dialogAD = new Dialog<>();
+        dialogAD.setTitle("Choisissez votre noeud et son terrain");
+
+        // Set the button types.
+        ButtonType btValider = new ButtonType("Valider", ButtonData.OK_DONE);
+        dialogAD.getDialogPane().getButtonTypes().add(btValider);
+
+        // Create the username and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        
+        TextField tfTT = new TextField();
+        tfTT.setPromptText("entrez un double");
+        TextField tfP2x = new TextField();
+        tfP2x.setPromptText("entrez un double");
+        TextField tfP2y = new TextField();
+        tfP2y.setPromptText("entrez un double");
+        
+       
+       
+
+        grid.add(new Label("ID du Terrain:"), 0, 0);
+        grid.add(tfTT, 1, 0);
+        grid.add(new Label("Coordonnées en x de l'appui double :"), 0, 1);
+        grid.add(tfP2x, 1, 1);
+        grid.add(new Label("Coordonnées en y du l'appui double :"), 0, 2);
+        grid.add(tfP2y, 1, 2);
+        
+        
+
+        // Enable/Disable login button depending on whether a username was entered.
+        Node bValider = dialogAD.getDialogPane().lookupButton(btValider);
+        bValider.setDisable(true);
+
+        // Do some validation (using the Java 8 lambda syntax).
+        tfP2x.textProperty().addListener((observable, oldValue, newValue) -> {
+            bValider.setDisable(newValue.trim().isEmpty());
+        });
+        
+
+        dialogAD.getDialogPane().setContent(grid);
+
+        // Request focus on the username field by default.
+        Platform.runLater(() -> tfTT.requestFocus());
+
+        // Convert the result to a username-password-pair when the login button is clicked.
+        dialogAD.setResultConverter(dialogButton -> {
+            if (dialogButton == btValider) {
+                List<String> List = new ArrayList<>();
+                List.add(tfTT.getText());
+                List.add(tfP2x.getText());
+                List.add(tfP2y.getText());
+                
+                
+                return List;
+            }
+            return null;
+        });
+
+        Optional<List<String>> result = dialogAD.showAndWait();
         
         if (result.isPresent()) {
             return result.get();
