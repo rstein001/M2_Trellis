@@ -8,6 +8,7 @@ package fr.insa.stein.cours_s2.trellis.gui;
 import fr.insa.stein.cours_s2.trellis.model.AppuisDouble;
 import fr.insa.stein.cours_s2.trellis.model.AppuisSimple;
 import fr.insa.stein.cours_s2.trellis.model.Barre;
+import fr.insa.stein.cours_s2.trellis.model.Noeud;
 import fr.insa.stein.cours_s2.trellis.model.NoeudSimple;
 import fr.insa.stein.cours_s2.trellis.model.Treillis;
 import fr.insa.stein.cours_s2.trellis.model.TypeBarre;
@@ -32,6 +33,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import recup.Lire;
 
 
 public class MainPane extends BorderPane {
@@ -53,6 +55,7 @@ public class MainPane extends BorderPane {
     private Button bBarre2;
     private Button bNoeud;
     private Button bCalcul;
+    private Button bForce;
 
 
     private ChoiceBox cbType;
@@ -204,9 +207,6 @@ public class MainPane extends BorderPane {
         
         this.bCalcul = new Button("CALCULS");
         this.bCalcul.setOnAction((ActionEvent t1) -> {
-            
-        
-            
         Stage calculs = new Stage();
         calculs.initModality(Modality.APPLICATION_MODAL);
         List calcul = Treillis.calculs();
@@ -224,16 +224,30 @@ public class MainPane extends BorderPane {
             calculs.setTitle("Résultats des calculs: ");
             calculs.setScene(scene);
             calculs.show();
-        
-       
-         
-         
-         
-       
-            
-            
         });
         
+        this.bForce = new Button("Ajouter une force");
+        this.bForce.setOnAction((ActionEvent t1) -> {
+            List<String> List = Dialogue.DialogForce(Treillis);
+            int i =0;
+            while(i<3){
+                if(List.get(0).matches("[+-]?\\d*(\\.\\d+)?")){
+                    i++;
+                }else{
+                    System.out.println("erreur double");
+                    i=3;
+                }
+            }
+        int id = Integer.parseInt(List.get(0));
+        Noeud N = Treillis.getNumN().getObj(id);
+        double Fx=Double.parseDouble(List.get(1));
+        double Fy=Double.parseDouble(List.get(2));
+        N.setFx(Fx);
+        N.setFy(Fy);
+        
+            
+            
+         });
         
         this.t = new Text("Choisir une barre : ");
         
@@ -260,7 +274,7 @@ public class MainPane extends BorderPane {
         
         
         HBox hb = new HBox(this.bTerrain, this.bAppuisDouble, this.bAppuisSimple,this.bNoeud,
-        this.baddtype, this.bBarre2, this.t, this.cbType, this.cpCouleur, this.bCalcul);
+        this.baddtype, this.bBarre2, this.t, this.cbType, this.cpCouleur,this.bForce, this.bCalcul);
         Insets Inset = new Insets(5,5,0,5);
         HBox.setMargin(bTerrain, Inset);
         HBox.setMargin(bAppuisDouble, Inset);
@@ -272,6 +286,7 @@ public class MainPane extends BorderPane {
         HBox.setMargin(cpCouleur, Inset);
         HBox.setMargin(bNoeud, Inset);
         HBox.setMargin(bCalcul, Inset);
+        HBox.setMargin(bForce, Inset);
       
         this.setTop(hb);
        
@@ -298,6 +313,10 @@ public class MainPane extends BorderPane {
 
     public Button getbAppuisSimple() {
         return bAppuisSimple;
+    }
+
+    public Button getbForce() {
+        return bForce;
     }
 
     

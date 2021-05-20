@@ -446,6 +446,73 @@ public class Dialogue {
         }
         return null;
     }
+    
+    public static List<String> DialogForce(Treillis Trellis) {
+        // Create the custom dialog.
+        Dialog<List<String>> dialogForce = new Dialog<>();
+        dialogForce.setTitle("ajoutez une Force");
+
+        // Set the button types.
+        ButtonType btValider = new ButtonType("Valider", ButtonData.OK_DONE);
+        dialogForce.getDialogPane().getButtonTypes().add(btValider);
+
+        // Create the username and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        
+        TextField tfP1x = new TextField();
+        tfP1x.setPromptText("entrez un entier");
+        TextField tfP1y = new TextField();
+        tfP1y.setPromptText("entrez un double");
+        TextField tfP1z = new TextField();
+        tfP1y.setPromptText("entrez un double");
+       
+
+        grid.add(new Label("ID du noeud:"), 0, 0);
+        grid.add(tfP1x, 1, 0);
+        grid.add(new Label("Fx:"), 0, 1);
+        grid.add(tfP1y, 1, 1);
+        grid.add(new Label("Fy:"), 0, 2);
+        grid.add(tfP1z, 1, 2);
+        
+
+        // Enable/Disable login button depending on whether a username was entered.
+        Node bValider = dialogForce.getDialogPane().lookupButton(btValider);
+        bValider.setDisable(true);
+
+        // Do some validation (using the Java 8 lambda syntax).
+        tfP1y.textProperty().addListener((observable, oldValue, newValue) -> {
+            bValider.setDisable(newValue.trim().isEmpty());
+        });
+        
+
+        dialogForce.getDialogPane().setContent(grid);
+
+        // Request focus on the username field by default.
+        Platform.runLater(() -> tfP1x.requestFocus());
+
+        // Convert the result to a username-password-pair when the login button is clicked.
+        dialogForce.setResultConverter(dialogButton -> {
+            if (dialogButton == btValider) {
+                List<String> List = new ArrayList<>();
+                List.add(tfP1x.getText());
+                List.add(tfP1y.getText());
+                List.add(tfP1z.getText());
+                
+                return List;
+            }
+            return null;
+        });
+
+        Optional<List<String>> result = dialogForce.showAndWait();
+        
+        if (result.isPresent()) {
+            return result.get();
+        }
+        return null;
+    }
 }
 
 
