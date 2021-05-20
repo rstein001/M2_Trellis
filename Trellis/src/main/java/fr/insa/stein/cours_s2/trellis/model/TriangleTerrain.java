@@ -2,6 +2,8 @@ package fr.insa.stein.cours_s2.trellis.model;
 
 
 import static fr.insa.stein.cours_s2.trellis.model.Treillis.angle3pt;
+import java.io.IOException;
+import java.io.Writer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import recup.Lire;
@@ -119,6 +121,11 @@ public class TriangleTerrain {
         context.fillText (Integer.toString(2), this.getPTx(2)+10, this.getPTy(2)+10);
         
        
+    }
+    
+    public void save (Writer w) throws IOException{
+        w.append("Triangle;"+this.getId()+";("+this.getPTx(0)+','+this.getPTy(0)+");("+this.getPTx(1)+','+this.getPTy(1)+
+                ");("+this.getPTx(2)+','+this.getPTy(2)+")"+"\n");
     }
     
     

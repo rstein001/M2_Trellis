@@ -1,6 +1,8 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
 
+import java.io.IOException;
+import java.io.Writer;
 import javafx.scene.paint.Color;
 
 /*
@@ -40,4 +42,9 @@ public class NoeudSimple extends Noeud {
         return  "Noeud Simple {\n" + "id : "+getId()+" ; ("+ this.getPx() +","+ this.getPy() 
                 +") ; Fx : "+ this.getFx()+" ; Fy : "+ this.getFy()+"\n}";
     }
+    
+    public void save (Writer w) throws IOException{
+        w.append("NoeudSimple;"+this.getId()+";("+this.getPx()+','+this.getPy()+")"+"\n");
+    }
+    
 }

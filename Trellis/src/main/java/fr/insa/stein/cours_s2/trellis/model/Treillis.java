@@ -4,6 +4,11 @@ package fr.insa.stein.cours_s2.trellis.model;
 
 import fr.insa.stein.cours_s2.trellis.matrice.Matrice;
 import static fr.insa.stein.cours_s2.trellis.model.TriangleTerrain.demandePT;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.paint.Color;
@@ -744,6 +749,80 @@ public class Treillis {
         treillis.menuTexte();
     }
     
+    public void save(Writer w) throws IOException {
+        w.append("ZoneConstructible;"+this.Xmin+';'+this.Xmax+';'+this.Ymin+';'+this.Ymax+"\n");
+        for (int i=0; i<this.TT.size();i++){
+            this.numTT.getObj(i).save(w);
+        }
+        w.append("FINTRIANGLES");
+        for (int i=0; i<this.Catalogue.size();i++){
+            this.numTB.getObj(i).save(w);
+        }
+        w.append("FINCATALOGUE");
+        for (int i=0; i<this.Noeuds.size();i++){
+            Noeud noeud=this.numN.getObj(i);
+            if (noeud instanceof AppuisDouble){
+                ((AppuisDouble) noeud).save(w);
+            }
+        }
+        for (int i=0; i<this.Noeuds.size();i++){
+            Noeud noeud=this.numN.getObj(i);
+            if (noeud instanceof AppuisSimple){
+                ((AppuisSimple) noeud).save(w);
+            }
+        }
+        for (int i=0; i<this.Noeuds.size();i++){
+            Noeud noeud=this.numN.getObj(i);
+            if (noeud instanceof NoeudSimple){
+                ((NoeudSimple) noeud).save(w);
+            }
+        }
+        w.append("FINNOEUDS");
+       for (int i=0; i<this.Barres.size();i++){
+            this.numB.getObj(i).save(w);
+            
+        }
+        w.append("FINBARRES");
+    }
+    /*
+    public static Treillis lecture(File fin) throws IOException {
+        
+        try (BufferedReader bin = new BufferedReader(new FileReader(fin))) {
+            String line;
+            while ((line = bin.readLine()) != null && line.length() != 0) {
+                String[] bouts = line.split(";");
+                if (bouts[0].equals("ZoneConstructible")) {
+                    double xmin = Double.parseDouble(bouts[1]);
+                    double xmax = Double.parseDouble(bouts[2]);
+                    double ymin = Double.parseDouble(bouts[3]);
+                    double ymax = Double.parseDouble(bouts[4]);
+                    Treillis res= new Treillis(xmin, xmax, ymin, ymax);
+                } else if (bouts[0].equals("Triangle")) {
+                    int idP1 = Integer.parseInt(bouts[2]);
+                    int idP2 = Integer.parseInt(bouts[3]);
+                    Color col = FigureSimple.parseColor(bouts[4], bouts[5], bouts[6]);
+                    Point p1 = (Point) num.getObj(idP1);
+                    Point p2 = (Point) num.getObj(idP2);
+                    Segment ns = new Segment(p1, p2, col);
+                    num.associe(id, ns);
+                    derniere = ns;
+                } else if (bouts[0].equals("TypeBarre")) {
+                    int id = Integer.parseInt(bouts[1]);
+                    Groupe ng = new Groupe();
+                    num.associe(id, ng);
+                    for (int i = 2; i < bouts.length; i++) {
+                        int idSous = Integer.parseInt(bouts[i]);
+                        Figure fig = num.getObj(idSous);
+                        ng.add(fig);
+                    }
+                    derniere = ng;
+                }
+            }
+
+        }
+        return derniere;
+    }
+    */
     public static void main(String[] args) {
         testMenu();
         

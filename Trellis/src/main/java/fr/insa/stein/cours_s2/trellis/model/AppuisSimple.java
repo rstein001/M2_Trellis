@@ -2,6 +2,8 @@ package fr.insa.stein.cours_s2.trellis.model;
 
 
 import static fr.insa.stein.cours_s2.trellis.model.Treillis.angleHoriz;
+import java.io.IOException;
+import java.io.Writer;
 import javafx.scene.paint.Color;
 
 /*
@@ -53,4 +55,9 @@ public class AppuisSimple extends Appuis {
         return angleHoriz(numTT.getObj(idTT).getPTx(idPT), numTT.getObj(idTT).getPTy(idPT),
                 numTT.getObj(idTT).getPTx((idPT+1)%3),numTT.getObj(idTT).getPTy((idPT+1)%3))+Math.PI/2;
     }
+    
+    public void save (Writer w) throws IOException{
+        w.append("AppuiSimple;"+this.getId()+";"+this.getIdTriangle()+';'+this.getNumeroPT()+";"+this.getAlpha()+"\n");
+    }
+    
 }

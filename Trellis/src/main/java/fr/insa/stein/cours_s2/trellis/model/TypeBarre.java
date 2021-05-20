@@ -1,5 +1,8 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
+import java.io.IOException;
+import java.io.Writer;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -83,6 +86,9 @@ public class TypeBarre {
                 " ; Rtrac : " + Rtrac + " ; Rcomp : " + Rcomp + "\n}";
     }
     
-    
+    public void save (Writer w) throws IOException{
+        w.append("TypeBarre;"+this.getId()+";"+this.getCout()+';'+this.getLmin()+";"+this.Lmax+';'+this.Rtrac+
+                ";"+this.Rcomp+"\n");
+    }
     
 }

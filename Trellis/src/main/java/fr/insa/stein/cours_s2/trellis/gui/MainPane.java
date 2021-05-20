@@ -32,7 +32,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javax.swing.event.ChangeListener;
 
 
 public class MainPane extends BorderPane {
@@ -159,7 +158,7 @@ public class MainPane extends BorderPane {
             int pt = Integer.parseInt(List.get(1));
             double a = Double.parseDouble(List.get(2));
             Treillis.getNoeuds().add(new AppuisSimple (Treillis.getNumN(),this.Treillis.getNumTT().getObj(TT), pt ,a,this.getCol()));
-            
+            this.redrawAll();
         });
         
             

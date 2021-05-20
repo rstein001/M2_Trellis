@@ -1,6 +1,8 @@
 package fr.insa.stein.cours_s2.trellis.model;
 
 
+import java.io.IOException;
+import java.io.Writer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -77,6 +79,11 @@ public class Barre {
         context.setStroke(this.getCol());
         context.strokeLine(treillis.getNumN().getObj(this.idNoeud1).getPx(),
         treillis.getNumN().getObj(this.idNoeud1).getPy(),treillis.getNumN().getObj(this.idNoeud2).getPx(), treillis.getNumN().getObj(this.idNoeud2).getPy());
+    }
+    
+    
+    public void save (Writer w) throws IOException{
+        w.append("Barre;"+this.getId()+";"+this.getIdType()+';'+this.getIdNoeud1()+";"+this.getIdNoeud2()+"\n");
     }
     
     
