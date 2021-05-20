@@ -47,13 +47,5 @@ public class AppuisDouble extends Appuis {
                 +") ; Fx : "+ this.getFx()+" ; Fy : "+ this.getFy() +"\n}";
     }
     
-     /*public void dessine(GraphicsContext context, Treillis treillis) {
-        
-        context.setStroke(this.getCol());
-        context.fillOval(this.px-RAYON_IN_DRAW,this.py-RAYON_IN_DRAW,2*RAYON_IN_DRAW, 2*RAYON_IN_DRAW);
-        context.strokeLine(treillis.getNumN().getObj(this.idNoeud1).getPx(),
-        treillis.getNumN().getObj(this.idNoeud1).getPy(),treillis.getNumN().getObj(this.idNoeud2).getPx(), treillis.getNumN().getObj(this.idNoeud2).getPy());
-        
-     } */
-
 }
+

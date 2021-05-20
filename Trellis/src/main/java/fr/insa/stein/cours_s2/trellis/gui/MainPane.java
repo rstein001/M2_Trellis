@@ -6,6 +6,7 @@
 package fr.insa.stein.cours_s2.trellis.gui;
 
 import fr.insa.stein.cours_s2.trellis.model.AppuisDouble;
+import fr.insa.stein.cours_s2.trellis.model.AppuisSimple;
 import fr.insa.stein.cours_s2.trellis.model.Barre;
 import fr.insa.stein.cours_s2.trellis.model.NoeudSimple;
 import fr.insa.stein.cours_s2.trellis.model.Treillis;
@@ -16,16 +17,20 @@ import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.swing.event.ChangeListener;
 
@@ -45,9 +50,11 @@ public class MainPane extends BorderPane {
     private Button bTerrain;
     private Button bAppuisDouble;
     private Button bAppuisSimple;
-    private Button bBarre1;
+    
     private Button bBarre2;
     private Button bNoeud;
+    private Button bCalcul;
+
 
     private ChoiceBox cbType;
     private Button baddtype;
@@ -109,6 +116,7 @@ public class MainPane extends BorderPane {
                     i=3;
                 }
             }
+            
             double Px = Double.parseDouble(List.get(0));
             double Py = Double.parseDouble(List.get(1));
             Treillis.getNoeuds().add(new NoeudSimple(Treillis.getNumN(),Px,Py, getCol()));
@@ -128,40 +136,36 @@ public class MainPane extends BorderPane {
                     i=2;
                 }
             }
-            double A = Double.parseDouble(List.get(2));
-            
-            
+            int TT = Integer.parseInt(List.get(0));
+            int pt = Integer.parseInt(List.get(1));
+            double a = Double.parseDouble(List.get(2));
+            Treillis.getNoeuds().add(new AppuisDouble (Treillis.getNumN(),this.Treillis.getNumTT().getObj(TT), pt ,a,this.getCol()));
             
             this.redrawAll();
         });
         this.bAppuisSimple = new Button("Appuis Simple");
         this.bAppuisSimple.setOnAction((t) -> {
-            System.out.println();
-        });
-        this.bBarre1 = new Button("Barre (1 seul noeud construit)");
-        this.bBarre1.setOnAction((t) -> {
-            List<String> List = Dialogue.DialogN1(Treillis);
+            List<String> List = Dialogue.DialogAD(Treillis);
             int i =0;
-            while(i<5){
+            while(i<2){
                 if(List.get(0).matches("[+-]?\\d*(\\.\\d+)?")){
                     i++;
                 }else{
                     System.out.println("erreur double");
-                    i=5;
+                    i=2;
                 }
             }
-            int N1 = Integer.parseInt(List.get(0));
-            int N2 = Integer.parseInt(List.get(1));
-            double Px = Double.parseDouble(List.get(2));
-            double Py = Double.parseDouble(List.get(3));
-            Treillis.getNoeuds().add(new NoeudSimple(Treillis.getNumN(),Px,Py, getCol()));
-            
-            Treillis.getBarres().add(new Barre(Treillis.getNumB(), Treillis.getCatalogue().get((int)this.cbType.getValue()-1) ,N1,N2, this.getCol()));
-            this.redrawAll();
-            
+            int TT = Integer.parseInt(List.get(0));
+            int pt = Integer.parseInt(List.get(1));
+            double a = Double.parseDouble(List.get(2));
+            Treillis.getNoeuds().add(new AppuisSimple (Treillis.getNumN(),this.Treillis.getNumTT().getObj(TT), pt ,a,this.getCol()));
             
         });
-        this.bBarre2 = new Button("Barre (2 noeuds construits)");
+        
+            
+            
+       
+        this.bBarre2 = new Button("Barre");
         this.bBarre2.setOnAction((t) -> {
             List<String> List = Dialogue.DialogN2(Treillis);
             int i =0;
@@ -199,6 +203,39 @@ public class MainPane extends BorderPane {
             this.cbType.getItems().add(this.Treillis.getCatalogue().size());
         });
         
+        this.bCalcul = new Button("CALCULS");
+        this.bCalcul.setOnAction((ActionEvent t1) -> {
+            
+        
+            
+        Stage calculs = new Stage();
+        calculs.initModality(Modality.APPLICATION_MODAL);
+        List calcul = Treillis.calculs();
+            VBox layout = new VBox(); 
+            layout.setAlignment(Pos.CENTER);
+            Insets Inset = new Insets(5,5,0,5);
+        for(int i=0;i<calcul.size(); i++){
+            Label label = new Label((String) calcul.get(i));
+            layout.setMargin(label, Inset);
+            
+            layout.getChildren().add(label);
+        }
+        
+            Scene scene = new Scene(layout, layout.getPrefWidth(), layout.getPrefHeight());
+            calculs.setTitle("Résultats des calculs: ");
+            calculs.setScene(scene);
+            calculs.show();
+        
+       
+         
+         
+         
+       
+            
+            
+        });
+        
+        
         this.t = new Text("Choisir une barre : ");
         
         this.at = new TextInputDialog("");
@@ -224,18 +261,18 @@ public class MainPane extends BorderPane {
         
         
         HBox hb = new HBox(this.bTerrain, this.bAppuisDouble, this.bAppuisSimple,this.bNoeud,
-        this.baddtype, this.bBarre1, this.bBarre2, this.t, this.cbType, this.cpCouleur);
+        this.baddtype, this.bBarre2, this.t, this.cbType, this.cpCouleur, this.bCalcul);
         Insets Inset = new Insets(5,5,0,5);
         HBox.setMargin(bTerrain, Inset);
         HBox.setMargin(bAppuisDouble, Inset);
         HBox.setMargin(bAppuisSimple, Inset);
         HBox.setMargin(baddtype, Inset);
-        HBox.setMargin(bBarre1, Inset);
         HBox.setMargin(bBarre2, Inset);
         HBox.setMargin(t, Inset);
         HBox.setMargin(cbType, Inset);
         HBox.setMargin(cpCouleur, Inset);
         HBox.setMargin(bNoeud, Inset);
+        HBox.setMargin(bCalcul, Inset);
       
         this.setTop(hb);
        
@@ -264,9 +301,8 @@ public class MainPane extends BorderPane {
         return bAppuisSimple;
     }
 
-    public Button getbBarre1() {
-        return bBarre1;
-    }
+    
+    
 
     public Button getbBarre2() {
         return bBarre2;

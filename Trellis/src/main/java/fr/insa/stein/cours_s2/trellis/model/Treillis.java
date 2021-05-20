@@ -225,7 +225,8 @@ public class Treillis {
         }
     }
     
-    public void calculs(){
+    public List<String> calculs(){
+        List res = new ArrayList<String>();
         int ns = this.Noeuds.size();
         int nb = this.Barres.size();
         int nas = this.nbrAppuisSimple();
@@ -241,7 +242,8 @@ public class Treillis {
         Matrice matF = new Matrice(2*ns, 1);
         
         if (!this.estIsostat()){
-            System.out.println("le treillis est hyperstatique");
+            res.add("le treillis est hyperstatique");
+            return res;
         }else{
             
             for(int i=0; i<nb; i++){
@@ -347,19 +349,23 @@ public class Treillis {
             Matrice matR = matA.inverse().mult(matF);
             System.out.println(matR);
             for (int i = 0; i < 2*ns; i++) {
-                System.out.println(matI[i]+" = "+matR.get(i, 0));
+                res.add(matI[i]+" = "+matR.get(i, 0));
+                
             }
             for (int i = 0; i < nb; i++) {
                 double contrainte =matR.get(i, 0);
                 if(contrainte>=0){
                     double Rt=this.Catalogue.get(this.Barres.get(i).getIdType()-1).getRtrac();
-                    System.out.println("La barre "+(i+1)+" est en traction : "+contrainte*100/Rt+"% de sa résistance max");
+                    res.add("La barre "+(i+1)+" est en traction : "+contrainte*100/Rt+"% de sa résistance max");
                 }else{
                     double Rc=this.Catalogue.get(this.Barres.get(i).getIdType()-1).getRcomp();
-                    System.out.println("La barre "+(i+1)+" est en compression : "+Math.abs(contrainte)*100/Rc+"% de sa résistance max");
+                    res.add("La barre "+(i+1)+" est en compression : "+Math.abs(contrainte)*100/Rc+"% de sa résistance max");
+                    
                 }
             }
+            
         }
+        return res;
     }
     
     public void demandeZone(){
@@ -683,7 +689,10 @@ public class Treillis {
                     break;
                     
                     case 12:
-                        this.calculs();
+                        List calcul= this.calculs();
+                        for (int i=0;i<calcul.size();i++){
+                            System.out.println(calcul.get(i));
+                        }
                     break;
                 default:
                     break;
