@@ -5,48 +5,35 @@
  */
 package fr.insa.stein.cours_s2.trellis.gui;
 
-import fr.insa.stein.cours_s2.trellis.model.AppuisDouble;
-import fr.insa.stein.cours_s2.trellis.model.AppuisSimple;
-import fr.insa.stein.cours_s2.trellis.model.Barre;
-import fr.insa.stein.cours_s2.trellis.model.Noeud;
-import fr.insa.stein.cours_s2.trellis.model.NoeudSimple;
 import fr.insa.stein.cours_s2.trellis.model.Treillis;
-import fr.insa.stein.cours_s2.trellis.model.TypeBarre;
-import fr.insa.stein.cours_s2.trellis.model.TriangleTerrain;
 import java.io.File;
-import java.util.List;
-
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import recup.Lire;
 
 
 public class MainPane extends BorderPane {
 
     private Treillis Treillis;
-
+    private Controleur controleur;
     private Stage inStage;
+    private File curFile;
     private DessinCanvas cDessin;
+    private MainMenu menu;
     
     private ColorPicker cpCouleur;
     private Color col;
     
-    private TriangleTerrain TriangleTerrain;
     
     private Button bTerrain;
     private Button bAppuisDouble;
@@ -66,8 +53,8 @@ public class MainPane extends BorderPane {
     
 
 
-    public MainPane(Stage inStage, Treillis Zone) {
-        this(inStage, null, Zone);
+    public MainPane(Stage inStage, Treillis treillis) {
+        this(inStage, null, treillis);
     }
     
     public MainPane(Stage inStage) {
@@ -77,176 +64,46 @@ public class MainPane extends BorderPane {
     public MainPane(Stage inStage, File fromFile, Treillis Treillis) {
         this.inStage = inStage;
         this.Treillis = Treillis;
+        this.curFile = fromFile;
+        this.controleur = new Controleur(this);
 
         this.bTerrain = new Button("TriangleTerrain");
         this.bTerrain.setOnAction((t) -> {
-            List<String> List = Dialogue.DialogTT(Treillis);
-            int i =0;
-            while(i<6){
-                if(List.get(0).matches("[+-]?\\d*(\\.\\d+)?")){
-                    i++;
-                }else{
-                    System.out.println("erreur double");
-                    i=6;
-                }
-            }
-            double P1x = Double.parseDouble(List.get(0));
-            double P1y = Double.parseDouble(List.get(1));
-            double P2x = Double.parseDouble(List.get(2));
-            double P2y = Double.parseDouble(List.get(3));
-            double P3x = Double.parseDouble(List.get(4));
-            double P3y = Double.parseDouble(List.get(5));
-            double [][] PT ={{P1x,P1y},{P2x,P2y},{P3x,P3y}};
-            
-            Treillis.getTT().add(new TriangleTerrain(Treillis.getNumTT(),PT));
-            this.redrawAll();
-            
+            this.getControleur().boutonTriangleTerrain();
         });
-        this.bAppuisDouble = new Button("Appuis Double");
-        this.bAppuisDouble.setOnAction((t) -> {
-            System.out.println();
-        });
+        
         this.bNoeud = new Button("Noeud");
         this.bNoeud.setOnAction((t) -> {
-            List<String> List = Dialogue.DialogNoeud(Treillis);
-            int i =0;
-            while(i<2){
-                if(List.get(0).matches("[+-]?\\d*(\\.\\d+)?")){
-                    i++;
-                }else{
-                    System.out.println("erreur double");
-                    i=3;
-                }
-            }
-            
-            double Px = Double.parseDouble(List.get(0));
-            double Py = Double.parseDouble(List.get(1));
-            Treillis.getNoeuds().add(new NoeudSimple(Treillis.getNumN(),Px,Py, getCol()));
-            this.redrawAll();
-            
-            
+            this.getControleur().boutonNoeudSimple();            
         });
+        
         this.bAppuisDouble = new Button("Appuis Double");
         this.bAppuisDouble.setOnAction((t) -> {
-            List<String> List = Dialogue.DialogAD(Treillis);
-            int i =0;
-            while(i<2){
-                if(List.get(0).matches("[+-]?\\d*(\\.\\d+)?")){
-                    i++;
-                }else{
-                    System.out.println("erreur double");
-                    i=2;
-                }
-            }
-            int TT = Integer.parseInt(List.get(0));
-            int pt = Integer.parseInt(List.get(1));
-            double a = Double.parseDouble(List.get(2));
-            Treillis.getNoeuds().add(new AppuisDouble (Treillis.getNumN(),this.Treillis.getNumTT().getObj(TT), pt ,a,this.getCol()));
-            
-            this.redrawAll();
+            this.getControleur().boutonAppuisDouble();
         });
         this.bAppuisSimple = new Button("Appuis Simple");
         this.bAppuisSimple.setOnAction((t) -> {
-            List<String> List = Dialogue.DialogAD(Treillis);
-            int i =0;
-            while(i<2){
-                if(List.get(0).matches("[+-]?\\d*(\\.\\d+)?")){
-                    i++;
-                }else{
-                    System.out.println("erreur double");
-                    i=2;
-                }
-            }
-            int TT = Integer.parseInt(List.get(0));
-            int pt = Integer.parseInt(List.get(1));
-            double a = Double.parseDouble(List.get(2));
-            Treillis.getNoeuds().add(new AppuisSimple (Treillis.getNumN(),this.Treillis.getNumTT().getObj(TT), pt ,a,this.getCol()));
-            this.redrawAll();
-        });
-        
-            
-            
+            this.getControleur().boutonAppuisDouble();
+        });   
        
         this.bBarre2 = new Button("Barre");
         this.bBarre2.setOnAction((t) -> {
-            List<String> List = Dialogue.DialogN2(Treillis);
-            int i =0;
-            while(i<3){
-                if(List.get(0).matches("[0-9]*")){
-                    i++;
-                }else{
-                    System.out.println("erreur int");
-                    i=3;
-                }
-            }
-            int N1 = Integer.parseInt(List.get(0));
-            int N2 = Integer.parseInt(List.get(1));
-            Treillis.getBarres().add(new Barre(Treillis.getNumB(), Treillis.getCatalogue().get((int)this.cbType.getValue()-1) ,N1,N2, this.getCol()));
-            this.redrawAll();
+            this.getControleur().boutonBarre();
         });
+        
         this.baddtype = new Button("Ajouter un type de barre");
         this.baddtype.setOnAction((ActionEvent t1) -> {
-            List<String> List = Dialogue.DialogTB(Treillis);
-            int i =0;
-            while(i<5){
-                if(List.get(0).matches("[+-]?\\d*(\\.\\d+)?")){
-                    i++;
-                }else{
-                    System.out.println("erreur double");
-                    i=5;
-                }
-            }
-            double cout = Double.parseDouble(List.get(0));
-            double lmin = Double.parseDouble(List.get(1));
-            double lmax = Double.parseDouble(List.get(2));
-            double rtract = Double.parseDouble(List.get(3));
-            double rcomp = Double.parseDouble(List.get(4));
-            Treillis.getCatalogue().add(new TypeBarre(Treillis.getNumTB(),cout,lmin,lmax,rtract,rcomp));
-            this.cbType.getItems().add(this.Treillis.getCatalogue().size());
+            this.getControleur().boutonTypeBarre();
         });
         
         this.bCalcul = new Button("CALCULS");
         this.bCalcul.setOnAction((ActionEvent t1) -> {
-        Stage calculs = new Stage();
-        calculs.initModality(Modality.APPLICATION_MODAL);
-        List calcul = Treillis.calculs();
-            VBox layout = new VBox(); 
-            layout.setAlignment(Pos.CENTER);
-            Insets Inset = new Insets(5,5,0,5);
-        for(int i=0;i<calcul.size(); i++){
-            Label label = new Label((String) calcul.get(i));
-            layout.setMargin(label, Inset);
-            
-            layout.getChildren().add(label);
-        }
-        
-            Scene scene = new Scene(layout, layout.getPrefWidth(), layout.getPrefHeight());
-            calculs.setTitle("Résultats des calculs: ");
-            calculs.setScene(scene);
-            calculs.show();
+            this.getControleur().boutonCalcul();
         });
         
         this.bForce = new Button("Ajouter une force");
         this.bForce.setOnAction((ActionEvent t1) -> {
-            List<String> List = Dialogue.DialogForce(Treillis);
-            int i =0;
-            while(i<3){
-                if(List.get(0).matches("[+-]?\\d*(\\.\\d+)?")){
-                    i++;
-                }else{
-                    System.out.println("erreur double");
-                    i=3;
-                }
-            }
-        int id = Integer.parseInt(List.get(0));
-        Noeud N = Treillis.getNumN().getObj(id);
-        double Fx=Double.parseDouble(List.get(1));
-        double Fy=Double.parseDouble(List.get(2));
-        N.setFx(Fx);
-        N.setFy(Fy);
-        
-            
-            
+            this.getControleur().boutonForce();            
          });
         
         this.t = new Text("Choisir une barre : ");
@@ -262,10 +119,6 @@ public class MainPane extends BorderPane {
             Scene scene = new Scene (tilePane, 600, 300);
         }
        this.cbType.getSelectionModel().select(0);
-      
-        
-        
-        
         
         this.cpCouleur = new ColorPicker(Color.BLACK);
         this.cpCouleur.setOnAction((t) -> {
@@ -287,17 +140,24 @@ public class MainPane extends BorderPane {
         HBox.setMargin(bNoeud, Inset);
         HBox.setMargin(bCalcul, Inset);
         HBox.setMargin(bForce, Inset);
-      
+        
         this.setTop(hb);
+        
+        this.menu = new MainMenu(this);
+        this.setBottom(this.menu);
        
         this.cDessin = new DessinCanvas(this);
         this.setCenter(this.cDessin);
 
     }
-
-  public void redrawAll() {
-      this.cDessin.redrawAll();
-  }
+    
+    public Controleur getControleur() {
+        return controleur;
+    }
+    
+    public void redrawAll() {
+        this.cDessin.redrawAll();
+    }
 
     public Treillis getTreillis() {
         return Treillis;
@@ -317,10 +177,7 @@ public class MainPane extends BorderPane {
 
     public Button getbForce() {
         return bForce;
-    }
-
-    
-    
+    }    
 
     public Button getbBarre2() {
         return bBarre2;
@@ -341,7 +198,15 @@ public class MainPane extends BorderPane {
     public Stage getInStage() {
         return inStage;
     }
-
+    
+    public File getCurFile() {
+        return curFile;
+    }
+    
+    public void setCurFile(File curFile) {
+        this.curFile = curFile;
+    }
+    
     public TextInputDialog getAt() {
         return at;
     }

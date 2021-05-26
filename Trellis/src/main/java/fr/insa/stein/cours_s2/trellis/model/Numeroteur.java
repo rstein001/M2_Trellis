@@ -64,14 +64,6 @@ public class Numeroteur<TO> {
             throw new Error("Objet" + obj + " inconnu dans numéroteur");
         }
     }
-
-    public int getOuCreeID(TO obj) {
-        if (this.objExist(obj)) {
-            return this.objetVersId.get(obj);
-        } else {
-            return this.creeID(obj);
-        }
-    }
     
     public TO getObj(int id) {
         if (! this.idExist(id)) {
@@ -84,14 +76,6 @@ public class Numeroteur<TO> {
         return this.idVersObjet.containsKey(id);
     }
     
-    public void associe(int id,TO obj) {
-        if (this.idExist(id)) {
-            throw new Error("identificateur existant");
-        }
-        this.idVersObjet.put(id, obj);
-        this.objetVersId.put(obj, id);
-    }
-
     public int getSize(){
         return this.objetVersId.size();
     }

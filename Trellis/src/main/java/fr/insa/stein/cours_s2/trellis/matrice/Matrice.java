@@ -599,6 +599,8 @@ public class Matrice {
      * @return un Optional contenant la matrice inverse si this est inversible,
      * null sinon.
      */
+    
+    
     public Matrice inverse() {
         if (this.getNbrLig() != this.getNbrCol()) {
             throw new Error("inverse seulement pour les matrices carrées");

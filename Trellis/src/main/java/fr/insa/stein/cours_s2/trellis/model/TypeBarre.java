@@ -36,49 +36,36 @@ public class TypeBarre {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    
 
     public double getCout() {
         return cout;
     }
 
-    public void setCout(double cout) {
-        this.cout = cout;
-    }
-
+    
     public double getLmin() {
         return Lmin;
     }
 
-    public void setLmin(double Lmin) {
-        this.Lmin = Lmin;
-    }
+    
 
     public double getLmax() {
         return Lmax;
     }
 
-    public void setLmax(double Lmax) {
-        this.Lmax = Lmax;
-    }
+    
 
     public double getRtrac() {
         return Rtrac;
     }
 
-    public void setRtrac(double Rtrac) {
-        this.Rtrac = Rtrac;
-    }
+    
 
     public double getRcomp() {
         return Rcomp;
     }
 
-    public void setRcomp(double Rcomp) {
-        this.Rcomp = Rcomp;
-    }
+    
 
     @Override
     public String toString() {

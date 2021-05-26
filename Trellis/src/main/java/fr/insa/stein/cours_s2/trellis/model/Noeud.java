@@ -25,7 +25,6 @@ public abstract class Noeud{
     private double py;
     private Color col;
     private int id;
-    private List<Integer> barre;
     private double fx;
     private double fy;
 
@@ -34,7 +33,6 @@ public abstract class Noeud{
         this.py = y;
         this.col = col;
         this.id = num.creeID(this);
-        this.barre = new ArrayList();
         this.fx = 0;
         this.fy = 0;
     }
@@ -78,17 +76,9 @@ public abstract class Noeud{
     public Color getCol() {
         return col;
     }
-
-    public void setCol(Color col) {
-        this.col = col;
-    }
     
     public int getId() {
         return id;
-    }
-
-    public List<Integer> getBarreN() {
-        return barre;
     }
 
     public double getFx() {
@@ -115,9 +105,11 @@ public abstract class Noeud{
     
     
     public void dessine (GraphicsContext context){
+        double x = this.px*50+500;
+        double y = -(this.py*50-400);
          context.setFill(this.getCol());
-         context.fillOval(this.px-RAYON_IN_DRAW,this.py-RAYON_IN_DRAW,2*RAYON_IN_DRAW, 2*RAYON_IN_DRAW);
-         context.fillText (Integer.toString(this.id), this.px+10, this.py+10);
+         context.fillOval(x-RAYON_IN_DRAW,y-RAYON_IN_DRAW,2*RAYON_IN_DRAW, 2*RAYON_IN_DRAW);
+         context.fillText ('S'+Integer.toString(this.id), x+10, y+10);
          
      }   
     

@@ -37,7 +37,7 @@ public abstract class Appuis extends Noeud {
         super(num, col);
         idTriangle = TT.getId();
         this.numeroPT = numeroPT;
-        this.alpha = 0;
+        this.alpha = (this.getPx()- TT.getPTx((numeroPT+1)%3))/(TT.getPTx(numeroPT)- TT.getPTx((numeroPT+1)%3));
         this.setPx(x);
         this.setPy(y);
     }

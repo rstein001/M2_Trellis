@@ -64,10 +64,6 @@ public class Barre {
     public Color getCol() {
         return col;
     }
-
-    public void setCol(Color col) {
-        this.col = col;
-    }
     
     @Override
     public String toString() {
@@ -75,10 +71,12 @@ public class Barre {
                 "idNoued1 : "+getIdNoeud1()+" ; "+"idNoeud2 : "+getIdNoeud2()+" ; " + "\n}";
     }
     public void dessine(GraphicsContext context, Treillis treillis) {
-        
+        double xd = treillis.getNumN().getObj(this.idNoeud1).getPx()*50+500;
+        double yd = -(treillis.getNumN().getObj(this.idNoeud1).getPy()*50-400);
+        double xf = treillis.getNumN().getObj(this.idNoeud2).getPx()*50+500;
+        double yf = -(treillis.getNumN().getObj(this.idNoeud2).getPy()*50-400);
         context.setStroke(this.getCol());
-        context.strokeLine(treillis.getNumN().getObj(this.idNoeud1).getPx(),
-        treillis.getNumN().getObj(this.idNoeud1).getPy(),treillis.getNumN().getObj(this.idNoeud2).getPx(), treillis.getNumN().getObj(this.idNoeud2).getPy());
+        context.strokeLine(xd, yd , xf, yf);
     }
     
     

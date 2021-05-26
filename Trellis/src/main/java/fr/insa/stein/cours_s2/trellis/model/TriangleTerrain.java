@@ -52,20 +52,8 @@ public class TriangleTerrain {
         return PT[i][1];
     }
 
-    public void setPTx(int i, double x) {
-        this.PT[i][0] = x;
-    }
-    
-    public void setPTy(int i, double y) {
-        this.PT[i][1] = y;
-    }
-
     public Color getCol() {
         return col;
-    }
-
-    public void setCol(Color col) {
-        this.col = col;
     }
     
     @Override
@@ -111,16 +99,19 @@ public class TriangleTerrain {
 
     
     public void dessine(GraphicsContext context) {
-        
+        double x1 = this.getPTx(0)*50+500;
+        double y1 = -(this.getPTy(0)*50-400);
+        double x2 = this.getPTx(1)*50+500;
+        double y2 = -(this.getPTy(1)*50-400);
+        double x3 = this.getPTx(2)*50+500;
+        double y3 = -(this.getPTy(2)*50-400);
         context.setStroke(this.getCol());
-        context.strokeLine(this.getPTx(0),this.getPTy(0), this.getPTx(1), this.getPTy(1) );
-        context.strokeLine(this.getPTx(1),this.getPTy(1), this.getPTx(2), this.getPTy(2) );
-        context.strokeLine(this.getPTx(2),this.getPTy(2), this.getPTx(0), this.getPTy(0) );
-        context.fillText (Integer.toString(0), this.getPTx(0)+10, this.getPTy(0)+10);
-        context.fillText (Integer.toString(1), this.getPTx(1)+10, this.getPTy(1)+10);
-        context.fillText (Integer.toString(2), this.getPTx(2)+10, this.getPTy(2)+10);
-        
-       
+        context.strokeLine(x1,y1, x2, y2);
+        context.strokeLine(x2,y2, x3, y3);
+        context.strokeLine(x3,y3, x1, y1);
+        context.fillText ("PT"+Integer.toString(0), x1-25, y1+10);
+        context.fillText ("PT"+Integer.toString(1), x2-25, y2+10);
+        context.fillText ("PT"+Integer.toString(2), x3-25, y3+10);
     }
     
     public void save (Writer w) throws IOException{

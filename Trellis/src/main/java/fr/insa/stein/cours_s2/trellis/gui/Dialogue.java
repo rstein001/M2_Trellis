@@ -100,9 +100,7 @@ public class Dialogue {
         return null;
     }
     
-    public static List<String> DialogTT (Treillis Trellis) 
-    
-    {
+    public static List<String> DialogTT (Treillis Trellis) {
         // Create the custom dialog.
         Dialog<List<String>> dialogTT = new Dialog<>();
         dialogTT.setTitle("ajoutez un triangle terrain");

@@ -5,10 +5,13 @@ package fr.insa.stein.cours_s2.trellis.model;
 import fr.insa.stein.cours_s2.trellis.matrice.Matrice;
 import static fr.insa.stein.cours_s2.trellis.model.TriangleTerrain.demandePT;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.paint.Color;
@@ -348,23 +351,25 @@ public class Treillis {
                 }
                 cur=cur+2;
             }
-            System.out.println(matA);
-            System.out.println(matA.inverse());
-            System.out.println(matF);
+            //System.out.println(matA);
+            //System.out.println(matA.inverse());
+            //System.out.println(matF);
             Matrice matR = matA.inverse().mult(matF);
-            System.out.println(matR);
+            //System.out.println(matR);
             for (int i = 0; i < 2*ns; i++) {
-                res.add(matI[i]+" = "+matR.get(i, 0));
+                res.add(matI[i]+" = "+String.format("%+4.2E", matR.get(i, 0)));
                 
             }
+            
+            DecimalFormat f = new DecimalFormat("#.##");
             for (int i = 0; i < nb; i++) {
                 double contrainte =matR.get(i, 0);
                 if(contrainte>=0){
                     double Rt=this.Catalogue.get(this.Barres.get(i).getIdType()-1).getRtrac();
-                    res.add("La barre "+(i+1)+" est en traction : "+contrainte*100/Rt+"% de sa résistance max");
+                    res.add("La barre "+(i+1)+" est en traction : "+f.format(contrainte/Rt)+"% de sa résistance max");
                 }else{
                     double Rc=this.Catalogue.get(this.Barres.get(i).getIdType()-1).getRcomp();
-                    res.add("La barre "+(i+1)+" est en compression : "+Math.abs(contrainte)*100/Rc+"% de sa résistance max");
+                    res.add("La barre "+(i+1)+" est en compression : "+f.format(Math.abs(contrainte)/Rc)+"% de sa résistance max");
                     
                 }
             }
@@ -619,8 +624,6 @@ public class Treillis {
                         break;
                     }
                     this.Barres.add(new Barre(this.numB, Type, idN1, idN2));
-                    this.Noeuds.get(this.Barres.get(this.numTB.getSize()-1).getIdNoeud1()-1).getBarreN().add(this.numTB.getSize()-1);
-                    this.Noeuds.get(this.Barres.get(this.numTB.getSize()-1).getIdNoeud2()-1).getBarreN().add(this.numTB.getSize()-1);
                     break;
                     
                     
@@ -652,8 +655,6 @@ public class Treillis {
                         break;
                     }
                     this.Barres.add(new Barre(this.numB, Type, idN1, this.numN.getSize()));
-                    this.Noeuds.get(this.Barres.get(this.numTB.getSize()-1).getIdNoeud1()-1).getBarreN().add(this.numTB.getSize()-1);
-                    this.Noeuds.get(this.Barres.get(this.numTB.getSize()-1).getIdNoeud2()-1).getBarreN().add(this.numTB.getSize()-1);
                     break;
                     
                     case 10:
@@ -685,8 +686,6 @@ public class Treillis {
                         break;
                     }
                     this.Barres.add(new Barre(this.numB, Type, this.numN.getSize()-1, this.numN.getSize()));
-                    this.Noeuds.get(this.Barres.get(this.numTB.getSize()-1).getIdNoeud1()-1).getBarreN().add(this.numTB.getSize()-1);
-                    this.Noeuds.get(this.Barres.get(this.numTB.getSize()-1).getIdNoeud2()-1).getBarreN().add(this.numTB.getSize()-1);
                     break;
                     
                     case 11:
@@ -707,13 +706,13 @@ public class Treillis {
     
     public static Treillis treillisTest(){
         Treillis res = new Treillis();
-        double [][] PT ={{0,0},{0,2},{1,-2}};
+        double [][] PT ={{0,0},{0,2},{-1,2}};
         res.TT.add(new TriangleTerrain(res.numTT, PT, Color.GREEN));
         res.Catalogue.add(new TypeBarre(res.numTB, 100,1,500,1000,2000));
         res.Catalogue.add(new TypeBarre(res.numTB, 100,1,500,599,2000));
         res.Noeuds.add(new AppuisDouble(res.numN,res.numTT.getObj(1), 0, 1));
         res.Noeuds.add(new AppuisSimple(res.numN,res.numTT.getObj(1), 0, 0));
-        res.Noeuds.add(new NoeudSimple(res.numN, 100, 100));
+        res.Noeuds.add(new NoeudSimple(res.numN, 1, 1));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),1,3));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),2,3));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),1,2));
@@ -725,14 +724,14 @@ public class Treillis {
         Treillis res = new Treillis();
         double [][] PT ={{0,0},{-3,0},{0,-2}};
         res.TT.add(new TriangleTerrain(res.numTT, PT));
-        double [][] PT2 ={{10,0},{10,-2},{13,1}};
+        double [][] PT2 ={{10,0},{10,-2},{13,0}};
         res.TT.add(new TriangleTerrain(res.numTT, PT2));
         res.Catalogue.add(new TypeBarre(res.numTB, 100,1,6,1000,2000));
         res.Noeuds.add(new AppuisDouble(res.numN,res.numTT.getObj(1), 0, 0));
         res.Noeuds.add(new NoeudSimple(res.numN, 5, 0));
         res.Noeuds.add(new AppuisSimple(res.numN,res.numTT.getObj(2), 0, 0));
-        res.Noeuds.add(new NoeudSimple(res.numN, 2.5, 4.5));
-        res.Noeuds.add(new NoeudSimple(res.numN, 7.5, 4.5));
+        res.Noeuds.add(new NoeudSimple(res.numN, 2.5, 3.5));
+        res.Noeuds.add(new NoeudSimple(res.numN, 7.5, 3.5));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),1,2));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),2,3));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),1,4));
@@ -744,6 +743,13 @@ public class Treillis {
         return res;
     }
     
+    public static Treillis treillisTest3(){
+        Treillis res = new Treillis();
+        res.Noeuds.add(new NoeudSimple(res.numN, 0, 0));
+        res.Noeuds.add(new NoeudSimple(res.numN, 2, 2));
+        return res;
+    }
+    
     public static void testMenu(){
         Treillis treillis = treillisTest();
         treillis.menuTexte();
@@ -752,77 +758,113 @@ public class Treillis {
     public void save(Writer w) throws IOException {
         w.append("ZoneConstructible;"+this.Xmin+';'+this.Xmax+';'+this.Ymin+';'+this.Ymax+"\n");
         for (int i=0; i<this.TT.size();i++){
-            this.numTT.getObj(i).save(w);
+            this.numTT.getObj(i+1).save(w);
         }
         w.append("FINTRIANGLES");
         for (int i=0; i<this.Catalogue.size();i++){
-            this.numTB.getObj(i).save(w);
+            this.numTB.getObj(i+1).save(w);
         }
         w.append("FINCATALOGUE");
         for (int i=0; i<this.Noeuds.size();i++){
-            Noeud noeud=this.numN.getObj(i);
+            Noeud noeud=this.numN.getObj(i+1);
             if (noeud instanceof AppuisDouble){
                 ((AppuisDouble) noeud).save(w);
             }
         }
         for (int i=0; i<this.Noeuds.size();i++){
-            Noeud noeud=this.numN.getObj(i);
+            Noeud noeud=this.numN.getObj(i+1);
             if (noeud instanceof AppuisSimple){
                 ((AppuisSimple) noeud).save(w);
             }
         }
         for (int i=0; i<this.Noeuds.size();i++){
-            Noeud noeud=this.numN.getObj(i);
+            Noeud noeud=this.numN.getObj(i+1);
             if (noeud instanceof NoeudSimple){
                 ((NoeudSimple) noeud).save(w);
             }
         }
         w.append("FINNOEUDS");
        for (int i=0; i<this.Barres.size();i++){
-            this.numB.getObj(i).save(w);
+            this.numB.getObj(i+1).save(w);
             
         }
         w.append("FINBARRES");
     }
-    /*
+    
     public static Treillis lecture(File fin) throws IOException {
-        
+        Treillis res = null;
         try (BufferedReader bin = new BufferedReader(new FileReader(fin))) {
             String line;
             while ((line = bin.readLine()) != null && line.length() != 0) {
                 String[] bouts = line.split(";");
+                
+                res= new Treillis();
                 if (bouts[0].equals("ZoneConstructible")) {
                     double xmin = Double.parseDouble(bouts[1]);
+                    res.setXmin(xmin);
                     double xmax = Double.parseDouble(bouts[2]);
+                    res.setXmax(xmax);
                     double ymin = Double.parseDouble(bouts[3]);
+                    res.setYmin(ymin);
                     double ymax = Double.parseDouble(bouts[4]);
-                    Treillis res= new Treillis(xmin, xmax, ymin, ymax);
+                    res.setYmax(ymax);
                 } else if (bouts[0].equals("Triangle")) {
-                    int idP1 = Integer.parseInt(bouts[2]);
-                    int idP2 = Integer.parseInt(bouts[3]);
-                    Color col = FigureSimple.parseColor(bouts[4], bouts[5], bouts[6]);
-                    Point p1 = (Point) num.getObj(idP1);
-                    Point p2 = (Point) num.getObj(idP2);
-                    Segment ns = new Segment(p1, p2, col);
-                    num.associe(id, ns);
-                    derniere = ns;
+                    double[][] PT= new double[3][2];
+                    String[] point1 = lecturePoint(bouts[2]);
+                    PT[0][0]= Double.parseDouble(point1[0]);
+                    PT[0][1]= Double.parseDouble(point1[1]);
+                    String[] point2 = lecturePoint(bouts[3]);
+                    PT[1][0]= Double.parseDouble(point2[0]);
+                    PT[1][1]= Double.parseDouble(point2[1]);
+                    String[] point3 = lecturePoint(bouts[4]);
+                    PT[2][0]= Double.parseDouble(point3[0]);
+                    PT[2][1]= Double.parseDouble(point3[1]);
+                    res.TT.add(new TriangleTerrain(res.getNumTT(), PT));
                 } else if (bouts[0].equals("TypeBarre")) {
-                    int id = Integer.parseInt(bouts[1]);
-                    Groupe ng = new Groupe();
-                    num.associe(id, ng);
-                    for (int i = 2; i < bouts.length; i++) {
-                        int idSous = Integer.parseInt(bouts[i]);
-                        Figure fig = num.getObj(idSous);
-                        ng.add(fig);
-                    }
-                    derniere = ng;
+                    double cout = Double.parseDouble(bouts[2]);
+                    double lmin = Double.parseDouble(bouts[3]);
+                    double lmax = Double.parseDouble(bouts[4]);
+                    double rtract = Double.parseDouble(bouts[5]);
+                    double rcomp = Double.parseDouble(bouts[6]);
+                    res.Catalogue.add(new TypeBarre(res.getNumTB(),cout,lmin,lmax,rtract,rcomp));
+                }else if (bouts[0].equals("AppuiDouble")) {
+                    int idTT = Integer.parseInt(bouts[2]);
+                    int numPT = Integer.parseInt(bouts[3]);
+                    double alpha = Double.parseDouble(bouts[4]);
+                    res.Noeuds.add(new AppuisDouble(res.getNumN(),res.getNumTT().getObj(idTT),numPT,alpha));
+                }else if (bouts[0].equals("AppuiSimple")) {
+                    int idTT = Integer.parseInt(bouts[2]);
+                    int numPT = Integer.parseInt(bouts[3]);
+                    double alpha = Double.parseDouble(bouts[4]);
+                    res.Noeuds.add(new AppuisSimple(res.getNumN(),res.getNumTT().getObj(idTT),numPT,alpha));
+                } else if (bouts[0].equals("NoeudSimple")) {
+                    String[] point = lecturePoint(bouts[2]);
+                    double x = Double.parseDouble(point[0]);
+                    double y = Double.parseDouble(point[1]);
+                    res.Noeuds.add(new NoeudSimple(res.getNumN(), x, y));
+                }else if (bouts[0].equals("Barre")) {
+                    int idTB = Integer.parseInt(bouts[2]);
+                    int idN1 = Integer.parseInt(bouts[3]);
+                    int idN2 = Integer.parseInt(bouts[2]);
+                    res.Barres.add(new Barre(res.getNumB(), res.getNumTB().getObj(idTB), idN1, idN2));
                 }
             }
-
         }
-        return derniere;
+        return res;
     }
-    */
+    
+    public static String[] lecturePoint(String point){
+        point = point.replace("(", "");
+        point = point.replace(")", "");
+        return point.split(";");
+    }
+    
+    public void sauvegarde(File fout) throws IOException {
+        try (BufferedWriter bout = new BufferedWriter(new FileWriter(fout))) {
+            this.save(bout);
+        }
+    }
+    
     public static void main(String[] args) {
         testMenu();
         
