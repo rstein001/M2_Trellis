@@ -50,9 +50,8 @@ public class MainMenu extends MenuBar{
             this.main.getControleur().menuOpen(t);
         });        
         file.getItems().addAll(nouveau,save,saveAs,load);
-        Menu help = new Menu("Aide");
         
-        this.getMenus().addAll(file,help);
+        this.getMenus().add(file);
     }
     
 }

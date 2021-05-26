@@ -125,8 +125,10 @@ public class MainPane extends BorderPane {
             this.setCol(this.cpCouleur.getValue());
         });
         
+        this.menu = new MainMenu(this);
+        this.setBottom(this.menu);
         
-        HBox hb = new HBox(this.bTerrain, this.bAppuisDouble, this.bAppuisSimple,this.bNoeud,
+        HBox hb = new HBox(this.menu, this.bTerrain, this.bAppuisDouble, this.bAppuisSimple,this.bNoeud,
         this.baddtype, this.bBarre2, this.t, this.cbType, this.cpCouleur,this.bForce, this.bCalcul);
         Insets Inset = new Insets(5,5,0,5);
         HBox.setMargin(bTerrain, Inset);
@@ -142,9 +144,6 @@ public class MainPane extends BorderPane {
         HBox.setMargin(bForce, Inset);
         
         this.setTop(hb);
-        
-        this.menu = new MainMenu(this);
-        this.setBottom(this.menu);
        
         this.cDessin = new DessinCanvas(this);
         this.setCenter(this.cDessin);
