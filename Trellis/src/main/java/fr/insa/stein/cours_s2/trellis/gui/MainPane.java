@@ -162,6 +162,10 @@ public class MainPane extends BorderPane {
         return Treillis;
     }
 
+    public void setTreillis(Treillis Treillis) {
+        this.Treillis = Treillis;
+    }
+
     public Button getbTerrain() {
         return bTerrain;
     }

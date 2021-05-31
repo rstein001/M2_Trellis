@@ -238,10 +238,12 @@ public class Controleur {
         File f = chooser.showOpenDialog(this.vue.getInStage());
         if (f != null) {
             try {
-                Treillis lue = Treillis.lecture(f);
+                Treillis lue = new Treillis();
+                lue.lecture(f);
+                this.vue.setTreillis(lue);
                 Stage nouveau = new Stage();
                 nouveau.setTitle(f.getName());
-                Scene sc = new Scene(new MainPane(nouveau, f, lue), 800, 600);
+                Scene sc = new Scene(new MainPane(nouveau, lue), 1400, 600);
                 nouveau.setScene(sc);
                 nouveau.show();
             } catch (Exception ex) {

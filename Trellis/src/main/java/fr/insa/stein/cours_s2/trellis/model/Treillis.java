@@ -62,7 +62,7 @@ public class Treillis {
     }
     
     public Treillis() {
-        this(2000,0,2000,0);
+        this(-1000,1000,-1000,1000);
     }
 
     public double getXmax() {
@@ -351,11 +351,11 @@ public class Treillis {
                 }
                 cur=cur+2;
             }
-            //System.out.println(matA);
-            //System.out.println(matA.inverse());
-            //System.out.println(matF);
+            System.out.println(matA);
+            System.out.println(matA.inverse());
+            System.out.println(matF);
             Matrice matR = matA.inverse().mult(matF);
-            //System.out.println(matR);
+            System.out.println(matR);
             for (int i = 0; i < 2*ns; i++) {
                 res.add(matI[i]+" = "+String.format("%+4.2E", matR.get(i, 0)));
                 
@@ -727,11 +727,12 @@ public class Treillis {
         double [][] PT2 ={{10,0},{10,-2},{13,0}};
         res.TT.add(new TriangleTerrain(res.numTT, PT2));
         res.Catalogue.add(new TypeBarre(res.numTB, 100,1,6,1000,2000));
-        res.Noeuds.add(new AppuisDouble(res.numN,res.numTT.getObj(1), 0, 0));
+        res.Noeuds.add(new AppuisDouble(res.numN,res.numTT.getObj(1), 0, 0, Color.BLUE));
         res.Noeuds.add(new NoeudSimple(res.numN, 5, 0));
-        res.Noeuds.add(new AppuisSimple(res.numN,res.numTT.getObj(2), 0, 0));
-        res.Noeuds.add(new NoeudSimple(res.numN, 2.5, 3.5));
-        res.Noeuds.add(new NoeudSimple(res.numN, 7.5, 3.5));
+        res.Noeuds.add(new AppuisSimple(res.numN,res.numTT.getObj(2), 0, 0, Color.RED));
+        res.Noeuds.add(new NoeudSimple(res.numN, 2.5, 2.5));
+        res.Noeuds.add(new NoeudSimple(res.numN, 7.5, 2.5));
+        res.Noeuds.add(new NoeudSimple(res.numN, 5, 5));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),1,2));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),2,3));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),1,4));
@@ -739,6 +740,8 @@ public class Treillis {
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),2,5));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),3,5));
         res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),4,5));
+        res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),4,6));
+        res.Barres.add(new Barre(res.numB,res.Catalogue.get(0),5,6));
         res.numN.getObj(2).setFy(-1000);
         return res;
     }
@@ -760,11 +763,11 @@ public class Treillis {
         for (int i=0; i<this.TT.size();i++){
             this.numTT.getObj(i+1).save(w);
         }
-        w.append("FINTRIANGLES");
+        w.append("FINTRIANGLES"+"\n");
         for (int i=0; i<this.Catalogue.size();i++){
             this.numTB.getObj(i+1).save(w);
         }
-        w.append("FINCATALOGUE");
+        w.append("FINCATALOGUE"+"\n");
         for (int i=0; i<this.Noeuds.size();i++){
             Noeud noeud=this.numN.getObj(i+1);
             if (noeud instanceof AppuisDouble){
@@ -783,7 +786,7 @@ public class Treillis {
                 ((NoeudSimple) noeud).save(w);
             }
         }
-        w.append("FINNOEUDS");
+        w.append("FINNOEUDS"+"\n");
        for (int i=0; i<this.Barres.size();i++){
             this.numB.getObj(i+1).save(w);
             
@@ -791,23 +794,21 @@ public class Treillis {
         w.append("FINBARRES");
     }
     
-    public static Treillis lecture(File fin) throws IOException {
-        Treillis res = null;
+    public void lecture(File fin) throws IOException {
         try (BufferedReader bin = new BufferedReader(new FileReader(fin))) {
             String line;
             while ((line = bin.readLine()) != null && line.length() != 0) {
                 String[] bouts = line.split(";");
                 
-                res= new Treillis();
                 if (bouts[0].equals("ZoneConstructible")) {
                     double xmin = Double.parseDouble(bouts[1]);
-                    res.setXmin(xmin);
+                    this.setXmin(xmin);
                     double xmax = Double.parseDouble(bouts[2]);
-                    res.setXmax(xmax);
+                    this.setXmax(xmax);
                     double ymin = Double.parseDouble(bouts[3]);
-                    res.setYmin(ymin);
+                    this.setYmin(ymin);
                     double ymax = Double.parseDouble(bouts[4]);
-                    res.setYmax(ymax);
+                    this.setYmax(ymax);
                 } else if (bouts[0].equals("Triangle")) {
                     double[][] PT= new double[3][2];
                     String[] point1 = lecturePoint(bouts[2]);
@@ -819,44 +820,50 @@ public class Treillis {
                     String[] point3 = lecturePoint(bouts[4]);
                     PT[2][0]= Double.parseDouble(point3[0]);
                     PT[2][1]= Double.parseDouble(point3[1]);
-                    res.TT.add(new TriangleTerrain(res.getNumTT(), PT));
+                    System.out.println(PT[0][0]);
+                    System.out.println(PT[0][1]);
+                    System.out.println(PT[1][0]);
+                    System.out.println(PT[1][1]);
+                    System.out.println(PT[2][0]);
+                    System.out.println(PT[2][1]);
+                    this.TT.add(new TriangleTerrain(this.getNumTT(), PT, Color.GREEN));
                 } else if (bouts[0].equals("TypeBarre")) {
                     double cout = Double.parseDouble(bouts[2]);
                     double lmin = Double.parseDouble(bouts[3]);
                     double lmax = Double.parseDouble(bouts[4]);
                     double rtract = Double.parseDouble(bouts[5]);
                     double rcomp = Double.parseDouble(bouts[6]);
-                    res.Catalogue.add(new TypeBarre(res.getNumTB(),cout,lmin,lmax,rtract,rcomp));
+                    this.Catalogue.add(new TypeBarre(this.getNumTB(),cout,lmin,lmax,rtract,rcomp));
                 }else if (bouts[0].equals("AppuiDouble")) {
                     int idTT = Integer.parseInt(bouts[2]);
                     int numPT = Integer.parseInt(bouts[3]);
                     double alpha = Double.parseDouble(bouts[4]);
-                    res.Noeuds.add(new AppuisDouble(res.getNumN(),res.getNumTT().getObj(idTT),numPT,alpha));
+                    this.Noeuds.add(new AppuisDouble(this.getNumN(),this.getNumTT().getObj(idTT),numPT,alpha,Color.BLUE));
                 }else if (bouts[0].equals("AppuiSimple")) {
                     int idTT = Integer.parseInt(bouts[2]);
                     int numPT = Integer.parseInt(bouts[3]);
                     double alpha = Double.parseDouble(bouts[4]);
-                    res.Noeuds.add(new AppuisSimple(res.getNumN(),res.getNumTT().getObj(idTT),numPT,alpha));
+                    this.Noeuds.add(new AppuisSimple(this.getNumN(),this.getNumTT().getObj(idTT),numPT,alpha,Color.RED));
                 } else if (bouts[0].equals("NoeudSimple")) {
                     String[] point = lecturePoint(bouts[2]);
                     double x = Double.parseDouble(point[0]);
                     double y = Double.parseDouble(point[1]);
-                    res.Noeuds.add(new NoeudSimple(res.getNumN(), x, y));
+                    this.Noeuds.add(new NoeudSimple(this.getNumN(), x, y));
                 }else if (bouts[0].equals("Barre")) {
                     int idTB = Integer.parseInt(bouts[2]);
                     int idN1 = Integer.parseInt(bouts[3]);
-                    int idN2 = Integer.parseInt(bouts[2]);
-                    res.Barres.add(new Barre(res.getNumB(), res.getNumTB().getObj(idTB), idN1, idN2));
+                    int idN2 = Integer.parseInt(bouts[4]);
+                    this.Barres.add(new Barre(this.getNumB(), this.getNumTB().getObj(idTB), idN1, idN2));
                 }
             }
         }
-        return res;
     }
     
     public static String[] lecturePoint(String point){
         point = point.replace("(", "");
         point = point.replace(")", "");
-        return point.split(";");
+        String[] bouts = point.split(",");
+        return bouts;
     }
     
     public void sauvegarde(File fout) throws IOException {
