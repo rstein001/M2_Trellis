@@ -19,6 +19,8 @@
     </dependencies>
     <build>
         <plugins>
+            
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -27,6 +29,8 @@
                     <release>11</release>
                 </configuration>
             </plugin>
+            
+            
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -42,6 +46,37 @@
                     </execution>
                 </executions>
             </plugin>
+            
+            <!-- voir https://github.com/openjfx/javafx-maven-plugin
+            https://dev.to/cherrychain/javafx-jlink-and-jpackage-h9 
+            maven goals : 
+            pour run : javafx:run
+            pour creer programme standalone : javafx:jlink 
+            voir aussi JPackage pour une alternative avec jdk 16-->
+            <plugin>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.5</version>
+                <configuration>
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <stripDebug>true</stripDebug>
+                    <noManPages>true</noManPages>
+                    <mainClass>Trellis/fr.insa.stein.cours_s2.trellis.gui.Main</mainClass>
+                    <launcher>Trellis</launcher>
+                    <jlinkImageName>Treillis_RSTVZ</jlinkImageName>
+                    <jlinkZipName>Treillis_RSTVZ</jlinkZipName>
+                    <vendor>RSTVZ</vendor>
+                </configuration>
+                <executions>
+                    <execution>
+                        <!-- Default configuration for running -->
+                        <!-- Usage: mvn clean javafx:run -->
+                        <id>default-cli</id>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            
         </plugins>
     </build>
     <name>Treillis</name>

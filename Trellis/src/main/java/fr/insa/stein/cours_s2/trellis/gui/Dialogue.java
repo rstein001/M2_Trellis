@@ -26,15 +26,12 @@ import javafx.scene.layout.GridPane;
 public class Dialogue {
 
     public static List<String> DialogTB(Treillis Trellis) {
-        // Create the custom dialog.
         Dialog<List<String>> dialogTB = new Dialog<>();
         dialogTB.setTitle("ajoutez un type de barre");
 
-        // Set the button types.
         ButtonType btValider = new ButtonType("Valider", ButtonData.OK_DONE);
         dialogTB.getDialogPane().getButtonTypes().add(btValider);
 
-        // Create the username and password labels and fields.
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -63,11 +60,9 @@ public class Dialogue {
         grid.add(tfRcomp, 1, 4);
 
 
-        // Enable/Disable login button depending on whether a username was entered.
         Node bValider = dialogTB.getDialogPane().lookupButton(btValider);
         bValider.setDisable(true);
 
-        // Do some validation (using the Java 8 lambda syntax).
         tfRcomp.textProperty().addListener((observable, oldValue, newValue) -> {
             bValider.setDisable(newValue.trim().isEmpty());
         });
@@ -75,10 +70,8 @@ public class Dialogue {
 
         dialogTB.getDialogPane().setContent(grid);
 
-        // Request focus on the username field by default.
         Platform.runLater(() -> tfCout.requestFocus());
 
-        // Convert the result to a username-password-pair when the login button is clicked.
         dialogTB.setResultConverter(dialogButton -> {
             if (dialogButton == btValider) {
                 List<String> List = new ArrayList<>();
@@ -101,15 +94,12 @@ public class Dialogue {
     }
     
     public static List<String> DialogTT (Treillis Trellis) {
-        // Create the custom dialog.
         Dialog<List<String>> dialogTT = new Dialog<>();
         dialogTT.setTitle("ajoutez un triangle terrain");
 
-        // Set the button types.
         ButtonType btValider = new ButtonType("Valider", ButtonData.OK_DONE);
         dialogTT.getDialogPane().getButtonTypes().add(btValider);
 
-        // Create the username and password labels and fields.
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -142,11 +132,9 @@ public class Dialogue {
         grid.add(tfP3y, 1, 5);
 
 
-        // Enable/Disable login button depending on whether a username was entered.
         Node bValider = dialogTT.getDialogPane().lookupButton(btValider);
         bValider.setDisable(true);
 
-        // Do some validation (using the Java 8 lambda syntax).
         tfP3y.textProperty().addListener((observable, oldValue, newValue) -> {
             bValider.setDisable(newValue.trim().isEmpty());
         });
@@ -154,10 +142,8 @@ public class Dialogue {
 
         dialogTT.getDialogPane().setContent(grid);
 
-        // Request focus on the username field by default.
         Platform.runLater(() -> tfP1x.requestFocus());
 
-        // Convert the result to a username-password-pair when the login button is clicked.
         dialogTT.setResultConverter(dialogButton -> {
             if (dialogButton == btValider) {
                 List<String> List = new ArrayList<>();
@@ -182,15 +168,12 @@ public class Dialogue {
     }
     
     public static List<String> DialogNoeud(Treillis Trellis) {
-        // Create the custom dialog.
         Dialog<List<String>> dialogNoeud = new Dialog<>();
         dialogNoeud.setTitle("ajoutez un nouveau noeud");
 
-        // Set the button types.
         ButtonType btValider = new ButtonType("Valider", ButtonData.OK_DONE);
         dialogNoeud.getDialogPane().getButtonTypes().add(btValider);
 
-        // Create the username and password labels and fields.
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -207,12 +190,9 @@ public class Dialogue {
         grid.add(new Label("Coordonnées en y:"), 0, 1);
         grid.add(tfP1y, 1, 1);
         
-
-        // Enable/Disable login button depending on whether a username was entered.
         Node bValider = dialogNoeud.getDialogPane().lookupButton(btValider);
         bValider.setDisable(true);
 
-        // Do some validation (using the Java 8 lambda syntax).
         tfP1y.textProperty().addListener((observable, oldValue, newValue) -> {
             bValider.setDisable(newValue.trim().isEmpty());
         });
@@ -220,10 +200,8 @@ public class Dialogue {
 
         dialogNoeud.getDialogPane().setContent(grid);
 
-        // Request focus on the username field by default.
         Platform.runLater(() -> tfP1x.requestFocus());
 
-        // Convert the result to a username-password-pair when the login button is clicked.
         dialogNoeud.setResultConverter(dialogButton -> {
             if (dialogButton == btValider) {
                 List<String> List = new ArrayList<>();
@@ -244,15 +222,12 @@ public class Dialogue {
     }
     
     public static List<String> DialogN1(Treillis Trellis) {
-        // Create the custom dialog.
         Dialog<List<String>> dialogN1 = new Dialog<>();
         dialogN1.setTitle("Choisissez vos 2 noeuds");
 
-        // Set the button types.
         ButtonType btValider = new ButtonType("Valider", ButtonData.OK_DONE);
         dialogN1.getDialogPane().getButtonTypes().add(btValider);
 
-        // Create the username and password labels and fields.
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -276,11 +251,9 @@ public class Dialogue {
         grid.add(tfP2z, 1, 2);
         
 
-        // Enable/Disable login button depending on whether a username was entered.
         Node bValider = dialogN1.getDialogPane().lookupButton(btValider);
         bValider.setDisable(true);
 
-        // Do some validation (using the Java 8 lambda syntax).
         tfP2y.textProperty().addListener((observable, oldValue, newValue) -> {
             bValider.setDisable(newValue.trim().isEmpty());
         });
@@ -288,10 +261,8 @@ public class Dialogue {
 
         dialogN1.getDialogPane().setContent(grid);
 
-        // Request focus on the username field by default.
         Platform.runLater(() -> tfP2x.requestFocus());
 
-        // Convert the result to a username-password-pair when the login button is clicked.
         dialogN1.setResultConverter(dialogButton -> {
             if (dialogButton == btValider) {
                 List<String> List = new ArrayList<>();
@@ -313,15 +284,12 @@ public class Dialogue {
     }
     
     public static List<String> DialogN2(Treillis Trellis) {
-        // Create the custom dialog.
         Dialog<List<String>> dialogN2 = new Dialog<>();
         dialogN2.setTitle("Choisissez vos 2 noeuds");
 
-        // Set the button types.
         ButtonType btValider = new ButtonType("Valider", ButtonData.OK_DONE);
         dialogN2.getDialogPane().getButtonTypes().add(btValider);
 
-        // Create the username and password labels and fields.
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -339,11 +307,9 @@ public class Dialogue {
         grid.add(tfP2y, 1, 1);
         
 
-        // Enable/Disable login button depending on whether a username was entered.
         Node bValider = dialogN2.getDialogPane().lookupButton(btValider);
         bValider.setDisable(true);
 
-        // Do some validation (using the Java 8 lambda syntax).
         tfP2y.textProperty().addListener((observable, oldValue, newValue) -> {
             bValider.setDisable(newValue.trim().isEmpty());
         });
@@ -351,10 +317,8 @@ public class Dialogue {
 
         dialogN2.getDialogPane().setContent(grid);
 
-        // Request focus on the username field by default.
         Platform.runLater(() -> tfP2x.requestFocus());
 
-        // Convert the result to a username-password-pair when the login button is clicked.
         dialogN2.setResultConverter(dialogButton -> {
             if (dialogButton == btValider) {
                 List<String> List = new ArrayList<>();
@@ -375,15 +339,12 @@ public class Dialogue {
     }
     
     public static List<String> DialogAD(Treillis Trellis) {
-        // Create the custom dialog.
         Dialog<List<String>> dialogAD = new Dialog<>();
         dialogAD.setTitle("Choisissez votre noeud et son terrain");
 
-        // Set the button types.
         ButtonType btValider = new ButtonType("Valider", ButtonData.OK_DONE);
         dialogAD.getDialogPane().getButtonTypes().add(btValider);
 
-        // Create the username and password labels and fields.
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -408,11 +369,9 @@ public class Dialogue {
         
         
 
-        // Enable/Disable login button depending on whether a username was entered.
         Node bValider = dialogAD.getDialogPane().lookupButton(btValider);
         bValider.setDisable(true);
 
-        // Do some validation (using the Java 8 lambda syntax).
         tfP2x.textProperty().addListener((observable, oldValue, newValue) -> {
             bValider.setDisable(newValue.trim().isEmpty());
         });
@@ -420,10 +379,8 @@ public class Dialogue {
 
         dialogAD.getDialogPane().setContent(grid);
 
-        // Request focus on the username field by default.
         Platform.runLater(() -> tfTT.requestFocus());
 
-        // Convert the result to a username-password-pair when the login button is clicked.
         dialogAD.setResultConverter(dialogButton -> {
             if (dialogButton == btValider) {
                 List<String> List = new ArrayList<>();
@@ -446,15 +403,12 @@ public class Dialogue {
     }
     
     public static List<String> DialogForce(Treillis Trellis) {
-        // Create the custom dialog.
         Dialog<List<String>> dialogForce = new Dialog<>();
         dialogForce.setTitle("ajoutez une Force");
 
-        // Set the button types.
         ButtonType btValider = new ButtonType("Valider", ButtonData.OK_DONE);
         dialogForce.getDialogPane().getButtonTypes().add(btValider);
 
-        // Create the username and password labels and fields.
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -476,11 +430,9 @@ public class Dialogue {
         grid.add(tfP1z, 1, 2);
         
 
-        // Enable/Disable login button depending on whether a username was entered.
         Node bValider = dialogForce.getDialogPane().lookupButton(btValider);
         bValider.setDisable(true);
 
-        // Do some validation (using the Java 8 lambda syntax).
         tfP1y.textProperty().addListener((observable, oldValue, newValue) -> {
             bValider.setDisable(newValue.trim().isEmpty());
         });
@@ -488,10 +440,8 @@ public class Dialogue {
 
         dialogForce.getDialogPane().setContent(grid);
 
-        // Request focus on the username field by default.
         Platform.runLater(() -> tfP1x.requestFocus());
 
-        // Convert the result to a username-password-pair when the login button is clicked.
         dialogForce.setResultConverter(dialogButton -> {
             if (dialogButton == btValider) {
                 List<String> List = new ArrayList<>();
